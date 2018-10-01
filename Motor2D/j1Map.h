@@ -6,6 +6,13 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+
+#define MAP1 "hello2.tmx"
+#define MAP2 "hexagonal-mini.tmx"
+#define MAP3 "isometric_grass_and_water.tmx"
+#define MAP4 "sewers.tmx"
+
+
 // TODO 1: Create a struct for the map layer
 // ----------------------------------------------------
 
