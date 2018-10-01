@@ -31,10 +31,10 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	p2List_item<TileSet*>* item; //Sprites
+	p2List_item<TileSet*>* item; //Sprites_Layer
 	item = data.tilesets.start;
 
-	p2List_item<MapLayer*>* layer;
+	p2List_item<MapLayer*>* layer; //Map
 	layer = data.layers.start;
 
 	// TODO 5: Prepare the loop to draw all tilesets + Blit
@@ -42,7 +42,6 @@ void j1Map::Draw()
 		for (int x = 0; x < data.width; ++x) {
 
 			uint id = layer->data->Get(x, y);
-			LOG("%i", id);
 
 			id = layer->data->data[id];
 
