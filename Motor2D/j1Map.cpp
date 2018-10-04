@@ -37,10 +37,9 @@ void j1Map::Draw()
 	p2List_item<MapLayer*>* layer; //Map
 	layer = data.layers.start;
 
-	// TODO 5: Prepare the loop to draw all tilesets + Blit
+
 	for (int y = 0; y < data.height; ++y) {
 		for (int x = 0; x < data.width; ++x) {
-
 			uint id = layer->data->Get(x, y);
 
 			id = layer->data->data[id];
@@ -52,8 +51,6 @@ void j1Map::Draw()
 			}
 		}
 	}
-	
-		// TODO 9: Complete the draw function
 
 }
 
@@ -61,9 +58,35 @@ void j1Map::Draw()
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
+	switch (data.type) {
+	case MAPTYPE_ORTHOGONAL:
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+		break;
+	case MAPTYPE_ISOMETRIC:
+		// TODO 1: Add isometric map to world coordinates
+		ret.x = (data.tile_width / 2)*(x - y);
+		ret.y = (data.tile_height / 2)*(x - y);
+		break;
+	}
+	return ret;
+}
 
-	ret.x = x * data.tile_width;
-	ret.y = y * data.tile_height;
+iPoint j1Map::WorldToMap(int x, int y) const
+{
+	iPoint ret(0, 0);
+	switch (data.type) {
+	case MAPTYPE_ORTHOGONAL:
+		// TODO 2: Add orthographic world to map coordinates
+		ret.x = x / data.tile_width;
+		ret.y = y / data.tile_height;
+
+		break;
+	case MAPTYPE_ISOMETRIC:
+		// TODO 3: Add the case for isometric maps to WorldToMap
+		
+		break;
+	}
 
 	return ret;
 }
@@ -98,9 +121,6 @@ bool j1Map::CleanUp()
 		item = item->next;
 	}
 	data.tilesets.clear();
-
-	// TODO 2: clean up all layer data
-	// Remove all layers
 
 	p2List_item<MapLayer*>* layer;
 	layer = data.layers.start;
@@ -158,7 +178,6 @@ bool j1Map::Load(const char* file_name)
 		data.tilesets.add(set);
 	}
 
-	// TODO 4: Iterate all layers and load each of them
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
 	for (layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
@@ -338,7 +357,6 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-// TODO 3: Create the definition for a function that loads a single layer
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
