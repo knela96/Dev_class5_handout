@@ -11,6 +11,8 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "j1App.h"
+#include "j1FadeToBlack.h"
+#include "j1Player.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -21,10 +23,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	input = new j1Input();
 	win = new j1Window();
 	render = new j1Render();
+	fade = new j1FadeToBlack();
 	tex = new j1Textures();
 	audio = new j1Audio();
 	scene = new j1Scene();
 	map = new j1Map();
+	player = new j1Player();
+
+	//fade->active = false;
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -34,9 +40,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(fade);
+	AddModule(player);
+
 
 	// render last to swap buffer
 	AddModule(render);
+
+
 }
 
 // Destructor
@@ -102,7 +113,7 @@ bool j1App::Start()
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while(item != NULL && ret == true && item->data->active)
 	{
 		ret = item->data->Start();
 		item = item->next;

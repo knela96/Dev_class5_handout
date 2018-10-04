@@ -31,27 +31,32 @@ void j1Map::Draw()
 	if(map_loaded == false)
 		return;
 
-	p2List_item<TileSet*>* item; //Sprites_Layer
-	item = data.tilesets.start;
 
 	p2List_item<MapLayer*>* layer; //Map
 	layer = data.layers.start;
 
+	p2List_item<TileSet*>* item; //Sprites_Layer
 
-	for (int y = 0; y < data.height; ++y) {
-		for (int x = 0; x < data.width; ++x) {
-			uint id = layer->data->Get(x, y);
+	while (layer != nullptr) {
+		item = data.tilesets.start;
+		while (item != nullptr) {
+			for (int y = 0; y < data.height; ++y) {
+				for (int x = 0; x < data.width; ++x) {
+					uint id = layer->data->Get(x, y);
 
-			id = layer->data->data[id];
+					id = layer->data->data[id];
 
-			if (id != 0) {
-				SDL_Rect *rect = &item->data->GetTileRect(id);
-				iPoint pos = MapToWorld(x, y);
-				App->render->Blit(item->data->texture,pos.x,pos.y, rect);
-			}
+					if (id != 0) {
+						SDL_Rect *rect = &item->data->GetTileRect(id);
+						iPoint pos = MapToWorld(x, y);
+						App->render->Blit(item->data->texture, pos.x, pos.y, rect);
+					}
+				}
+			};
+			item = item->next;
 		}
+		layer = layer->next;
 	}
-
 }
 
 
@@ -66,7 +71,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	case MAPTYPE_ISOMETRIC:
 		// TODO 1: Add isometric map to world coordinates
 		ret.x = (data.tile_width / 2)*(x - y);
-		ret.y = (data.tile_height / 2)*(x - y);
+		ret.y = (data.tile_height / 2)*(x + y);
 		break;
 	}
 	return ret;
@@ -84,7 +89,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 		break;
 	case MAPTYPE_ISOMETRIC:
 		// TODO 3: Add the case for isometric maps to WorldToMap
-		
 		break;
 	}
 
@@ -179,17 +183,16 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	// Load layer info ----------------------------------------------
+
 	pugi::xml_node layer;
 	for (layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 	{
-		MapLayer* set = new MapLayer();
+		MapLayer* lay = new MapLayer();
+
+		ret = LoadLayer(layer, lay);
 
 		if (ret == true)
-		{
-			ret = LoadLayer(layer, set);
-		}
-
-		data.layers.add(set);
+			data.layers.add(lay);
 	}
 
 
@@ -367,10 +370,10 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	memset(layer->data, 0, sizeof(uint)*layer->width*layer->height);
 
 	int i = 0;
-
-	for (node = map_file.child("map").child("layer").child("data").child("tile"); node && ret; node = node.next_sibling("tile"))
+	
+	for (pugi::xml_node layer_node = node.child("data").child("tile"); layer_node && ret; layer_node = layer_node.next_sibling("tile"))
 	{
-		layer->data[i++] = node.attribute("gid").as_uint();
+		layer->data[i++] = layer_node.attribute("gid").as_uint();
 	}
 
 	return ret;
