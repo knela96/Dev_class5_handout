@@ -3,23 +3,49 @@
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
-#include "p2Point.h"
 #include "j1Module.h"
 
+
+enum ColliderTypes
+{
+	COLLIDER_NONE = -1,
+	COLLIDER_WALL,
+	COLLIDER_PLAYER,
+	COLLIDER_ENEMY,
+	COLLIDER_PLAYER_SHOT,
+	COLLIDER_ENEMY_SHOT,
+	COLLIDER_POWERUP,
+	COLLIDER_MAX,
+};
+
 struct Collider {
-	iPoint position;
-	uint height;
-	uint width;
+	SDL_Rect rect;
+	bool to_delete = false;
+	ColliderTypes type;
+	j1Module* callback = nullptr;
+
+	ColliderTypes gettype() { return type; }
+
+	void SetPos(int x, int y)
+	{
+		rect.x = x;
+		rect.y = y;
+	}
+
+	bool CheckCollision(const SDL_Rect& r) const;
 };
 
 struct Colliders {
+	ColliderTypes type;
 	p2SString name;
-	uint id;
+	p2List<Collider*> collider;
 };
 
 struct ColliderData {
 	p2List<Colliders*> colliders;
 };
+
+
 
 // ----------------------------------------------------
 class j1Collisions : public j1Module
@@ -31,19 +57,21 @@ public:
 	// Destructor
 	virtual ~j1Collisions();
 
-	// Called before render is available
-	bool Awake(pugi::xml_node& conf);
-
 	// Called each loop iteration
 	void Draw();
 
 	// Called before quitting
 	bool CleanUp();
 
-	bool Load(const char* file_name);
+	//bool PreUpdate();
 
-	bool j1Collisions::LoadColliderDetails(pugi::xml_node& colliders_node, Colliders* col);
-	bool j1Collisions::LoadCollider(pugi::xml_node& node, Collider* col);
+	bool Update(float dt);
+
+	//bool PostUpdate();
+
+	bool Load(pugi::xml_document& file_name);
+
+	bool j1Collisions::LoadColliderGroup(pugi::xml_node& node, Colliders* col);
 
 private:
 
@@ -52,8 +80,8 @@ public:
 	ColliderData data;
 
 private:
-	pugi::xml_document	map_file;
-	p2SString			folder;
+	bool				collisions_loaded;
+	bool				debug;
 };
 
 #endif // __j1Collisions_H__

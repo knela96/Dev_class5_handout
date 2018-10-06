@@ -34,10 +34,9 @@ bool j1Player::Start()
 {
 	LOG("Loading player textures");
 	bool ret = true;
-	/*
-	graphics = App->tex->Load("Assets/Sprites/Character/Player.png"); // arcade version
+	//graphics = App->tex->Load("Assets/Sprites/Character/Player.png"); // arcade version
 	
-	death_fx = App->audio->LoadS("Assets/Audio Files/SFX in WAV/xmultipl-044.wav");
+	//death_fx = App->audio->LoadS("Assets/Audio Files/SFX in WAV/xmultipl-044.wav");
 
 	current_animation = &idle;
 
@@ -45,24 +44,14 @@ bool j1Player::Start()
 	camera_offset.y = App->render->camera.y;
 
 	speed = 2;
-	 
-	nitroanim = false;
 
 	start_time = 0;
 	life = 3;
 	dead = false;
 
 	//Add a collider to the player
-	collider = App->collision->AddCollider({ position.x+4, position.y+1, 22, 14 }, COLLIDER_PLAYER, this);
+	//collider = App->collision->AddCollider({ position.x+4, position.y+1, 22, 14 }, COLLIDER_PLAYER, this);
 
-	powerup[BASIC_SHOOT] = true;
-	powerup[BOMB_SHOOT] = false;
-
-	font_score = App->font->Load("Assets/Sprites/UI/fonts.1.png", "0123456789í.-=éè()óòáú`´!?abcdefghijklmnopqrstuvwxyz", 2);
-	font_gameover = App->font->Load("Assets/Sprites/UI/fonts.2.png", "0123456789·' ºººººººººººººabcdefghijklmnopqrstuvwxyz", 2);
-
-	music = App->audio->LoadM("Assets/Audio Files/Music in OGG/16_Game_Over.ogg");
-	*/
 	return ret;
 }
 

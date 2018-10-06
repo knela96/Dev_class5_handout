@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
+#include "j1Collisions.h"
 #include "j1Map.h"
 #include <math.h>
 
@@ -193,6 +194,12 @@ bool j1Map::Load(const char* file_name)
 
 		if (ret == true)
 			data.layers.add(lay);
+	}
+
+	//Load Colliders
+	if (ret == true)
+	{
+		App->collisions->Load(map_file);
 	}
 
 

@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Map.h"
+#include "j1Collisions.h"
 #include "j1Scene.h"
 
 j1Scene::j1Scene() : j1Module()
