@@ -71,7 +71,9 @@ public:
 
 	bool Load(pugi::xml_document& file_name);
 
-	bool j1Collisions::LoadColliderGroup(pugi::xml_node& node, Colliders* col);
+	bool LoadColliderGroup(pugi::xml_node& node, Colliders* col);
+
+	Collider* AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback = nullptr);
 
 private:
 

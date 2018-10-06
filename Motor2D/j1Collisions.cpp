@@ -96,6 +96,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 	for (collider = map_file.child("map").child("objectgroup"); collider && ret; collider = collider.next_sibling("objectgroup"))
 	{
 		Colliders* col = new Colliders();
+		col->name = collider.attribute("name").as_string();
 
 		ret = LoadColliderGroup(collider, col);
 
@@ -108,9 +109,6 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 bool j1Collisions::LoadColliderGroup(pugi::xml_node& node, Colliders* colliders)
 {
 	bool ret = true;
-	colliders->type = (ColliderTypes)node.attribute("id").as_uint();
-	colliders->name = node.attribute("name").as_string();
-
 	for (pugi::xml_node object = node.child("object"); object && ret; object = object.next_sibling("object"))
 	{
 		Collider* col = new Collider();
@@ -119,9 +117,25 @@ bool j1Collisions::LoadColliderGroup(pugi::xml_node& node, Colliders* colliders)
 		col->rect.y = object.attribute("y").as_uint();
 		col->rect.w = object.attribute("width").as_uint();
 		col->rect.h = object.attribute("height").as_uint();
-		col->type = colliders->type;
+		col->type = (ColliderTypes)object.attribute("name").as_uint();
 
 		colliders->collider.add(col);
+	}
+
+	return ret;
+}
+
+Collider* j1Collisions::AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback)
+{
+	Collider* ret = nullptr;
+
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	{
+		if (colliders[i] == nullptr)
+		{
+			ret = colliders[i] = new Collider(rect, type, callback);
+			break;
+		}
 	}
 
 	return ret;

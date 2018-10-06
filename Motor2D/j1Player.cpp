@@ -23,7 +23,6 @@ j1Player::j1Player()
 	idle.speed = 0.1f;
 
 	current_animation = &idle;
-
 }
 
 j1Player::~j1Player()
@@ -34,7 +33,7 @@ bool j1Player::Start()
 {
 	LOG("Loading player textures");
 	bool ret = true;
-	//graphics = App->tex->Load("Assets/Sprites/Character/Player.png"); // arcade version
+	graphics = App->tex->Load("Assets/Sprites/Character/Player.png"); // arcade version
 	
 	//death_fx = App->audio->LoadS("Assets/Audio Files/SFX in WAV/xmultipl-044.wav");
 
@@ -50,7 +49,7 @@ bool j1Player::Start()
 	dead = false;
 
 	//Add a collider to the player
-	//collider = App->collision->AddCollider({ position.x+4, position.y+1, 22, 14 }, COLLIDER_PLAYER, this);
+	collider = App->collisions->data.colliders[0]->collider.add()
 
 	return ret;
 }
