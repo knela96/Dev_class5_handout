@@ -13,7 +13,6 @@
 #define MAP4 "sewers.tmx"
 
 
-// TODO 1: Create a struct for the map layer
 // ----------------------------------------------------
 
 struct MapLayer {
@@ -25,14 +24,9 @@ struct MapLayer {
 };
 
 
-
-	// TODO 6: Short function to get the value of x,y
-
-
 // ----------------------------------------------------
 struct TileSet
 {
-	// TODO 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
 
 	p2SString			name;

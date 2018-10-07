@@ -49,7 +49,7 @@ bool j1Player::Start()
 	dead = false;
 
 	//Add a collider to the player
-	collider = App->collisions->data.colliders[0]->collider.add()
+	collider = App->collisions->GetCollider(COLLIDER_PLAYER);
 
 	return ret;
 }

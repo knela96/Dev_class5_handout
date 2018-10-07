@@ -24,6 +24,12 @@ struct Collider {
 	ColliderTypes type;
 	j1Module* callback = nullptr;
 
+	Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
+		rect(rectangle),
+		type(type),
+		callback(callback)
+	{}
+
 	ColliderTypes gettype() { return type; }
 
 	void SetPos(int x, int y)
@@ -73,7 +79,7 @@ public:
 
 	bool LoadColliderGroup(pugi::xml_node& node, Colliders* col);
 
-	Collider* AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback = nullptr);
+	Collider* GetCollider(ColliderTypes type);
 
 private:
 

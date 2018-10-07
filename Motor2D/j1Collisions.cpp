@@ -125,18 +125,22 @@ bool j1Collisions::LoadColliderGroup(pugi::xml_node& node, Colliders* colliders)
 	return ret;
 }
 
-Collider* j1Collisions::AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback)
+Collider* j1Collisions::GetCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback)
 {
 	Collider* ret = nullptr;
-
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	
+	for (uint i = 0; i < data.colliders.count(); ++i)
 	{
-		if (colliders[i] == nullptr)
+		for (uint j = 0; j < data.colliders[i]->collider.count(); ++j)
 		{
-			ret = colliders[i] = new Collider(rect, type, callback);
-			break;
+			if (data.colliders[i]->collider[j] != nullptr)
+			{
+				if(data.colliders[i]->collider[j]->gettype() == type) {
+					return data.colliders[i]->collider[j];
+				}
+			}
 		}
 	}
-
+	
 	return ret;
 }

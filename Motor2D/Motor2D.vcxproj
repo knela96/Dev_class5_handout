@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\maps\hello2.tmx" />
+    <None Include="..\Game\Assets\maps\map1.tmx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
