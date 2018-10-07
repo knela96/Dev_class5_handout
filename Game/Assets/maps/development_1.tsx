@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.2" tiledversion="1.2.0" name="development_1" tilewidth="16" tileheight="16" tilecount="540" columns="27">
- <image source="../../../../Magic-Cliffs-Environment/tileset.ajusted.png" width="432" height="320"/>
+ <image source="tileset.ajusted.png" width="432" height="320"/>
  <terraintypes>
   <terrain name="background" tile="170"/>
   <terrain name="trocks" tile="72"/>
