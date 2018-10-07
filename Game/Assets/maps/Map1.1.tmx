@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="208" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="58">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="208" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="58">
  <tileset firstgid="1" name="tileset.ajusted" tilewidth="16" tileheight="16" tilecount="540" columns="27">
   <image source="tileset.ajusted.png" width="432" height="320"/>
  </tileset>
+ <imagelayer id="10" name="sky">
+  <image source="sky.png" width="112" height="304"/>
+ </imagelayer>
+ <imagelayer id="11" name="clouds">
+  <image source="clouds.png" width="544" height="236"/>
+ </imagelayer>
+ <imagelayer id="12" name="sea">
+  <image source="sea.png" width="112" height="96"/>
+ </imagelayer>
+ <imagelayer id="9" name="far ground" offsetx="988" offsety="531">
+  <image source="far-grounds.png" width="616" height="110"/>
+ </imagelayer>
  <layer id="1" name="sketch" width="208" height="40" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,184,184,184,184,184,184,184,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
