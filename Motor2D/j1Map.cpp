@@ -70,7 +70,6 @@ iPoint j1Map::MapToWorld(int x, int y) const
 		ret.y = y * data.tile_height;
 		break;
 	case MAPTYPE_ISOMETRIC:
-		// TODO 1: Add isometric map to world coordinates
 		ret.x = (data.tile_width / 2)*(x - y);
 		ret.y = (data.tile_height / 2)*(x + y);
 		break;
@@ -83,7 +82,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	iPoint ret(0, 0);
 	switch (data.type) {
 	case MAPTYPE_ORTHOGONAL:
-		// TODO 2: Add orthographic world to map coordinates
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
 

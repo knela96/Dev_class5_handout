@@ -24,11 +24,11 @@ struct Collider {
 	ColliderTypes type;
 	j1Module* callback = nullptr;
 
-	Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
+	/*Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
-	{}
+	{}*/
 
 	ColliderTypes gettype() { return type; }
 
@@ -41,14 +41,9 @@ struct Collider {
 	bool CheckCollision(const SDL_Rect& r) const;
 };
 
-struct Colliders {
-	ColliderTypes type;
-	p2SString name;
-	p2List<Collider*> collider;
-};
 
 struct ColliderData {
-	p2List<Colliders*> colliders;
+	p2List<Collider*> colliders;
 };
 
 
@@ -69,17 +64,15 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	//bool PreUpdate();
+	bool PreUpdate();
 
 	bool Update(float dt);
 
 	//bool PostUpdate();
 
 	bool Load(pugi::xml_document& file_name);
-
-	bool LoadColliderGroup(pugi::xml_node& node, Colliders* col);
-
-	Collider* GetCollider(ColliderTypes type);
+	
+	bool setColliders();
 
 private:
 
@@ -88,6 +81,8 @@ public:
 	ColliderData data;
 
 private:
+
+	bool				matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool				collisions_loaded;
 	bool				debug;
 };

@@ -16,50 +16,63 @@
 
 j1Player::j1Player()
 {
-
+	name.create("player");
 	// idle animation (arcade sprite sheet)
-	idle.PushBack({ 97, 0, 48, 16 });
+	idle.PushBack({ 0, 0, 40, 40 });
 	idle.loop = true;
 	idle.speed = 0.1f;
 
 	current_animation = &idle;
+	
 }
 
 j1Player::~j1Player()
 {}
 
 // Load assets
-bool j1Player::Start()
+bool j1Player::Awake(pugi::xml_node& config)
 {
 	LOG("Loading player textures");
 	bool ret = true;
-	graphics = App->tex->Load("Assets/Sprites/Character/Player.png"); // arcade version
+
+	folder.create(config.child("folder").child_value());
+
+	texture_path.create("%s%s", folder.GetString(), config.child("texture").attribute("source").as_string());
+
+	 // arcade version
 	
 	//death_fx = App->audio->LoadS("Assets/Audio Files/SFX in WAV/xmultipl-044.wav");
 
-	current_animation = &idle;
+
+	return ret;
+}
+
+bool j1Player::Start() {
 
 	camera_offset.x = App->render->camera.x;
 	camera_offset.y = App->render->camera.y;
 
-	speed = 2;
+	collider->rect.w = 50;//GET VALUES FROM CONFIG_XML
+	collider->rect.h = 50;
+
+	position.x = collider->rect.x;
+	position.y = collider->rect.y;
+
+	graphics = App->tex->Load(texture_path.GetString());
+
+	speed = { 2,2 };
 
 	start_time = 0;
 	life = 3;
 	dead = false;
 
-	//Add a collider to the player
-	collider = App->collisions->GetCollider(COLLIDER_PLAYER);
 
-	return ret;
+	return true;
 }
 
 bool j1Player::CleanUp()
 {
 	/*
-	position.x = 100;
-	position.y = 130;
-
 	LOG("Unloading Player assets");
 	App->textures->Unload(graphics);
 	graphics = nullptr;
@@ -75,20 +88,27 @@ bool j1Player::CleanUp()
 	return true;
 }
 // Update: draw background
-bool j1Player::Update()
-{ 
-	if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/) && position.x < App->render->camera.x / App->win->scale + App->win->width -40)
+bool j1Player::Update(float dt)
+{
+	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
 	{
-		position.x += speed;
+		position.y -= speed.y;
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/) && position.x > App->render->camera.x / App->win->scale)
+	if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
 	{
-		position.x -= speed;
+		position.y += speed.y;
+	}
+	if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
+	{
+		position.x += speed.x;
+	}
+	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/))
+	{
+		position.x -= speed.x;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		position.x = 4700;
 		position.y = 100;
-		//App->scene_stage1->disableModules();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
@@ -97,16 +117,19 @@ bool j1Player::Update()
 	}
 
 	//Collider
-	//collider->SetPos(position.x+10, position.y+3);
-
+	collider->SetPos(position.x, position.y);
 
 	// Draw everything --------------------------------------
 	App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame());
-
-	//collider->SetPos(position.x + 4, position.y + 1);//SET POS PLAYER_COLLIDER
-	
-	LOG("%i", life);
 	
 
 	return true;
+}
+
+void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
+	if (collider2->type == COLLIDER_WALL) {
+		if (collider1->rect.x < collider->rect.x + collider->rect.w) {
+			position.x = collider->rect.x + collider->rect.w;
+		}
+	}	
 }

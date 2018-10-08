@@ -26,4 +26,14 @@
     <folder>Assets/maps/</folder>
   </map>
 
+  <player>
+    <folder>Assets/Sprites/Character/</folder>
+    <texture source="Player.png" />
+    <collider w="50" h="50" />
+    <jumpFX source="Jump.wav"/>
+    <accel x="1" y="1"/>
+    <gravity value="50"/>
+    <jumpForce x="0" y="-26"/>
+  </player>
+
 </config>

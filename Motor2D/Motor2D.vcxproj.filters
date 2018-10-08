@@ -147,5 +147,8 @@
     <None Include="..\Game\Assets\maps\map1.tmx">
       <Filter>Desenvolupament  ========\XML</Filter>
     </None>
+    <None Include="..\Game\Assets\maps\Map1.1.tmx">
+      <Filter>Desenvolupament  ========\XML</Filter>
+    </None>
   </ItemGroup>
 </Project>

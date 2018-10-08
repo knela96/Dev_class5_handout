@@ -13,7 +13,7 @@ public:
 	~j1FadeToBlack();
 
 	bool Start();
-	bool Update();
+	bool Update(float dt);
 	bool FadeToBlack(j1Module* module_off, j1Module* module_on, float time = 2.0f);
 	bool FadeToBlack(float time = 1.0f);
 	bool FadeonlyBlack(float time = 1.0f);

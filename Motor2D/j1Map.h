@@ -8,7 +8,7 @@
 
 
 #define MAP1 "hello2.tmx"
-#define MAP2 "hexagonal-mini.tmx"
+#define MAP2 "Map1.1.tmx"
 #define MAP3 "isometric_grass_and_water.tmx"
 #define MAP4 "sewers.tmx"
 

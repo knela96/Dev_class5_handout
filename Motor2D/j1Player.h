@@ -16,12 +16,15 @@ public:
 	j1Player();
 	~j1Player();
 
+	bool Awake(pugi::xml_node& config);
 	bool Start();
-	bool Update();
+	bool Update(float dt);
 	bool CleanUp();
 
+	void OnCollision(Collider* collider1, Collider* collider2);
+
 public:
-	int speed = 2;
+	iPoint speed;
 	SDL_Texture * graphics = nullptr;
 	j1Animation idle;
 	j1Animation* current_animation;
@@ -34,6 +37,9 @@ public:
 	bool godmode = false;
 	uint life = 3;
 	char _godmode[8] = "godmode";
+private:
+	p2SString			texture_path;
+	p2SString			folder;
 };
 
 #endif
