@@ -25,6 +25,9 @@ public:
 
 public:
 	iPoint speed;
+	float scale;
+	bool onGround = false;
+	bool isFalling = false;
 	SDL_Texture * graphics = nullptr;
 	j1Animation idle;
 	j1Animation* current_animation;
@@ -40,6 +43,8 @@ public:
 private:
 	p2SString			texture_path;
 	p2SString			folder;
+	uint heightjump;
+
 };
 
 #endif

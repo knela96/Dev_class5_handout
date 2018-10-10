@@ -205,7 +205,6 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 bool j1Collisions::setColliders() {
 	for (uint i = 0; i < data.colliders.count(); ++i)
 	{
-		
 		switch (data.colliders[i]->type) {
 		case COLLIDER_PLAYER:
 			data.colliders[i]->callback = App->player;
@@ -222,4 +221,108 @@ bool Collider::CheckCollision(const SDL_Rect & r) const
 		return false;
 	else
 		return true;
+}
+
+iPoint Collider::AvoidCollision(iPoint speed, Collider* collider){
+
+	iPoint new_speed = speed;
+	Collider* c1 = collider;
+	c1->rect.x += speed.x;
+	c1->rect.y += speed.y;
+
+	for (uint i = 0; i < App->collisions->data.colliders.count(); ++i)
+	{
+		// skip empty colliders
+		if (App->collisions->data.colliders[i] == nullptr)
+			continue;
+
+		Collider* c2 = App->collisions->data.colliders[i];
+
+		if (c1->CheckCollision(c2->rect) == true)
+		{
+			if (c2->gettype() == 0) {
+				new_speed = CollisionSpeed(&c1->rect, &c2->rect, new_speed);
+			}
+			c1->rect.y -= (speed.y - new_speed.y);
+			c1->rect.x -= (speed.x - new_speed.x);
+		}
+
+	}
+	return new_speed;
+}
+
+iPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, iPoint new_speed) {
+	SDL_Rect overlay;
+	SDL_IntersectRect(collider1, collider2, &overlay);
+
+	if (new_speed.y > 0) {
+		if (collider1->y + collider1->h >= collider2->y ) {
+			if (new_speed.x > 0) {
+				if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
+					new_speed.x += overlay.w;
+				else if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y) {
+					new_speed.y -= overlay.h;
+					App->player->onGround = true;
+				}
+			}
+			else if (new_speed.x < 0) {
+				if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+				else if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
+					new_speed.x += overlay.w;
+				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y) {
+					new_speed.y -= overlay.h;
+					App->player->onGround = true;
+				}
+			}
+			else {
+				new_speed.y -= overlay.h;
+				App->player->onGround = true;
+			}
+		}
+		else {
+			if (new_speed.x > 0) {
+				if (collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+			}
+			else if (new_speed.x < 0)
+				if (collider1->x > collider2->x + collider2->w)
+					new_speed.x += overlay.w;
+		}
+	}
+	else if (new_speed.y < 0) {
+		if (collider1->y <= collider2->y + collider2->h) {
+			if (new_speed.x > 0) {
+				if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
+					new_speed.x += overlay.w;
+				else if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y)
+					new_speed.y += overlay.h;
+			}
+			else if (new_speed.x < 0) {
+				if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+				else if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
+					new_speed.x += overlay.w;
+				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y)
+					new_speed.y += overlay.h;
+			}
+			else
+				new_speed.y += overlay.h;
+		}
+	}
+	else {
+		if (new_speed.x > 0) {
+			if (collider1->x + collider1->w > collider2->x)
+				new_speed.x -= overlay.w;
+		}
+		else if (new_speed.x < 0)
+			if (collider1->x < collider2->x + collider2->w)
+				new_speed.x += overlay.w;
+	}
+
+	return new_speed;
 }

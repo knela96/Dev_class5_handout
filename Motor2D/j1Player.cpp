@@ -39,10 +39,6 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 	texture_path.create("%s%s", folder.GetString(), config.child("texture").attribute("source").as_string());
 
-	 // arcade version
-	
-	//death_fx = App->audio->LoadS("Assets/Audio Files/SFX in WAV/xmultipl-044.wav");
-
 
 	return ret;
 }
@@ -60,12 +56,15 @@ bool j1Player::Start() {
 
 	graphics = App->tex->Load(texture_path.GetString());
 
-	speed = { 2,2 };
+	speed = { 0,0 };
 
 	start_time = 0;
 	life = 3;
 	dead = false;
+	isFalling = true;
+	onGround = false;
 
+	scale = 1;
 
 	return true;
 }
@@ -90,21 +89,35 @@ bool j1Player::CleanUp()
 // Update: draw background
 bool j1Player::Update(float dt)
 {
-	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
+	start_time++;
+	//speed.x = 0;
+
+	
+	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ))
 	{
-		position.y -= speed.y;
+		speed.y = -1;
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
+	if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ))
 	{
-		position.y += speed.y;
+		speed.y =1;
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
+	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
 	{
-		position.x += speed.x;
+		speed.x = -1;
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/))
+	if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/))
 	{
-		position.x -= speed.x;
+		speed.x = 1;
+	}
+	if (!App->input->GetKey(SDL_SCANCODE_A) && !App->input->GetKey(SDL_SCANCODE_D)/*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/)
+	{
+		speed.x = 0;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/)
+	{
+		speed.y = -6;
+		onGround = false;
+		heightjump = position.y;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		position.x = 4700;
@@ -115,6 +128,13 @@ bool j1Player::Update(float dt)
 		life = 0;
 		dead = true;
 	}
+
+	speed.y = 3.0f; // Gravity
+
+
+	speed = collider->AvoidCollision(speed, collider);
+	position += speed;
+
 
 	//Collider
 	collider->SetPos(position.x, position.y);
@@ -127,9 +147,12 @@ bool j1Player::Update(float dt)
 }
 
 void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
-	if (collider2->type == COLLIDER_WALL) {
-		if (collider1->rect.x < collider->rect.x + collider->rect.w) {
-			position.x = collider->rect.x + collider->rect.w;
+	/*if (collider2->type == COLLIDER_WALL) {
+		if (collider1->rect.y + collider1->rect.h >= collider->rect.y) {
+			LOG("%i", collider1->rect.y);
+			position.y = collider2->rect.y - collider1->rect.h + 1;
+			isGrounded = true;
+			LOG("%i", collider1->rect.y);
 		}
-	}	
+	}	*/
 }

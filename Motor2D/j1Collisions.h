@@ -39,6 +39,8 @@ struct Collider {
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
+	iPoint AvoidCollision(iPoint speed, Collider* collider);
+	iPoint CollisionSpeed(SDL_Rect* collider1, SDL_Rect* Collider, iPoint speed);
 };
 
 
