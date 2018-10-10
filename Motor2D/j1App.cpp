@@ -122,6 +122,9 @@ bool j1App::Start()
 		item = item->next;
 	}
 
+	started_at = SDL_GetTicks();
+
+
 	return ret;
 }
 
@@ -165,6 +168,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	//dt = float(SDL_GetTicks() - started_at) / 1000.0f;
 }
 
 // ---------------------------------------------

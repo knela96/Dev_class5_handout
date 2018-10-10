@@ -88,11 +88,7 @@ bool j1Player::CleanUp()
 }
 // Update: draw background
 bool j1Player::Update(float dt)
-{
-	start_time++;
-	//speed.x = 0;
-
-	
+{	
 	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ))
 	{
 		speed.y = -1;

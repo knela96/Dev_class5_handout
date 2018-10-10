@@ -3,6 +3,7 @@
 
 #include "p2List.h"
 #include "j1Module.h"
+#include "SDL\include\SDL_timer.h"
 #include "PugiXml\src\pugixml.hpp"
 
 // Modules
@@ -95,6 +96,7 @@ private:
 	p2List<j1Module*>	modules;
 	uint				frames;
 	float				dt;
+	uint				started_at;
 	int					argc;
 	char**				args;
 
