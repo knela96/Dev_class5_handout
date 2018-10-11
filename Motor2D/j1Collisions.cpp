@@ -222,9 +222,9 @@ bool Collider::CheckCollision(const SDL_Rect & r) const
 		return true;
 }
 
-iPoint Collider::AvoidCollision(iPoint speed, Collider& collider){
+fPoint Collider::AvoidCollision(fPoint speed, Collider& collider){
 
-	iPoint new_speed = speed;
+	fPoint new_speed = speed;
 	Collider c1 = collider;
 	c1.rect.x += speed.x;
 	c1.rect.y += speed.y;
@@ -253,7 +253,7 @@ iPoint Collider::AvoidCollision(iPoint speed, Collider& collider){
 	return new_speed;
 }
 
-iPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, iPoint new_speed) {
+fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint new_speed) {
 	SDL_Rect overlay;
 	SDL_IntersectRect(collider1, collider2, &overlay);
 

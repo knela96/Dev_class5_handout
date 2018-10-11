@@ -65,7 +65,7 @@ bool j1Player::Start() {
 	dead = false;
 
 	jumpSpeed = 20.0f;//NODE
-	maxFallingSpeed = 15.0f;//NODE
+	maxFallingSpeed = 10.0f;//NODE
 	walkSpeed = 8.0f;//NODE
 	gravity = 2.0f; //NODE
 
@@ -151,11 +151,22 @@ bool j1Player::Update(float dt)
 		break;
 	case CharacterState::Jump:
 
+		if (plane && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+			gravity = 1.0f;
+		else
+			gravity = 2.0f;
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP && speed.y < 0.0f)
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
 		{
-			speed.y = MAX(speed.y, -2.0f);
+			if(speed.y < 0.0f)
+				speed.y = MAX(speed.y, -2.0f);
+			if (plane == false)
+				plane = true;
+			else
+				plane = false;
 		}
+		LOG("%f", gravity);
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 		{
@@ -177,20 +188,26 @@ bool j1Player::Update(float dt)
 				currentState = CharacterState::Stand;
 				speed.x = 0;
 				speed.y = 0;
+				plane = false;
 			}
 			else 
 			{
 				currentState = CharacterState::Stand;
 				speed.y = 0;
+				plane = false;
 			}
 		}
 		break;
 	}
 	speed.y += gravity;
-	speed.y = MIN(speed.y, maxFallingSpeed);
+	if (!plane)
+		speed.y = MIN(speed.y, maxFallingSpeed);
+	else
+		speed.y = MIN(speed.y, gravity);
 
 	speed = collider->AvoidCollision(speed, *collider);
-	position += speed;
+	position.x += (int)speed.x;
+	position.y += (int)speed.y;
 
 	//Collider
 	collider->SetPos(position.x, position.y);

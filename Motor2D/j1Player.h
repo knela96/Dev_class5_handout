@@ -39,7 +39,7 @@ public:
 	float walkSpeed;//NODE
 	float gravity; //NODE
 	fPoint scale;
-	iPoint speed;
+	fPoint speed;
 
 	bool onGround = false;
 	bool plane = false;
