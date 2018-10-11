@@ -43,6 +43,7 @@ public:
 
 	bool onGround = false;
 	bool plane = false;
+	bool isFalling = false;
 
 	SDL_Texture * graphics = nullptr;
 	j1Animation idle;

@@ -115,6 +115,7 @@ bool j1Player::Update(float dt)
 			speed.y = -jumpSpeed;
 			currentState = CharacterState::Jump;
 			collider->onGround = false;
+			isFalling = true;
 			break;
 		}
 
@@ -141,6 +142,7 @@ bool j1Player::Update(float dt)
 			speed.y = -jumpSpeed;
 			currentState = CharacterState::Jump;
 			collider->onGround = false;
+			isFalling = true;
 			break;
 		}
 		else if (!collider->onGround)
@@ -151,22 +153,22 @@ bool j1Player::Update(float dt)
 		break;
 	case CharacterState::Jump:
 
-		if (plane && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-			gravity = 1.0f;
-		else
-			gravity = 2.0f;
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			plane = true;
 
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)
-		{
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+			if (plane)
+				gravity = 1.0f;
+			else
+				gravity = 2.0f;
+		}
+		
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)	{
 			if(speed.y < 0.0f)
 				speed.y = MAX(speed.y, -2.0f);
-			if (plane == false)
-				plane = true;
-			else
+			if (!onGround)
 				plane = false;
 		}
-		LOG("%f", gravity);
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 		{
@@ -189,16 +191,19 @@ bool j1Player::Update(float dt)
 				speed.x = 0;
 				speed.y = 0;
 				plane = false;
+				isFalling = false;
 			}
 			else 
 			{
 				currentState = CharacterState::Stand;
 				speed.y = 0;
 				plane = false;
+				isFalling = false;
 			}
 		}
 		break;
 	}
+
 	speed.y += gravity;
 	if (!plane)
 		speed.y = MIN(speed.y, maxFallingSpeed);
@@ -233,4 +238,5 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 void j1Player::setGround(bool ground)
 {
 	collider->onGround = ground;
+	isFalling = false;
 }
