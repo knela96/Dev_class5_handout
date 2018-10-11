@@ -24,6 +24,8 @@ struct Collider {
 	ColliderTypes type;
 	j1Module* callback = nullptr;
 
+	bool onGround;
+
 	/*Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
@@ -39,7 +41,7 @@ struct Collider {
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	iPoint AvoidCollision(iPoint speed, Collider* collider);
+	iPoint AvoidCollision(iPoint speed, Collider& collider);
 	iPoint CollisionSpeed(SDL_Rect* collider1, SDL_Rect* Collider, iPoint speed);
 };
 

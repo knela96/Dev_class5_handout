@@ -90,6 +90,8 @@ public:
 	j1Collisions*		collisions;
 	j1FadeToBlack*		fade;
 	j1Player*			player;
+	float previous_time;
+	float current_time;
 
 private:
 

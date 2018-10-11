@@ -15,7 +15,7 @@
  <imagelayer id="9" name="far ground" visible="0" offsetx="988" offsety="531">
   <image source="far-grounds.png" width="616" height="110"/>
  </imagelayer>
- <objectgroup id="5" name="colliders walls">
+ <objectgroup id="5" name="colliders walls" offsetx="8" offsety="49">
   <object id="1" name="0" x="224" y="400" width="592" height="240"/>
   <object id="2" name="0" x="944" y="336" width="256" height="32"/>
   <object id="3" name="0" x="960" y="368" width="224" height="16"/>
@@ -71,7 +71,7 @@
   <object id="55" name="0" x="2864" y="416" width="32" height="144"/>
   <object id="56" name="0" x="2832" y="480" width="32" height="96"/>
   <object id="57" name="0" x="2862" y="549"/>
-  <object id="60" name="1" x="584" y="368"/>
+  <object id="60" name="1" x="588" y="94"/>
  </objectgroup>
  <layer id="2" name="fons roques" width="208" height="40" visible="0">
   <data>

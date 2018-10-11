@@ -10,6 +10,14 @@ struct Collider;
 struct Mix_Chunk;
 typedef struct _Mix_Music Mix_Music;
 
+enum CharacterState
+{
+	Stand,
+	Walk,
+	Jump,
+	Plane
+};
+
 class j1Player : public j1Module
 {
 public:
@@ -22,12 +30,20 @@ public:
 	bool CleanUp();
 
 	void OnCollision(Collider* collider1, Collider* collider2);
+	void setGround(bool onGround);
 
 public:
+	CharacterState currentState = Stand;
+	float jumpSpeed;//NODE
+	float maxFallingSpeed;//NODE
+	float walkSpeed;//NODE
+	float gravity; //NODE
+	fPoint scale;
 	iPoint speed;
-	float scale;
+
 	bool onGround = false;
-	bool isFalling = false;
+	bool plane = false;
+
 	SDL_Texture * graphics = nullptr;
 	j1Animation idle;
 	j1Animation* current_animation;
@@ -35,7 +51,9 @@ public:
 	iPoint camera_offset;
 	Uint32 start_time;
 	Uint32 aux_time;
+
 	Collider* collider;
+
 	bool dead = false;
 	bool godmode = false;
 	uint life = 3;

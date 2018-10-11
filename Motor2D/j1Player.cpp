@@ -56,15 +56,20 @@ bool j1Player::Start() {
 
 	graphics = App->tex->Load(texture_path.GetString());
 
+	currentState = CharacterState::Jump;
+
 	speed = { 0,0 };
 
 	start_time = 0;
 	life = 3;
 	dead = false;
-	isFalling = true;
-	onGround = false;
 
-	scale = 1;
+	jumpSpeed = 20.0f;//NODE
+	maxFallingSpeed = 15.0f;//NODE
+	walkSpeed = 8.0f;//NODE
+	gravity = 2.0f; //NODE
+
+	scale = { 1,1 };
 
 	return true;
 }
@@ -89,54 +94,109 @@ bool j1Player::CleanUp()
 // Update: draw background
 bool j1Player::Update(float dt)
 {	
-	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ))
+	switch (currentState)
 	{
-		speed.y = -1;
-	}
-	if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ))
-	{
-		speed.y =1;
-	}
-	if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->controller[RIGHT] == KEY_STATE::KEY_REPEAT*/))
-	{
-		speed.x = -1;
-	}
-	if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/))
-	{
-		speed.x = 1;
-	}
-	if (!App->input->GetKey(SDL_SCANCODE_A) && !App->input->GetKey(SDL_SCANCODE_D)/*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/)
-	{
-		speed.x = 0;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && onGround /*|| App->input->controller[LEFT] == KEY_STATE::KEY_REPEAT*/)
-	{
-		speed.y = -6;
-		onGround = false;
-		heightjump = position.y;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
-		position.x = 4700;
-		position.y = 100;
-	}
+	case CharacterState::Stand:
 
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-		life = 0;
-		dead = true;
+		if (!collider->onGround)
+		{
+			currentState = CharacterState::Jump;
+			break;
+		}
+
+		//if left or right key is pressed, but not both
+		if (App->input->GetKey(SDL_SCANCODE_D) != App->input->GetKey(SDL_SCANCODE_A))
+		{
+			currentState = CharacterState::Walk;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			speed.y = -jumpSpeed;
+			currentState = CharacterState::Jump;
+			collider->onGround = false;
+			break;
+		}
+
+		break;
+	case CharacterState::Walk:
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
+		{
+			currentState = CharacterState::Stand;
+			speed.x = 0;
+			break;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D))
+		{
+			speed.x = walkSpeed;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A))
+		{
+			speed.x = -walkSpeed;
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		{
+			speed.y = -jumpSpeed;
+			currentState = CharacterState::Jump;
+			collider->onGround = false;
+			break;
+		}
+		else if (!collider->onGround)
+		{
+			currentState = CharacterState::Jump;
+			break;
+		}
+		break;
+	case CharacterState::Jump:
+
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP && speed.y < 0.0f)
+		{
+			speed.y = MAX(speed.y, -2.0f);
+		}
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
+		{
+			speed.x = 0.0f;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			speed.x = walkSpeed;
+		}
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			speed.x = -walkSpeed;
+		}
+		
+		if (collider->onGround)
+		{
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				currentState = CharacterState::Stand;
+				speed.x = 0;
+				speed.y = 0;
+			}
+			else 
+			{
+				currentState = CharacterState::Stand;
+				speed.y = 0;
+			}
+		}
+		break;
 	}
+	speed.y += gravity;
+	speed.y = MIN(speed.y, maxFallingSpeed);
 
-	speed.y = 3.0f; // Gravity
-
-
-	speed = collider->AvoidCollision(speed, collider);
+	speed = collider->AvoidCollision(speed, *collider);
 	position += speed;
-
 
 	//Collider
 	collider->SetPos(position.x, position.y);
 
 	// Draw everything --------------------------------------
-	App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame());
+	App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_NONE);
 	
 
 	return true;
@@ -151,4 +211,9 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 			LOG("%i", collider1->rect.y);
 		}
 	}	*/
+}
+
+void j1Player::setGround(bool ground)
+{
+	collider->onGround = ground;
 }

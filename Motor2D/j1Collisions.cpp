@@ -92,7 +92,6 @@ bool j1Collisions::PreUpdate()
 
 				if (c1->CheckCollision(c2->rect) == true)
 				{
-					LOG("%i - %i", c1->gettype(), c2->gettype());
 					if (matrix[c1->type][c2->type] && c1->callback)
 						c1->callback->OnCollision(c1, c2);
 
@@ -223,13 +222,13 @@ bool Collider::CheckCollision(const SDL_Rect & r) const
 		return true;
 }
 
-iPoint Collider::AvoidCollision(iPoint speed, Collider* collider){
+iPoint Collider::AvoidCollision(iPoint speed, Collider& collider){
 
 	iPoint new_speed = speed;
-	Collider* c1 = collider;
-	c1->rect.x += speed.x;
-	c1->rect.y += speed.y;
-
+	Collider c1 = collider;
+	c1.rect.x += speed.x;
+	c1.rect.y += speed.y;
+	
 	for (uint i = 0; i < App->collisions->data.colliders.count(); ++i)
 	{
 		// skip empty colliders
@@ -238,16 +237,19 @@ iPoint Collider::AvoidCollision(iPoint speed, Collider* collider){
 
 		Collider* c2 = App->collisions->data.colliders[i];
 
-		if (c1->CheckCollision(c2->rect) == true)
+		if (c1.CheckCollision(c2->rect) == true)
 		{
 			if (c2->gettype() == 0) {
-				new_speed = CollisionSpeed(&c1->rect, &c2->rect, new_speed);
+				new_speed = CollisionSpeed(&c1.rect, &c2->rect, new_speed);
 			}
-			c1->rect.y -= (speed.y - new_speed.y);
-			c1->rect.x -= (speed.x - new_speed.x);
+			c1.rect.y -= (speed.y - new_speed.y);
+			c1.rect.x -= (speed.x - new_speed.x);
 		}
 
 	}
+
+	collider.callback->setGround(onGround);
+
 	return new_speed;
 }
 
@@ -256,30 +258,36 @@ iPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, iPoint
 	SDL_IntersectRect(collider1, collider2, &overlay);
 
 	if (new_speed.y > 0) {
-		if (collider1->y + collider1->h >= collider2->y ) {
+		if (collider1->y + collider1->h > collider2->y ) {
 			if (new_speed.x > 0) {
-				if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
-					new_speed.x += overlay.w;
-				else if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
+				if (overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
 					new_speed.x -= overlay.w;
-				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y) {
+				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
+					new_speed.x += overlay.w;
+				else if (overlay.h < overlay.w && collider1->y > collider2->y) {
+					new_speed.y += overlay.h;
+				}
+				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
 					new_speed.y -= overlay.h;
-					App->player->onGround = true;
+					onGround = true;
 				}
 			}
 			else if (new_speed.x < 0) {
-				if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
-					new_speed.x -= overlay.w;
-				else if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
+				if (overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
 					new_speed.x += overlay.w;
-				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y) {
+				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+				else if (overlay.h < overlay.w && collider1->y > collider2->y) {
+					new_speed.y += overlay.h;
+				}
+				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
 					new_speed.y -= overlay.h;
-					App->player->onGround = true;
+					onGround = true;
 				}
 			}
 			else {
 				new_speed.y -= overlay.h;
-				App->player->onGround = true;
+				onGround = true;
 			}
 		}
 		else {
