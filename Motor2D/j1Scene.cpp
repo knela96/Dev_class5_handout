@@ -7,12 +7,15 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Map.h"
+#include "j1Player.h"
+#include "j1FadeToBlack.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
+#include "j1Window.h"
 
 j1Scene::j1Scene() : j1Module()
 {
-	name.create("scene");
+	name.create("scenes");
 }
 
 // Destructor
@@ -20,10 +23,15 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
+
+	map = config.child("scene1").child("map").child_value();
+	cam_pos = { config.child("scene1").child("camera").attribute("x").as_int(),
+				config.child("scene1").child("camera").attribute("y").as_int() 
+	};
 
 	return ret;
 }
@@ -31,7 +39,11 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load(MAP2);
+
+	App->map->Load(map.GetString());
+	App->player->Start();
+	App->render->camera.x = -cam_pos.x;
+	App->render->camera.y = -cam_pos.y;
 
 	return true;
 }
@@ -45,23 +57,28 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		//App->LoadGame();
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		App->fade->FadeToBlack(this, App->scene);
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		//App->SaveGame();
+	if(App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		App->fade->FadeToBlack(this, this);
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y -= 1;
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		App->LoadGame();
+	if(App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		App->SaveGame();
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y += 1;
+		App->render->camera.y += 3;
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y -= 3;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x -= 1;
+		App->render->camera.x -= 3;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 1;
+		App->render->camera.x += 3;
 
 	App->map->Draw();
 
@@ -93,6 +110,8 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	App->player->CleanUp();
+	App->collisions->CleanUp();
+	App->map->CleanUp();
 	return true;
 }

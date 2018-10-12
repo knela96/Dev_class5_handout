@@ -42,17 +42,13 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
-	AddModule(collisions);
 	AddModule(player);
+	AddModule(collisions);
 	AddModule(fade);
 
 
 	// render last to swap buffer
 	AddModule(render);
-
-
-	previous_time = 0;
-	current_time = SDL_GetTicks() / 1000.0f;
 }
 
 // Destructor
@@ -123,8 +119,6 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
-
-	started_at = SDL_GetTicks();
 
 
 	return ret;

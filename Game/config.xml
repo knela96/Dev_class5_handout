@@ -11,7 +11,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1024" height="768" scale="2"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -25,15 +25,28 @@
   <map>
     <folder>Assets/maps/</folder>
   </map>
+  
+  <scenes>
+    <scene1>
+      <map>Map1.1.tmx</map>
+      <camera x="500" y ="200" />
+    </scene1>
+  </scenes>
 
   <player>
+    <life value="3"/>
+    <dead value="false"/>
     <folder>Assets/Sprites/Character/</folder>
     <texture source="Player.png" />
     <collider w="50" h="50" />
-    <jumpFX source="Jump.wav"/>
-    <accel x="1" y="1"/>
-    <gravity value="50"/>
-    <jumpForce x="0" y="-26"/>
+    <gravity value="2"/>
+    <jumpSpeed value="20"/>
+    <maxFallingSpeed value="10"/>
+    <walkSpeed value="8" />
+    <speed x ="0" y="0" />
+    <animations>
+      <idle x="0" y="0" w="40" h="40" loop="false" speed="0.1f"/>
+    </animations>
   </player>
 
 </config>

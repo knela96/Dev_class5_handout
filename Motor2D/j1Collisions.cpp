@@ -107,7 +107,7 @@ bool j1Collisions::PreUpdate()
 
 void j1Collisions::Draw()
 {
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debug = !debug;
 
 	if (debug == false)
@@ -162,6 +162,8 @@ bool j1Collisions::CleanUp()
 		}
 	}
 
+	data.colliders.clear();
+	
 	return true;
 }
 
@@ -184,7 +186,6 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
 		{
 			Collider* col = new Collider();
-
 			col->rect.x = object.attribute("x").as_uint();
 			col->rect.y = object.attribute("y").as_uint();
 			col->rect.w = object.attribute("width").as_uint();
@@ -241,6 +242,8 @@ fPoint Collider::AvoidCollision(fPoint speed, Collider& collider){
 		{
 			if (c2->gettype() == 0) {
 				new_speed = CollisionSpeed(&c1.rect, &c2->rect, new_speed);
+				if (speed.y == new_speed.y)
+					onGround = false;
 			}
 			c1.rect.y -= (speed.y - new_speed.y);
 			c1.rect.x -= (speed.x - new_speed.x);

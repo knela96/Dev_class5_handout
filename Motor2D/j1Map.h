@@ -7,12 +7,6 @@
 #include "j1Module.h"
 
 
-#define MAP1 "hello2.tmx"
-#define MAP2 "Map1.1.tmx"
-#define MAP3 "isometric_grass_and_water.tmx"
-#define MAP4 "sewers.tmx"
-
-
 // ----------------------------------------------------
 
 struct MapLayer {
@@ -104,6 +98,8 @@ private:
 
 	pugi::xml_document	map_file;
 	p2SString			folder;
+	p2SString			map1;
+	p2SString			map2;
 	bool				map_loaded;
 };
 

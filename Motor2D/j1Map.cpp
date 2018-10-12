@@ -135,7 +135,6 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
-
 	// Clean up the pugui tree
 	map_file.reset();
 

@@ -70,8 +70,7 @@
   <object id="54" name="0" x="2896" y="336" width="32" height="240"/>
   <object id="55" name="0" x="2864" y="416" width="32" height="144"/>
   <object id="56" name="0" x="2832" y="480" width="32" height="96"/>
-  <object id="57" name="0" x="2862" y="549"/>
-  <object id="60" name="1" x="588" y="94"/>
+  <object id="58" name="1" x="591" y="319" width="40" height="40"/>
  </objectgroup>
  <layer id="2" name="fons roques" width="208" height="40" visible="0">
   <data>

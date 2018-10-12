@@ -34,16 +34,14 @@ public:
 
 public:
 	CharacterState currentState = Stand;
-	float jumpSpeed;//NODE
-	float maxFallingSpeed;//NODE
-	float walkSpeed;//NODE
-	float gravity; //NODE
-	fPoint scale;
+	float jumpSpeed;
+	float maxFallingSpeed;
+	float walkSpeed;
+	float gravity;
 	fPoint speed;
 
 	bool onGround = false;
 	bool plane = false;
-	bool isFalling = false;
 
 	SDL_Texture * graphics = nullptr;
 	j1Animation idle;
@@ -62,7 +60,8 @@ public:
 private:
 	p2SString			texture_path;
 	p2SString			folder;
-	uint heightjump;
+	uint				heightjump;
+	iPoint				lastPosition;
 
 };
 
