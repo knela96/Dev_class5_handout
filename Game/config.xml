@@ -31,6 +31,10 @@
       <map>Map1.1.tmx</map>
       <camera x="500" y ="200" />
     </scene1>
+    <scene2>
+      <map>Map2.1.tmx</map>
+      <camera x="500" y ="200" />
+    </scene2>
   </scenes>
 
   <player>
