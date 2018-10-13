@@ -8,7 +8,7 @@
 	<scenes />
 	<player>
 		<speed x="0" y="0" />
-		<position x="639" y="368" />
+		<position x="1430" y="288" />
 		<life value="3" />
 		<jumpSpeed value="25" />
 		<maxFallingSpeed value="10" />
@@ -18,6 +18,6 @@
 	<:anonymous />
 	<:anonymous />
 	<renderer>
-		<camera x="158" y="0" />
+		<camera x="963" y="0" />
 	</renderer>
 </game_state>

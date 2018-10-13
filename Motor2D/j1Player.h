@@ -59,7 +59,8 @@ public:
 	j1Animation anim_run;
 	j1Animation anim_plane;
 	j1Animation anim_death;
-	//j1Animation jump;
+	j1Animation anim_jumpup;
+	j1Animation anim_jumpdown;
 	j1Animation* current_animation;
 	iPoint position;
 

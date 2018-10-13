@@ -102,6 +102,32 @@ bool j1Player::Awake(pugi::xml_node& config)
 	anim_death.loop = config.child("animations").child("death").attribute("loop").as_bool();
 	anim_death.speed = config.child("animations").child("death").attribute("speed").as_float();
 
+
+	//Jump Pushbacks
+	for (pugi::xml_node push_node = config.child("animations").child("jump_up").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_jumpup.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_jumpup.loop = config.child("animations").child("jump_up").attribute("loop").as_bool();
+	anim_jumpup.speed = config.child("animations").child("jump_up").attribute("speed").as_float();
+
+	for (pugi::xml_node push_node = config.child("animations").child("jump_down").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_jumpdown.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_jumpdown.loop = config.child("animations").child("jump_down").attribute("loop").as_bool();
+	anim_jumpdown.speed = config.child("animations").child("jump_down").attribute("speed").as_float();
+
 	current_animation = &anim_idle;
 
 
@@ -225,6 +251,11 @@ bool j1Player::Update(float dt)
 			case CharacterState::Jump:
 
 				current_gravity = gravity;
+				if (speed.y < 0) {
+					current_animation = &anim_jumpup;
+				}
+				else if (speed.y > 0)
+					current_animation = &anim_jumpdown;
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 					if (!plane) {
@@ -373,6 +404,7 @@ void j1Player::cameraPos()
 
 void j1Player::deathAnim()
 {
+	current_animation = &anim_death;
 	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim) {
 		position.y -= 20;
 		start_time = SDL_GetTicks();
