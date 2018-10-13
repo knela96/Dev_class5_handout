@@ -34,6 +34,8 @@ public:
 
 	void OnCollision(Collider* collider1, Collider* collider2);
 	void setGround(bool onGround, bool isFalling);
+	void cameraPos();
+	void deathAnim();
 
 public:
 	CharacterState currentState = Stand;
@@ -52,22 +54,27 @@ public:
 	j1Animation idle;
 	j1Animation* current_animation;
 	iPoint position;
-	iPoint camera_offset;
+
 	Uint32 start_time;
 	Uint32 aux_time;
 
 	Collider* collider;
 
 	bool dead = false;
+	bool win = false;
 	bool godmode = false;
-	uint life = 3;
+	uint life;
+	uint current_life;
 	char _godmode[8] = "godmode";
 private:
 	p2SString			texture_path;
 	p2SString			folder;
 	uint				heightjump;
 	iPoint				lastPosition;
+	iPoint				respawn;
 	bool flip;
+	bool death_anim;
+
 
 };
 
