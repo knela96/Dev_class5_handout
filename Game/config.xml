@@ -40,7 +40,6 @@
   <player>
     <position x="0" y="0"/>
     <life value="3"/>
-    <dead value="false"/>
     <folder>Assets/Sprites/Character/</folder>
     <texture source="Player.png" />
     <collider w="50" h="50" />

@@ -40,7 +40,6 @@ bool j1Player::Awake(pugi::xml_node& config)
 	position.y = config.child("position").attribute("y").as_uint();
 
 	life = config.child("life").attribute("value").as_uint();
-	dead = config.child("dead").attribute("value").as_bool();
 
 	jumpSpeed = config.child("jumpSpeed").attribute("value").as_float();
 	maxFallingSpeed = config.child("maxFallingSpeed").attribute("value").as_float();
@@ -82,11 +81,7 @@ bool j1Player::Start() {
 
 	currentState = CharacterState::Jump;
 
-	flip = false;
-	dead = false;
-	win = false;
-	death_anim = false;
-	current_life = life;
+	resetPlayer();
 
 	return true;
 }
@@ -182,14 +177,14 @@ bool j1Player::Update(float dt)
 				current_gravity = gravity;
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-					if (!plane) {
+					if (!plane && start_time == 0) {
 						start_time = SDL_GetTicks();
 						plane = true;
 					}
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-					if (SDL_GetTicks() - start_time < 500)
+					if (SDL_GetTicks() - start_time < 500 && plane)
 						current_gravity = 1.0f;
 					else
 						plane = false;
@@ -198,8 +193,6 @@ bool j1Player::Update(float dt)
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
 					if (speed.y < 0.0f)
 						speed.y = MAX(speed.y, -2.0f);
-					if (!onGround)
-						plane = false;
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
@@ -229,13 +222,15 @@ bool j1Player::Update(float dt)
 						currentState = CharacterState::Stand;
 						speed.x = 0;
 						speed.y = 0;
-						plane = false;
+						plane = false; 
+						start_time = 0;
 					}
 					else
 					{
 						currentState = CharacterState::Stand;
 						speed.y = 0;
 						plane = false;
+						start_time = 0;
 					}
 				}
 				break;
@@ -312,9 +307,11 @@ void j1Player::cameraPos()
 
 void j1Player::deathAnim()
 {
-	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim)
+	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim) {
 		position.y -= 20;
-	else
+		start_time = SDL_GetTicks();
+	}
+	else if(SDL_GetTicks() - start_time > 500)
 		isFalling = true;
 
 	if (isFalling && death_anim) {
@@ -327,8 +324,60 @@ void j1Player::deathAnim()
 
 		if (current_life <= 0)
 			dead = true;
-
-		position = lastPosition;
+		else {
+			position = lastPosition;
+			App->render->camera.x = position.x * App->win->GetScale() - 300;
+		}
 	}
 
+}
+
+void j1Player::resetPlayer()
+{
+	flip = false;
+	dead = false;
+	win = false;
+	death_anim = false;
+	plane = false;
+	current_life = life;
+}
+
+// Load Game State
+bool j1Player::Load(pugi::xml_node& data)
+{
+	speed.x = data.child("speed").attribute("x").as_uint();
+	speed.y = data.child("speed").attribute("y").as_uint();
+
+	position.x = data.child("position").attribute("x").as_uint();
+	position.y = data.child("position").attribute("y").as_uint();
+
+	life = data.child("life").attribute("value").as_uint();
+
+	jumpSpeed = data.child("jumpSpeed").attribute("value").as_float();
+	maxFallingSpeed = data.child("maxFallingSpeed").attribute("value").as_float();
+	walkSpeed = data.child("walkSpeed").attribute("value").as_float();
+	gravity = data.child("gravity").attribute("value").as_float();
+
+	return true;
+}
+
+// Save Game State
+bool j1Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node player = data;
+
+	player.append_child("speed").append_attribute("x") = speed.x;
+	player.child("speed").append_attribute("y") = speed.y;
+
+	player.append_child("position").append_attribute("x") = position.x;
+	player.child("position").append_attribute("y") = position.y;
+
+	player.append_child("life").append_attribute("value") = life;
+
+	player.append_child("jumpSpeed").append_attribute("value") = jumpSpeed;
+	player.append_child("maxFallingSpeed").append_attribute("value") = maxFallingSpeed;
+	player.append_child("walkSpeed").append_attribute("value") = walkSpeed;
+	player.append_child("gravity").append_attribute("value") = gravity;
+
+	return true;
 }

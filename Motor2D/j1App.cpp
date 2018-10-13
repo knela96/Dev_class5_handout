@@ -79,6 +79,9 @@ bool j1App::Awake()
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 
+	save_game = "save_game.xml";
+	load_game = "save_game.xml";
+
 	bool ret = false;
 		
 	config = LoadConfig(config_file);
@@ -374,7 +377,10 @@ bool j1App::SavegameNow() const
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		if (item->data->name != NULL)
+		{
+			ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		}
 		item = item->next;
 	}
 

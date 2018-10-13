@@ -28,6 +28,8 @@ public:
 	bool Start();
 	bool Update(float dt);	
 	bool PostUpdate();
+	bool Load(pugi::xml_node& data);
+	bool Save(pugi::xml_node& data) const;
 
 
 	bool CleanUp();
@@ -36,6 +38,8 @@ public:
 	void setGround(bool onGround, bool isFalling);
 	void cameraPos();
 	void deathAnim();
+	void resetPlayer();
+
 
 public:
 	CharacterState currentState = Stand;
