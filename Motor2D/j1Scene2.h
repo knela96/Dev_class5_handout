@@ -32,9 +32,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool Load(pugi::xml_node & data);
+
+	bool Save(pugi::xml_node & data) const;
+
 private:
 	p2SString map;
 	iPoint cam_pos;
+	Levels load_scene;
 };
 
 #endif // __j1SCENE_H__

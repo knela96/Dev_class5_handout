@@ -12,7 +12,7 @@
 
 j1FadeToBlack::j1FadeToBlack()
 {
-	//screen = { 0, 0, (int)(App->win->width * App->win->scale), (int)(App->win->height * App->win->scale) };
+	name.create("fade");
 	
 }
 

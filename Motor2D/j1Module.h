@@ -13,6 +13,11 @@ class j1App;
 
 struct Collider;
 
+enum Levels {
+	Scene,
+	Scene2
+};
+
 class j1Module
 {
 public:
@@ -41,6 +46,9 @@ public:
 			CleanUp();
 		}
 	}
+
+
+	bool IsEnabled() const { return active; }
 
 	// Called before render is available
 	virtual bool Awake(pugi::xml_node&)

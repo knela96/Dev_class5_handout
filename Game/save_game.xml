@@ -5,20 +5,19 @@
 	<textures />
 	<audio />
 	<map />
-	<scene1 />
-	<scene2 />
+	<scenes value="1" />
 	<player>
 		<speed x="0" y="0" />
-		<position x="352" y="256" />
+		<position x="778" y="288" />
 		<life value="3" />
 		<jumpSpeed value="25" />
 		<maxFallingSpeed value="10" />
 		<walkSpeed value="7" />
 		<gravity value="2" />
 	</player>
-	<:anonymous />
-	<:anonymous />
+	<collisions />
+	<fade />
 	<renderer>
-		<camera x="60" y="0" />
+		<camera x="295" y="0" />
 	</renderer>
 </game_state>

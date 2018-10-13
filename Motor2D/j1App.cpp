@@ -349,7 +349,8 @@ bool j1App::LoadGameNow()
 
 		while(item != NULL && ret == true)
 		{
-			ret = item->data->Load(root.child(item->data->name.GetString()));
+			if (item->data->IsEnabled())
+				ret = item->data->Load(root.child(item->data->name.GetString()));
 			item = item->next;
 		}
 
@@ -382,7 +383,8 @@ bool j1App::SavegameNow() const
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		if(item->data->IsEnabled())
+			ret = item->data->Save(root.append_child(item->data->name.GetString()));
 		item = item->next;
 	}
 

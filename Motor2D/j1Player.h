@@ -82,8 +82,6 @@ private:
 	iPoint				respawn;
 	bool flip;
 	bool death_anim;
-
-
 };
 
 #endif

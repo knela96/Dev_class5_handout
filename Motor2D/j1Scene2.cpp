@@ -16,7 +16,7 @@
 
 j1Scene2::j1Scene2() : j1Module()
 {
-	name.create("scene2");
+	name.create("scenes");
 }
 
 // Destructor
@@ -29,9 +29,9 @@ bool j1Scene2::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
-	map = config.child("map").child_value();
-	cam_pos = { config.child("camera").attribute("x").as_int(),
-		config.child("camera").attribute("y").as_int()
+	map = config.child("scene2").child("map").child_value();
+	cam_pos = { config.child("scene2").child("camera").attribute("x").as_int(),
+		config.child("scene2").child("camera").attribute("y").as_int()
 	};
 
 	return ret;
@@ -119,5 +119,26 @@ bool j1Scene2::CleanUp()
 	App->player->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
+	return true;
+}
+
+bool j1Scene2::Load(pugi::xml_node& data)
+{
+	load_scene = (Levels)data.attribute("value").as_uint();
+
+	if (load_scene == Scene) {
+		Disable();
+		App->scene->Enable();
+	}
+
+	return true;
+}
+
+bool j1Scene2::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node player = data;
+
+	player.append_attribute("value") = Scene2;
+
 	return true;
 }
