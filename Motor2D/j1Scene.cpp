@@ -11,7 +11,6 @@
 #include "j1FadeToBlack.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
-#include "j1Scene2.h"
 #include "j1Window.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -40,6 +39,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+
 	App->map->Load(map.GetString());
 	App->player->Start();
 
@@ -59,7 +59,7 @@ bool j1Scene::Update(float dt)
 		App->fade->FadeToBlack(this, this);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		App->fade->FadeToBlack(this, this);
+		App->fade->FadeToBlack(this, App->scene);
 
 	if(App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		App->fade->FadeToBlack(this, this);
@@ -80,10 +80,6 @@ bool j1Scene::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 3;
-
-	if(App->player->win)
-		App->fade->FadeToBlack(this, App->scene2);
-
 
 	App->map->Draw();
 
@@ -114,7 +110,6 @@ bool j1Scene::PostUpdate()
 // Called before quitting
 bool j1Scene::CleanUp()
 {
-	this->active = false;
 	LOG("Freeing scene");
 	App->player->CleanUp();
 	App->collisions->CleanUp();
