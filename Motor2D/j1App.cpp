@@ -24,15 +24,15 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	input = new j1Input();
 	win = new j1Window();
-	render = new j1Render();
-	fade = new j1FadeToBlack();
 	tex = new j1Textures();
 	audio = new j1Audio();
+	map = new j1Map();
 	scene = new j1Scene();
 	scene2 = new j1Scene2();
-	map = new j1Map();
 	collisions = new j1Collisions();
 	player = new j1Player();
+	render = new j1Render();
+	fade = new j1FadeToBlack();
 
 
 	// Ordered for awake / Start / Update

@@ -147,10 +147,10 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\Assets\maps\Map1.1.tmx">
+    <None Include="..\Game\Assets\maps\Map2.1.tmx">
       <Filter>Desenvolupament  ========\XML</Filter>
     </None>
-    <None Include="..\Game\Assets\maps\Map2.1.tmx">
+    <None Include="..\Game\Assets\maps\Map1.2.tmx">
       <Filter>Desenvolupament  ========\XML</Filter>
     </None>
   </ItemGroup>

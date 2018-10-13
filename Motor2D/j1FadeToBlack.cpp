@@ -12,8 +12,7 @@
 
 j1FadeToBlack::j1FadeToBlack()
 {
-	name.create("fade");
-	
+	name.create("fade");	
 }
 
 j1FadeToBlack::~j1FadeToBlack()
@@ -25,6 +24,7 @@ bool j1FadeToBlack::Start()
 	LOG("Preparing Fade Screen"); 
 	screen = { 0, 0, (int)(App->win->width * App->win->scale), (int)(App->win->height * App->win->scale) };
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
+	resetStep();
 	return true;
 }
 

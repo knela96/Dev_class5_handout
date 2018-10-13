@@ -247,14 +247,14 @@ bool j1Player::Update(float dt)
 			case CharacterState::Jump:
 
 				current_gravity = gravity;
-				if (speed.y < 0) {
+				if (speed.y <= 0) {
 					current_animation = &anim_jumpup;
 				}
 				else if (speed.y > 0)
 					current_animation = &anim_jumpdown;
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-					if (!plane) {
+					if (!plane && start_time == 0) {
 						start_time = SDL_GetTicks();
 						plane = true;
 					}
@@ -304,12 +304,14 @@ bool j1Player::Update(float dt)
 						speed.x = 0;
 						speed.y = 0;
 						plane = false;
+						start_time = 0;
 					}
 					else
 					{
 						currentState = CharacterState::Stand;
 						speed.y = 0;
 						plane = false;
+						start_time = 0;
 					}
 				}
 				break;
@@ -367,8 +369,11 @@ bool j1Player::PostUpdate()
 
 void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	if (collider2->gettype() == 2) {
-		if (godmode == false && death_anim == false)
-			current_life--, death_anim = true;
+		if (death_anim == false) {
+			if (godmode == false)
+				current_life--;
+			death_anim = true;
+		}
 	}
 	else if (collider2->gettype() == 3) {
 		win = true;
