@@ -61,7 +61,7 @@ public:
 	j1Animation anim_death;
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
-	j1Animation* current_animation;
+	j1Animation* current_animation = nullptr;
 	iPoint position;
 
 	Uint32 start_time;
@@ -83,8 +83,6 @@ private:
 	iPoint				respawn;
 	bool flip;
 	bool death_anim;
-
-
 };
 
 #endif

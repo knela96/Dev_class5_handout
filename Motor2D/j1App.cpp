@@ -14,6 +14,7 @@
 #include "j1FadeToBlack.h"
 #include "j1Player.h"
 #include "j1Collisions.h"
+#include "j1Scene2.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -28,11 +29,11 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new j1Textures();
 	audio = new j1Audio();
 	scene = new j1Scene();
+	scene2 = new j1Scene2();
 	map = new j1Map();
 	collisions = new j1Collisions();
 	player = new j1Player();
 
-	//fade->active = false;
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -42,6 +43,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
+	AddModule(scene2);
 	AddModule(player);
 	AddModule(collisions);
 	AddModule(fade);
@@ -49,6 +51,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// render last to swap buffer
 	AddModule(render);
+
 }
 
 // Destructor
@@ -82,6 +85,7 @@ bool j1App::Awake()
 	bool ret = false; 
 	save_game = "save_game.xml";
 	load_game = "save_game.xml";
+
 	config = LoadConfig(config_file);
 
 	if(config.empty() == false)
@@ -111,18 +115,21 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
+	//DISABLE MODULES YOU DON'T WANT
+	scene->Disable();
+
+
+
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true && item->data->active)
+	while(item != NULL && ret == true)
 	{
-		ret = item->data->Start();
+		if(item->data->active)
+			ret = item->data->Start();
 		item = item->next;
 	}
-
-	//previous_time = 0;
-	//current_time = SDL_GetTicks();
 
 	return ret;
 }
@@ -342,7 +349,8 @@ bool j1App::LoadGameNow()
 
 		while(item != NULL && ret == true)
 		{
-			ret = item->data->Load(root.child(item->data->name.GetString()));
+			if (item->data->IsEnabled())
+				ret = item->data->Load(root.child(item->data->name.GetString()));
 			item = item->next;
 		}
 
@@ -375,7 +383,8 @@ bool j1App::SavegameNow() const
 
 	while(item != NULL && ret == true)
 	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		if(item->data->IsEnabled())
+			ret = item->data->Save(root.append_child(item->data->name.GetString()));
 		item = item->next;
 	}
 

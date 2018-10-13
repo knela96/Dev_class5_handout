@@ -13,6 +13,7 @@ class j1Render;
 class j1Textures;
 class j1Audio;
 class j1Scene;
+class j1Scene2;
 class j1Map;
 class j1Player;
 class j1FadeToBlack;
@@ -86,6 +87,7 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1Scene*			scene;
+	j1Scene2*			scene2;
 	j1Map*				map;
 	j1Collisions*		collisions;
 	j1FadeToBlack*		fade;

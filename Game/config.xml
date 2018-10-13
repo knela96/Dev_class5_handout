@@ -18,14 +18,10 @@
     <fullscreen_window value="false"/>
   </window>
 
-  <file_system>
-    <path>data.zip</path>
-  </file_system>
-
   <map>
     <folder>Assets/maps/</folder>
   </map>
-  
+
   <scenes>
     <scene1>
       <map>Map1.1_test.tmx</map>
