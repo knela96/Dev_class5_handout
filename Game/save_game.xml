@@ -1,9 +1,23 @@
-<!-- Save game for the game -->
-
+<?xml version="1.0"?>
 <game_state>
-
-  <renderer>
-    <camera x="100" y="0"/>
-  </renderer>
-
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<map />
+	<scenes />
+	<player>
+		<speed x="0" y="0" />
+		<position x="639" y="368" />
+		<life value="3" />
+		<jumpSpeed value="25" />
+		<maxFallingSpeed value="10" />
+		<walkSpeed value="7" />
+		<gravity value="2" />
+	</player>
+	<:anonymous />
+	<:anonymous />
+	<renderer>
+		<camera x="158" y="0" />
+	</renderer>
 </game_state>

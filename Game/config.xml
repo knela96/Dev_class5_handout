@@ -73,7 +73,7 @@
         <frame x="731" y="0" w="37" h="31"/>
         <frame x="772" y="0" w="37" h="31"/>
       </run>
-      <plane loop ="true" speed="0.04f">
+      <plane loop ="true" speed="0.2f">
         <frame x="0" y="97" w="29" h="33"/>
         <frame x="33" y="97" w="29" h="33"/>
         <frame x="64" y="97" w="38" h="33"/>

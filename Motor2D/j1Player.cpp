@@ -52,22 +52,57 @@ bool j1Player::Awake(pugi::xml_node& config)
 	//Idle pushbacks
 	for (pugi::xml_node push_node = config.child("animations").child("idle").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
-		idle.PushBack({
+		anim_idle.PushBack({
 			push_node.attribute("x").as_int(),
 			push_node.attribute("y").as_int(),
 			push_node.attribute("w").as_int(),
 			push_node.attribute("h").as_int()
 			});
 	}
-
-	idle.loop = config.child("animations").child("idle").attribute("loop").as_bool();
-	idle.speed = config.child("animations").child("idle").attribute("speed").as_float();
+	anim_idle.loop = config.child("animations").child("idle").attribute("loop").as_bool();
+	anim_idle.speed = config.child("animations").child("idle").attribute("speed").as_float();
 
 	//Run Pushbacks
-	//Plane Pushbacks
-	//Detah Pushbacks
+	for (pugi::xml_node push_node = config.child("animations").child("run").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_run.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_run.loop = config.child("animations").child("run").attribute("loop").as_bool();
+	anim_run.speed = config.child("animations").child("run").attribute("speed").as_float();
 
-	current_animation = &idle;
+
+	//Plane Pushbacks
+	for (pugi::xml_node push_node = config.child("animations").child("plane").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_plane.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_plane.loop = config.child("animations").child("plane").attribute("loop").as_bool();
+	anim_plane.speed = config.child("animations").child("plane").attribute("speed").as_float();
+
+	//Death Pushbacks
+	for (pugi::xml_node push_node = config.child("animations").child("death").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_death.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_death.loop = config.child("animations").child("death").attribute("loop").as_bool();
+	anim_death.speed = config.child("animations").child("death").attribute("speed").as_float();
+
+	current_animation = &anim_idle;
 
 
 	return ret;
@@ -75,13 +110,14 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start() {
 	
-	if (position.x == 0 && position.y == 0) {
+	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
 		position.y = respawn.y = collider->rect.y;
 	}
 	else {
 		position.x = respawn.x;
 		position.y = respawn.y;
+		b_respawn = false;
 	}
 
 	graphics = App->tex->Load(texture_path.GetString());
@@ -198,8 +234,10 @@ bool j1Player::Update(float dt)
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-					if (SDL_GetTicks() - start_time < 500)
+					if (SDL_GetTicks() - start_time < 500 && plane) {
 						current_gravity = 1.0f;
+						current_animation = &anim_plane;
+					}
 					else
 						plane = false;
 				}
@@ -267,6 +305,19 @@ bool j1Player::Update(float dt)
 
 		cameraPos();
 
+
+		//Animation checks
+		switch (currentState) {
+		case CharacterState::Walk:
+			if (speed.x == 0.0f) {
+				current_animation = &anim_idle;
+			}
+			else current_animation = &anim_run;
+			break;
+		case CharacterState::Stand:
+			current_animation = &anim_idle;
+			break;
+		}
 		//Collider
 		if(flip)
 			collider->SetPos(position.x + 7, position.y);
@@ -291,7 +342,8 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	if (collider2->gettype() == 2) {
 		if (godmode == false && death_anim == false)
 			current_life--, death_anim = true;
-	}else if (collider2->gettype() == 3) {
+	}
+	else if (collider2->gettype() == 3) {
 		win = true;
 	}
 }
@@ -321,9 +373,11 @@ void j1Player::cameraPos()
 
 void j1Player::deathAnim()
 {
-	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim)
+	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim) {
 		position.y -= 20;
-	else
+		start_time = SDL_GetTicks();
+	}
+	else if (SDL_GetTicks() - start_time > 500)
 		isFalling = true;
 
 	if (isFalling && death_anim) {
@@ -336,8 +390,60 @@ void j1Player::deathAnim()
 
 		if (current_life <= 0)
 			dead = true;
-
-		position = lastPosition;
+		else {
+			position = lastPosition;
+			App->render->camera.x = position.x * App->win->GetScale() - 300;
+		}
 	}
 
+}
+
+void j1Player::resetPlayer()
+{
+	flip = false;
+	dead = false;
+	win = false;
+	death_anim = false;
+	plane = false;
+	current_life = life;
+}
+
+// Load Game State
+bool j1Player::Load(pugi::xml_node& data)
+{
+	speed.x = data.child("speed").attribute("x").as_uint();
+	speed.y = data.child("speed").attribute("y").as_uint();
+
+	position.x = data.child("position").attribute("x").as_uint();
+	position.y = data.child("position").attribute("y").as_uint();
+
+	life = data.child("life").attribute("value").as_uint();
+
+	jumpSpeed = data.child("jumpSpeed").attribute("value").as_float();
+	maxFallingSpeed = data.child("maxFallingSpeed").attribute("value").as_float();
+	walkSpeed = data.child("walkSpeed").attribute("value").as_float();
+	gravity = data.child("gravity").attribute("value").as_float();
+
+	return true;
+}
+
+// Save Game State
+bool j1Player::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node player = data;
+
+	player.append_child("speed").append_attribute("x") = speed.x;
+	player.child("speed").append_attribute("y") = speed.y;
+
+	player.append_child("position").append_attribute("x") = position.x;
+	player.child("position").append_attribute("y") = position.y;
+
+	player.append_child("life").append_attribute("value") = life;
+
+	player.append_child("jumpSpeed").append_attribute("value") = jumpSpeed;
+	player.append_child("maxFallingSpeed").append_attribute("value") = maxFallingSpeed;
+	player.append_child("walkSpeed").append_attribute("value") = walkSpeed;
+	player.append_child("gravity").append_attribute("value") = gravity;
+
+	return true;
 }

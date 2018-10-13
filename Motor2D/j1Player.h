@@ -28,6 +28,8 @@ public:
 	bool Start();
 	bool Update(float dt);	
 	bool PostUpdate();
+	bool Save(pugi::xml_node& data) const;
+	bool Load(pugi::xml_node& data);
 
 
 	bool CleanUp();
@@ -36,6 +38,7 @@ public:
 	void setGround(bool onGround, bool isFalling);
 	void cameraPos();
 	void deathAnim();
+	void resetPlayer();
 
 public:
 	CharacterState currentState = Stand;
@@ -49,12 +52,13 @@ public:
 	bool onGround = false;
 	bool isFalling = false;
 	bool plane = false;
+	bool b_respawn = false;
 
 	SDL_Texture * graphics = nullptr;
-	j1Animation idle;
-	//j1Animation run;
-	//j1Animation plane;
-	//j1Animation death;
+	j1Animation anim_idle;
+	j1Animation anim_run;
+	j1Animation anim_plane;
+	j1Animation anim_death;
 	//j1Animation jump;
 	j1Animation* current_animation;
 	iPoint position;
