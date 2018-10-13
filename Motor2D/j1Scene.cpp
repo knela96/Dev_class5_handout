@@ -42,8 +42,6 @@ bool j1Scene::Start()
 
 	App->map->Load(map.GetString());
 	App->player->Start();
-	App->render->camera.x = -cam_pos.x;
-	App->render->camera.y = -cam_pos.y;
 
 	return true;
 }
@@ -57,7 +55,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->player->life <= 0)
+	if (App->player->current_life <= 0)
 		App->fade->FadeToBlack(this, this);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)

@@ -32,12 +32,12 @@ bool j1Player::Awake(pugi::xml_node& config)
 	folder.create(config.child("folder").child_value());
 
 	texture_path.create("%s%s", folder.GetString(), config.child("texture").attribute("source").as_string());
-
-	camera_offset.x = App->render->camera.x;
-	camera_offset.y = App->render->camera.y;
-
+	
 	speed.x = config.child("speed").attribute("x").as_uint();
 	speed.y = config.child("speed").attribute("y").as_uint();
+
+	position.x = config.child("position").attribute("x").as_uint();
+	position.y = config.child("position").attribute("y").as_uint();
 
 	life = config.child("life").attribute("value").as_uint();
 	dead = config.child("dead").attribute("value").as_bool();
@@ -75,17 +75,27 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start() {
 	
-	position.x = collider->rect.x;
-	position.y = collider->rect.y;
+	if (position.x == 0 && position.y == 0) {
+		position.x = respawn.x = collider->rect.x;
+		position.y = respawn.y = collider->rect.y;
+	}
+	else {
+		position.x = respawn.x;
+		position.y = respawn.y;
+	}
 
 	graphics = App->tex->Load(texture_path.GetString());
 
-	App->render->camera.y = 0;
-	App->render->camera.x = 60;
+	App->render->camera.x = 60 * App->win->GetScale();
+	App->render->camera.y = App->win->height / 2 - 300;
 
 	currentState = CharacterState::Jump;
 
 	flip = false;
+	dead = false;
+	win = false;
+	death_anim = false;
+	current_life = life;
 
 	return true;
 }
@@ -102,160 +112,160 @@ bool j1Player::CleanUp()
 bool j1Player::Update(float dt)
 {	
 	if (!dead) {
-		if (onGround)
-			lastPosition = position;
 
-		switch (currentState)
-		{
-		case CharacterState::Stand:
-
-			if (!onGround)
-			{
-				currentState = CharacterState::Jump;
-				break;
-			}
-
-			//if left or right key is pressed, but not both
-			if (App->input->GetKey(SDL_SCANCODE_D) != App->input->GetKey(SDL_SCANCODE_A))
-			{
-				currentState = CharacterState::Walk;
-				break;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			{
-				speed.y = -jumpSpeed;
-				//speed.y -= 5.0f;
-				currentState = CharacterState::Jump;
- 				onGround = false;
-				break;
-			}
-
-			break;
-		case CharacterState::Walk:
-
-			if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
-			{
-				currentState = CharacterState::Stand;
-				speed.x = 0;
-				break;
-			}else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				currentState = CharacterState::Stand;
-				speed.x = 0;
-				break;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				flip = false;
-				speed.x +=  1.0f;
-				if (speed.x > walkSpeed)
-					speed.x = walkSpeed;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				flip = true;
-				speed.x -= 1.0f;
-				if (speed.x < -walkSpeed)
-					speed.x = -walkSpeed;
-			}
-
-			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			{
-				speed.y = -jumpSpeed;
-
-				//speed.y -= 1.0f;
-				currentState = CharacterState::Jump;
-				onGround = false;
-				break;
-			}
-			else if (!onGround)
-			{
-				currentState = CharacterState::Jump;
-				break;
-			}
-			break;
-		case CharacterState::Jump:
-
-			current_gravity = gravity;
-
-			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-				plane = true;
-
-			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-				if (plane)
-					current_gravity = 1.0f;
-			}
-		
-			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP)	{
-				if(speed.y < 0.0f)
-					speed.y = MAX(speed.y, -2.0f);
-				if (!onGround)
-					plane = false;
-			}
-
-			if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
-			{
-				speed.x = 0.0f;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
-			{
-				speed.x = 0.0f;
-				break;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			{
-				flip = false;
-				speed.x = walkSpeed;
-			}
-			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			{
-				flip = true;
-				speed.x = -walkSpeed;
-			}
-		
+		if (!death_anim) {
 			if (onGround)
+				lastPosition = position;
+			switch (currentState)
 			{
-				if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			case CharacterState::Stand:
+
+				if (!onGround)
+				{
+					currentState = CharacterState::Jump;
+					break;
+				}
+
+				//if left or right key is pressed, but not both
+				if (App->input->GetKey(SDL_SCANCODE_D) != App->input->GetKey(SDL_SCANCODE_A))
+				{
+					currentState = CharacterState::Walk;
+					break;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+				{
+					speed.y = -jumpSpeed;
+					//speed.y -= 5.0f;
+					currentState = CharacterState::Jump;
+					onGround = false;
+					break;
+				}
+
+				break;
+			case CharacterState::Walk:
+
+				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 				{
 					currentState = CharacterState::Stand;
 					speed.x = 0;
-					speed.y = 0;
-					plane = false;
+					break;
 				}
-				else 
+				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 				{
 					currentState = CharacterState::Stand;
-					speed.y = 0;
-					plane = false;
+					speed.x = 0;
+					break;
 				}
+				else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				{
+					flip = false;
+					speed.x += 1.0f;
+					if (speed.x > walkSpeed)
+						speed.x = walkSpeed;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				{
+					flip = true;
+					speed.x -= 1.0f;
+					if (speed.x < -walkSpeed)
+						speed.x = -walkSpeed;
+				}
+
+				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+				{
+					speed.y = -jumpSpeed;
+
+					//speed.y -= 1.0f;
+					currentState = CharacterState::Jump;
+					onGround = false;
+					break;
+				}
+				else if (!onGround)
+				{
+					currentState = CharacterState::Jump;
+					break;
+				}
+				break;
+			case CharacterState::Jump:
+
+				current_gravity = gravity;
+
+				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+					if (!plane) {
+						start_time = SDL_GetTicks();
+						plane = true;
+					}
+				}
+
+				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+					if (SDL_GetTicks() - start_time < 500)
+						current_gravity = 1.0f;
+					else
+						plane = false;
+				}
+
+				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
+					if (speed.y < 0.0f)
+						speed.y = MAX(speed.y, -2.0f);
+					if (!onGround)
+						plane = false;
+				}
+
+				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
+				{
+					speed.x = 0.0f;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+				{
+					speed.x = 0.0f;
+					break;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+				{
+					flip = false;
+					speed.x = walkSpeed;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+				{
+					flip = true;
+					speed.x = -walkSpeed;
+				}
+
+				if (onGround)
+				{
+					if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+					{
+						currentState = CharacterState::Stand;
+						speed.x = 0;
+						speed.y = 0;
+						plane = false;
+					}
+					else
+					{
+						currentState = CharacterState::Stand;
+						speed.y = 0;
+						plane = false;
+					}
+				}
+				break;
 			}
-			break;
-		}
 
-		speed.y += current_gravity;
-		if (!plane)
-			speed.y = MIN(speed.y, maxFallingSpeed);
-		else
-			speed.y = MIN(speed.y, current_gravity);
-
-		speed = collider->AvoidCollision(speed, *collider);
-
-		position.x += (int)speed.x;
-		position.y += (int)speed.y;	
-
-			if ((position.x + collider->rect.w) * App->win->GetScale() > App->render->camera.w / 2 + App->render->camera.x + 100)
-				App->render->camera.x += speed.x * App->win->GetScale();
-			else if (position.x * App->win->GetScale() < App->render->camera.x + App->render->camera.w / 2 - 100 && App->render->camera.x > 60)
-				App->render->camera.x += speed.x * App->win->GetScale();
-		if (App->render->camera.y + App->render->camera.h < (App->map->data.height *16 * App->win->GetScale()) && App->render->camera.y > 0) {
-			if ((position.y + collider->rect.h) * App->win->GetScale() > App->render->camera.h + App->render->camera.y - (50 * App->win->GetScale()))
-				App->render->camera.y += speed.y * App->win->GetScale();
-			else if (position.y * App->win->GetScale() < App->render->camera.y + (50 * App->win->GetScale()))
-				App->render->camera.y += speed.y * App->win->GetScale();
+			speed.y += current_gravity;
+			if (!plane)
+				speed.y = MIN(speed.y, maxFallingSpeed);
 			else
-				App->render->camera.y = (position.y * App->win->GetScale() + collider->rect.h / 2 - App->win->height / 2);
-		}
+				speed.y = MIN(speed.y, current_gravity);
 
+			speed = collider->AvoidCollision(speed, *collider);
+
+			position.x += (int)speed.x;
+			position.y += (int)speed.y;
+		}
+		
+		if(death_anim)
+			deathAnim();
+
+		cameraPos();
 
 		//Collider
 		if(flip)
@@ -263,15 +273,11 @@ bool j1Player::Update(float dt)
 		else
 			collider->SetPos(position.x + 25, position.y);
 
-
 		// Draw everything --------------------------------------
 		if(flip)
 			App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
 		else
 			App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_NONE);
-
-
-
 	}
 	return true;
 }
@@ -283,19 +289,55 @@ bool j1Player::PostUpdate()
 
 void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	if (collider2->gettype() == 2) {
-		if (godmode == false)
-			life--,	position = lastPosition, App->render->camera.x = position.x * App->win->GetScale() - 300;
-		else
-			position = lastPosition;
+		if (godmode == false && death_anim == false)
+			current_life--, death_anim = true;
 	}else if (collider2->gettype() == 3) {
-		LOG("CHANGE MAP");
+		win = true;
 	}
-	if (life <= 0)
-		dead = true;
 }
 
 void j1Player::setGround(bool ground, bool falling)
 {
 	onGround = ground;
 	isFalling = falling;
+}
+
+void j1Player::cameraPos()
+{
+	if ((position.x + collider->rect.w) * App->win->GetScale() > App->render->camera.w / 2 + App->render->camera.x + 100)
+		App->render->camera.x += speed.x * App->win->GetScale();
+	else if (position.x * App->win->GetScale() < App->render->camera.x + App->render->camera.w / 2 - 100 && App->render->camera.x > 60)
+		App->render->camera.x += speed.x * App->win->GetScale();
+
+	if (App->render->camera.y + App->render->camera.h < (App->map->data.height * 16 * App->win->GetScale()) && App->render->camera.y > 0) {
+		if ((position.y + collider->rect.h) * App->win->GetScale() > App->render->camera.h + App->render->camera.y - (50 * App->win->GetScale()))
+			App->render->camera.y += speed.y * App->win->GetScale();
+		else if (position.y * App->win->GetScale() < App->render->camera.y + (50 * App->win->GetScale()))
+			App->render->camera.y += speed.y * App->win->GetScale();
+		else
+			App->render->camera.y = (position.y * App->win->GetScale() + collider->rect.h / 2 - App->win->height / 2);
+	}
+}
+
+void j1Player::deathAnim()
+{
+	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim)
+		position.y -= 20;
+	else
+		isFalling = true;
+
+	if (isFalling && death_anim) {
+		position.y += 20;
+	}
+
+	if (isFalling && position.y > App->render->camera.y + App->render->camera.h) {
+		isFalling = false;
+		death_anim = false;
+
+		if (current_life <= 0)
+			dead = true;
+
+		position = lastPosition;
+	}
+
 }

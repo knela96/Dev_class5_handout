@@ -38,6 +38,7 @@
   </scenes>
 
   <player>
+    <position x="0" y="0"/>
     <life value="3"/>
     <dead value="false"/>
     <folder>Assets/Sprites/Character/</folder>
