@@ -58,7 +58,7 @@ bool j1Scene2::PreUpdate()
 bool j1Scene2::Update(float dt)
 {
 	if (App->player->current_life <= 0)
-		App->fade->FadeToBlack(this, this);
+		App->fade->FadeToBlack(this, App->scene);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
