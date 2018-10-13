@@ -56,6 +56,10 @@ public:
 
 	SDL_Texture * graphics = nullptr;
 	j1Animation idle;
+	//j1Animation run;
+	//j1Animation plane;
+	//j1Animation death;
+	//j1Animation jump;
 	j1Animation* current_animation;
 	iPoint position;
 

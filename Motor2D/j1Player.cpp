@@ -47,15 +47,24 @@ bool j1Player::Awake(pugi::xml_node& config)
 	gravity = config.child("gravity").attribute("value").as_float();
 
 	// ANIMATIONS
-	idle.PushBack({
-		config.child("animations").child("idle").attribute("x").as_int(),
-		config.child("animations").child("idle").attribute("y").as_int(),
-		config.child("animations").child("idle").attribute("w").as_int(),
-		config.child("animations").child("idle").attribute("h").as_int()
-		});
-	
+
+	//Idle pushbacks
+	for (pugi::xml_node push_node = config.child("animations").child("idle").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		idle.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+
 	idle.loop = config.child("animations").child("idle").attribute("loop").as_bool();
 	idle.speed = config.child("animations").child("idle").attribute("speed").as_float();
+
+	//Run Pushbacks
+	//Plane Pushbacks
+	//Detah Pushbacks
 
 	current_animation = &idle;
 
