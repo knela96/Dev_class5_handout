@@ -65,11 +65,12 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start() {
 	
-	if (position.x == 0 && position.y == 0) {
+	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
 		position.y = respawn.y = collider->rect.y;
 	}
 	else {
+		b_respawn = false;
 		position.x = respawn.x;
 		position.y = respawn.y;
 	}
@@ -92,6 +93,7 @@ bool j1Player::CleanUp()
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
 	collider = nullptr;
+	b_respawn = false;
 	return true;
 }
 // Update: draw background
@@ -187,12 +189,13 @@ bool j1Player::Update(float dt)
 					if (SDL_GetTicks() - start_time < 500 && plane)
 						current_gravity = 1.0f;
 					else
-						plane = false;
+ 						plane = false;
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
 					if (speed.y < 0.0f)
 						speed.y = MAX(speed.y, -2.0f);
+					plane = false;
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))

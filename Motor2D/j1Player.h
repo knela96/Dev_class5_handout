@@ -67,6 +67,7 @@ public:
 	bool dead = false;
 	bool win = false;
 	bool godmode = false;
+	bool b_respawn;
 	uint life;
 	uint current_life;
 	char _godmode[8] = "godmode";

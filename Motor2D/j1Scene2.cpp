@@ -10,35 +10,35 @@
 #include "j1Player.h"
 #include "j1FadeToBlack.h"
 #include "j1Collisions.h"
-#include "j1Scene.h"
 #include "j1Scene2.h"
+#include "j1Scene.h"
 #include "j1Window.h"
 
-j1Scene::j1Scene() : j1Module()
+j1Scene2::j1Scene2() : j1Module()
 {
 	name.create("scenes");
 }
 
 // Destructor
-j1Scene::~j1Scene()
+j1Scene2::~j1Scene2()
 {}
 
 // Called before render is available
-bool j1Scene::Awake(pugi::xml_node& config)
+bool j1Scene2::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
 
-	map = config.child("scene1").child("map").child_value();
-	cam_pos = { config.child("scene1").child("camera").attribute("x").as_int(),
-				config.child("scene1").child("camera").attribute("y").as_int()
+	map = config.child("scene2").child("map").child_value();
+	cam_pos = { config.child("scene2").child("camera").attribute("x").as_int(),
+				config.child("scene2").child("camera").attribute("y").as_int()
 	};
 
 	return ret;
 }
 
 // Called before the first frame
-bool j1Scene::Start()
+bool j1Scene2::Start()
 {
 	App->map->Load(map.GetString());
 	App->player->Start();
@@ -47,22 +47,24 @@ bool j1Scene::Start()
 }
 
 // Called each loop iteration
-bool j1Scene::PreUpdate()
+bool j1Scene2::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool j1Scene::Update(float dt)
+bool j1Scene2::Update(float dt)
 {
 	if (App->player->current_life <= 0)
-		App->fade->FadeToBlack(this, this);
+		App->fade->FadeToBlack(this, App->scene);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		App->fade->FadeToBlack(this, this);
+		App->fade->FadeToBlack(this, App->scene);
 
-	if(App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
+		App->player->b_respawn = true;
 		App->fade->FadeToBlack(this, this);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->LoadGame();
@@ -81,10 +83,6 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 3;
 
-	if(App->player->win)
-		App->fade->FadeToBlack(this, App->scene2);
-
-
 	App->map->Draw();
 
 	int x, y;
@@ -101,7 +99,7 @@ bool j1Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool j1Scene::PostUpdate()
+bool j1Scene2::PostUpdate()
 {
 	bool ret = true;
 
@@ -112,9 +110,8 @@ bool j1Scene::PostUpdate()
 }
 
 // Called before quitting
-bool j1Scene::CleanUp()
+bool j1Scene2::CleanUp()
 {
-	this->active = false;
 	LOG("Freeing scene");
 	App->player->CleanUp();
 	App->collisions->CleanUp();
