@@ -73,7 +73,7 @@ public:
 
 
 	virtual void OnCollision(Collider*, Collider*) {}
-	virtual void setGround(bool onGround) {}
+	virtual void setGround(bool onGround,bool isFalling) {}
 
 public:
 

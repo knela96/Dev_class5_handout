@@ -30,7 +30,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 
 	map = config.child("scene1").child("map").child_value();
 	cam_pos = { config.child("scene1").child("camera").attribute("x").as_int(),
-				config.child("scene1").child("camera").attribute("y").as_int() 
+				config.child("scene1").child("camera").attribute("y").as_int()
 	};
 
 	return ret;
@@ -57,6 +57,9 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	if (App->player->life <= 0)
+		App->fade->FadeToBlack(this, this);
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
 

@@ -12,7 +12,7 @@ enum ColliderTypes
 	COLLIDER_WALL,
 	COLLIDER_PLAYER,
 	COLLIDER_ENEMY,
-	COLLIDER_PLAYER_SHOT,
+	COLLIDER_WIN,
 	COLLIDER_ENEMY_SHOT,
 	COLLIDER_POWERUP,
 	COLLIDER_MAX,
@@ -23,8 +23,8 @@ struct Collider {
 	bool to_delete = false;
 	ColliderTypes type;
 	j1Module* callback = nullptr;
-
 	bool onGround;
+	bool isFalling;
 
 	/*Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
 		rect(rectangle),

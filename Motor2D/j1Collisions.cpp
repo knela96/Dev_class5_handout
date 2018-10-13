@@ -11,42 +11,42 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER_SHOT] = true;
+	matrix[COLLIDER_WALL][COLLIDER_WIN] = false;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY_SHOT] = true;
 	matrix[COLLIDER_WALL][COLLIDER_POWERUP] = false;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_WIN] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SHOT] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_POWERUP] = true;
 
 	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER_SHOT] = true;
+	matrix[COLLIDER_ENEMY][COLLIDER_WIN] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_POWERUP] = false;
 
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_WALL] = true;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_ENEMY] = true;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_PLAYER_SHOT] = false;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_ENEMY_SHOT] = false;
-	matrix[COLLIDER_PLAYER_SHOT][COLLIDER_POWERUP] = false;
+	matrix[COLLIDER_WIN][COLLIDER_WALL] = true;
+	matrix[COLLIDER_WIN][COLLIDER_PLAYER] = false;
+	matrix[COLLIDER_WIN][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_WIN][COLLIDER_WIN] = false;
+	matrix[COLLIDER_WIN][COLLIDER_ENEMY_SHOT] = false;
+	matrix[COLLIDER_WIN][COLLIDER_POWERUP] = false;
 
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_WIN] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_POWERUP] = false;
 
 	matrix[COLLIDER_POWERUP][COLLIDER_WALL] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_POWERUP][COLLIDER_ENEMY] = false;
-	matrix[COLLIDER_POWERUP][COLLIDER_PLAYER_SHOT] = false;
+	matrix[COLLIDER_POWERUP][COLLIDER_WIN] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_POWERUP] = false;
 }
@@ -135,7 +135,7 @@ void j1Collisions::Draw()
 		case COLLIDER_ENEMY: // red
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 0, 0, alpha);
 			break;
-		case COLLIDER_PLAYER_SHOT: // yellow
+		case COLLIDER_WIN: // yellow
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 255, 0, alpha);
 			break;
 		case COLLIDER_ENEMY_SHOT: // magenta
@@ -229,6 +229,8 @@ fPoint Collider::AvoidCollision(fPoint speed, Collider& collider){
 	Collider c1 = collider;
 	c1.rect.x += speed.x;
 	c1.rect.y += speed.y;
+
+	onGround = false;
 	
 	for (uint i = 0; i < App->collisions->data.colliders.count(); ++i)
 	{
@@ -251,7 +253,7 @@ fPoint Collider::AvoidCollision(fPoint speed, Collider& collider){
 
 	}
 
-	collider.callback->setGround(onGround);
+	collider.callback->setGround(onGround,isFalling);
 
 	return new_speed;
 }
@@ -263,11 +265,11 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 	if (new_speed.y > 0) {
 		if (collider1->y + collider1->h > collider2->y ) {
 			if (new_speed.x > 0) {
-				if (overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
+				if ((overlay.w > 1) && overlay.w  < overlay.h && collider1->x < collider2->x + collider2->w)
 					new_speed.x -= overlay.w;
 				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
 					new_speed.x += overlay.w;
-				else if (overlay.h < overlay.w && collider1->y > collider2->y) {
+				else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
 					new_speed.y += overlay.h;
 				}
 				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
@@ -276,11 +278,11 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 				}
 			}
 			else if (new_speed.x < 0) {
-				if (overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
+				if ((overlay.w > 1) && overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
 					new_speed.x += overlay.w;
 				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
 					new_speed.x -= overlay.w;
-				else if (overlay.h < overlay.w && collider1->y > collider2->y) {
+				else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
 					new_speed.y += overlay.h;
 				}
 				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
@@ -306,23 +308,35 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 	else if (new_speed.y < 0) {
 		if (collider1->y <= collider2->y + collider2->h) {
 			if (new_speed.x > 0) {
-				if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
-					new_speed.x += overlay.w;
-				else if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
-					new_speed.x -= overlay.w;
-				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y)
-					new_speed.y += overlay.h;
+				if (new_speed.x > 0) {
+					if ((overlay.w > 1) && overlay.w  < overlay.h && collider1->x < collider2->x + collider2->w)
+						new_speed.x -= overlay.w;
+					else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
+						new_speed.x += overlay.w;
+					else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
+						new_speed.y += overlay.h;
+					}
+					else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
+						new_speed.y -= overlay.h;
+					}
+				}
 			}
 			else if (new_speed.x < 0) {
-				if (overlay.h > overlay.w && collider1->x + collider1->w > collider2->x)
-					new_speed.x -= overlay.w;
-				else if (overlay.h > overlay.w && collider1->x < collider2->x + collider2->w)
+				if ((overlay.w > 1) && overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
 					new_speed.x += overlay.w;
-				else if (overlay.w > overlay.h && collider1->y + collider1->h > collider2->y)
+				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
+					new_speed.x -= overlay.w;
+				else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
 					new_speed.y += overlay.h;
+				}
+				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
+					new_speed.y -= overlay.h;
+				}
 			}
-			else
+			else {
 				new_speed.y += overlay.h;
+				isFalling = true;
+			}
 		}
 	}
 	else {

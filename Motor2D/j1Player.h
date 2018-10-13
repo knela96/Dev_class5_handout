@@ -26,11 +26,14 @@ public:
 
 	bool Awake(pugi::xml_node& config);
 	bool Start();
-	bool Update(float dt);
+	bool Update(float dt);	
+	bool PostUpdate();
+
+
 	bool CleanUp();
 
 	void OnCollision(Collider* collider1, Collider* collider2);
-	void setGround(bool onGround);
+	void setGround(bool onGround, bool isFalling);
 
 public:
 	CharacterState currentState = Stand;
@@ -38,9 +41,11 @@ public:
 	float maxFallingSpeed;
 	float walkSpeed;
 	float gravity;
+	float current_gravity;
 	fPoint speed;
 
 	bool onGround = false;
+	bool isFalling = false;
 	bool plane = false;
 
 	SDL_Texture * graphics = nullptr;
@@ -62,6 +67,7 @@ private:
 	p2SString			folder;
 	uint				heightjump;
 	iPoint				lastPosition;
+	bool flip;
 
 };
 

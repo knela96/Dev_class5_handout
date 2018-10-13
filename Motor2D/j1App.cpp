@@ -120,6 +120,8 @@ bool j1App::Start()
 		item = item->next;
 	}
 
+	//previous_time = 0;
+	//current_time = SDL_GetTicks();
 
 	return ret;
 }
@@ -165,7 +167,6 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 void j1App::PrepareUpdate()
 {
 
-	//dt = float(SDL_GetTicks() - started_at) / 1000.0f;
 }
 
 // ---------------------------------------------
@@ -210,15 +211,15 @@ bool j1App::DoUpdate()
 
 	/*
 	previous_time = current_time;
-	current_time = SDL_GetTicks()/1000.0f;
+	current_time = SDL_GetTicks();
 
 	dt = (current_time - previous_time);
 	LOG("%f", dt);
 
-	if (dt > 0.15f) {
+	if (dt > 0.10f) {
 		dt = 0.15f;
-	}
-	*/
+	}*/
+
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
