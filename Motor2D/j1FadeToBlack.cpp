@@ -47,8 +47,8 @@ bool j1FadeToBlack::Update(float dt)
 				start_time = SDL_GetTicks();
 				current_step = fade_step::fade_from_black;
 				if (switch_scene) {
-					module_off->CleanUp();
-					module_on->Start();
+					module_off->Disable();
+					module_on->Enable();
 				}
 				else {
 					isBlack = true;

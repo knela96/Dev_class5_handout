@@ -127,11 +127,7 @@ bool j1Player::Start() {
 
 	currentState = CharacterState::Jump;
 
-	flip = false;
-	dead = false;
-	win = false;
-	death_anim = false;
-	current_life = life;
+	resetPlayer();
 
 	return true;
 }
@@ -444,6 +440,7 @@ bool j1Player::Save(pugi::xml_node& data) const
 	player.append_child("maxFallingSpeed").append_attribute("value") = maxFallingSpeed;
 	player.append_child("walkSpeed").append_attribute("value") = walkSpeed;
 	player.append_child("gravity").append_attribute("value") = gravity;
+
 
 	return true;
 }

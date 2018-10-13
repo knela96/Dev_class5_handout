@@ -18,24 +18,18 @@
     <fullscreen_window value="false"/>
   </window>
 
-  <file_system>
-    <path>data.zip</path>
-  </file_system>
-
   <map>
     <folder>Assets/maps/</folder>
   </map>
   
-  <scenes>
-    <scene1>
-      <map>Map1.1_test.tmx</map>
-      <camera x="500" y ="200" />
-    </scene1>
-    <scene2>
-      <map>Map2.1.tmx</map>
-      <camera x="500" y ="200" />
-    </scene2>
-  </scenes>
+   <scene1>
+    <map>Map1.1_test.tmx</map>
+    <camera x="500" y ="200" />
+  </scene1>
+  <scene2>
+    <map>Map2.1.tmx</map>
+    <camera x="500" y ="200" />
+  </scene2>
 
   <player>
     <position x="0" y="0"/>

@@ -60,7 +60,7 @@ public:
 	j1Animation anim_plane;
 	j1Animation anim_death;
 	//j1Animation jump;
-	j1Animation* current_animation;
+	j1Animation* current_animation = nullptr;
 	iPoint position;
 
 	Uint32 start_time;

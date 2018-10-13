@@ -17,12 +17,29 @@ class j1Module
 {
 public:
 
-	j1Module() : active(false)
+	j1Module() : active(true)
 	{}
 
 	void Init()
 	{
 		active = true;
+	}
+
+	void Enable()
+	{
+		if (!active)
+		{
+			active = true;
+			Start();
+		}
+	}
+	void Disable()
+	{
+		if (active)
+		{
+			active = false;
+			CleanUp();
+		}
 	}
 
 	// Called before render is available
