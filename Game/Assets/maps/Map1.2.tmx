@@ -16,6 +16,9 @@
   <image source="clouds1.png" width="544" height="236"/>
  </tileset>
  <layer id="16" name="Sky" width="208" height="40">
+  <properties>
+   <property name="speed" type="float" value="0.1"/>
+  </properties>
   <data>
    <tile gid="991"/>
    <tile gid="992"/>
@@ -8339,7 +8342,10 @@
    <tile/>
   </data>
  </layer>
- <layer id="15" name="Clous" width="208" height="40">
+ <layer id="15" name="Clouds" width="208" height="40">
+  <properties>
+   <property name="speed" type="float" value="0.3"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -16664,6 +16670,9 @@
   </data>
  </layer>
  <layer id="14" name="Sea" width="208" height="40">
+  <properties>
+   <property name="speed" type="float" value="0.5"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -24988,6 +24997,9 @@
   </data>
  </layer>
  <layer id="13" name="Far Ground" width="208" height="40">
+  <properties>
+   <property name="speed" type="float" value="0.7"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -58316,7 +58328,7 @@
   <object id="47" name="0" x="2928" y="256" width="160" height="320"/>
   <object id="49" name="0" x="3088" y="352" width="32" height="224"/>
   <object id="50" name="0" x="3120" y="464" width="32" height="112"/>
-  <object id="60" name="1" x="296" y="335" width="24" height="31"/>
+  <object id="60" name="1" x="300.875" y="335" width="19.125" height="31"/>
   <object id="61" name="3" x="2987.82" y="5.33333" width="79.0359" height="218.667"/>
   <object id="64" name="2" x="0" y="624" width="3328" height="16"/>
   <object id="66" name="0" x="48" y="192" width="176" height="432"/>

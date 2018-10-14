@@ -50,6 +50,8 @@ void j1Map::Draw()
 					if (id != 0) {
 						SDL_Rect *rect = &item->data->GetTileRect(id);
 						iPoint pos = MapToWorld(x, y);
+						/*if (pos.x > App->render->camera.x - camerax_offset && pos.x < App->render->camera.x + App->render->camera.w &&
+							pos.y > App->render->camera.y - cameray_offset && pos.y < App->render->camera.y + App->render->camera.h)*/
 						App->render->Blit(item->data->texture, pos.x, pos.y, rect);
 					}
 				}
