@@ -51,6 +51,16 @@ besides this, when you fall from a platform you don't respawn at the start of th
 
 Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
 
+Player Sprites taken from the Sega Megadrive Sonic Mania
+
+# Music
+
+Songs from the Game Ori and the Blind Forest developed by Moon Studios https://www.orithegame.com/moon-studios/
+
+# Sound Effects
+
+All effects taken from the website https://freesound.org/ with a Creative Commons 0 License
+
 Licensed by <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 
 
