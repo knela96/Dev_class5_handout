@@ -22,7 +22,8 @@ enum CharacterFX {
 	Run_fx = 1,
 	Plane_fx,
 	Death_fx,
-	Jump_fx
+	Jump_fx,
+	Win_fx
 };
 
 class j1Player : public j1Module
