@@ -32,4 +32,5 @@ F10 - God mode
 # Art
 
 Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
+
 Licensed by CC0
