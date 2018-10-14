@@ -34,6 +34,9 @@ bool j1Scene::Awake(pugi::xml_node& config)
 				config.child("scene1").child("camera").attribute("y").as_int()
 	};
 
+	music_path = config.child("scene1").child("audio").child_value();
+
+
 	return ret;
 }
 
@@ -45,6 +48,8 @@ bool j1Scene::Start()
 		App->map->Load(map.GetString());
 		App->collisions->Enable();
 		App->player->Enable();
+
+		App->audio->PlayMusic(music_path.GetString());
 
 	return true;
 }

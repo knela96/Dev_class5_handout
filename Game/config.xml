@@ -35,12 +35,12 @@
     <scene1>
       <map>Map1.2.tmx</map>
       <camera x="500" y ="200" />
-      <audio>the-waters-cleansed.mp3</audio>
+      <audio>the-waters-cleansed.ogg</audio>
     </scene1>
     <scene2>
       <map>Map2.1.tmx</map>
       <camera x="500" y ="200" />
-      <audio>naru-embracing-the-light</audio>
+      <audio>naru-embracing-the-light.ogg</audio>
     </scene2>
   </scenes>
 
