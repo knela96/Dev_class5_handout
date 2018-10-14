@@ -50,9 +50,9 @@ void j1Map::Draw()
 					if (id != 0) {
 						SDL_Rect *rect = &item->data->GetTileRect(id);
 						iPoint pos = MapToWorld(x, y);
-						/*if (pos.x > App->render->camera.x - camerax_offset && pos.x < App->render->camera.x + App->render->camera.w &&
-							pos.y > App->render->camera.y - cameray_offset && pos.y < App->render->camera.y + App->render->camera.h)*/
-						App->render->Blit(item->data->texture, pos.x, pos.y, rect);
+						if (pos.x + layer->data->speed > App->render->camera.x - 500 && pos.x + layer->data->speed< App->render->camera.x + App->render->camera.w  + 500 &&
+							pos.y + layer->data->speed> App->render->camera.y - 500 && pos.y + layer->data->speed< App->render->camera.y + App->render->camera.h + 500)
+								App->render->Blit(item->data->texture, pos.x, pos.y, rect,SDL_FLIP_NONE,1,layer->data->speed);
 					}
 				}
 			};
@@ -373,6 +373,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_uint();
 	layer->height = node.attribute("height").as_uint();
 	layer->data = new uint[layer->height*layer->width];
+	layer->speed = node.child("properties").child("property").attribute("value").as_float();
 	memset(layer->data, 0, sizeof(uint)*layer->width*layer->height);
 
 	int i = 0;

@@ -192,9 +192,9 @@ void j1Audio::StopFx() {
 }
 
 void j1Audio::ChangeMusicVolume() {
-	Mix_VolumeMusic(MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_music * MIX_MAX_VOLUME)));
+	//Mix_VolumeMusic(MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_music * MIX_MAX_VOLUME)));
 }
 
 void j1Audio::ChangeFxVolume(Mix_Chunk* fx) {
-	Mix_VolumeChunk(fx,MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_fx * MIX_MAX_VOLUME)));
+	//Mix_VolumeChunk(fx,MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_fx * MIX_MAX_VOLUME)));
 }
