@@ -172,6 +172,8 @@ bool j1Player::Start() {
 
 bool j1Player::CleanUp()
 {
+	//App->audio->StopFx();
+	//App->audio->UnloadFx();
 	LOG("Unloading Player assets");
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
@@ -183,14 +185,14 @@ bool j1Player::Update(float dt)
 {	
 	if (!dead) {
 
-		if (!death_anim) {
+		if (!death_anim || !win) {
 			if (onGround)
 				lastPosition = position;
 			switch (currentState)
 			{
 			case CharacterState::Stand:
 
-				//App->audio->StopFx();
+				App->audio->StopFx();
 
 				if (!onGround)
 				{
@@ -206,6 +208,8 @@ bool j1Player::Update(float dt)
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
+					App->audio->StopFx();
+					App->audio->PlayFx(Jump_fx, 0);
 					speed.y = -jumpSpeed;
 					//speed.y -= 5.0f;
 					currentState = CharacterState::Jump;
@@ -248,8 +252,8 @@ bool j1Player::Update(float dt)
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
-
-					App->audio->PlayFx(Jump_fx, 1); 
+					App->audio->StopFx();
+					App->audio->PlayFx(Jump_fx, 0); 
 
 					speed.y = -jumpSpeed;
 
@@ -262,6 +266,8 @@ bool j1Player::Update(float dt)
 				else if (!onGround)
 				{
 					currentState = CharacterState::Jump;
+					current_animation = &anim_jumpdown;
+					App->audio->StopFx();
 					break;
 				}
 
@@ -361,10 +367,6 @@ bool j1Player::Update(float dt)
 
 		cameraPos();
 
-		if (win == true) {
-			App->audio->PlayFx(Win_fx, 1);
-		}
-
 		//Animation checks
 		switch (currentState) {
 		case CharacterState::Walk:
@@ -406,6 +408,7 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 		}
 	}
 	else if (collider2->gettype() == 3) {
+		App->audio->PlayFx(Win_fx, 1);
 		win = true;
 	}
 }

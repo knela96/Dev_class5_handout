@@ -187,14 +187,25 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
+void j1Audio::StopMusic() {
+	Mix_HaltMusic();
+}
+
 void j1Audio::StopFx() {
 	Mix_HaltChannel(-1);
 }
 
 void j1Audio::ChangeMusicVolume() {
-	//Mix_VolumeMusic(MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_music * MIX_MAX_VOLUME)));
+	Mix_VolumeMusic(MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_music * MIX_MAX_VOLUME)));
 }
 
 void j1Audio::ChangeFxVolume(Mix_Chunk* fx) {
-	//Mix_VolumeChunk(fx,MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_fx * MIX_MAX_VOLUME)));
+	Mix_VolumeChunk(fx,MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_fx * MIX_MAX_VOLUME)));
+}
+
+void j1Audio::UnloadFx() {
+	p2List_item<Mix_Chunk*>* item;
+	for (item = fx.start; item != NULL; item = item->next)
+		Mix_FreeChunk(item->data);
+	fx.clear();
 }

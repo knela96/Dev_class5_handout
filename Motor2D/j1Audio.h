@@ -34,10 +34,14 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	void StopMusic();
+
 	void StopFx();
 
 	void ChangeMusicVolume();
 	void ChangeFxVolume(Mix_Chunk* fx);
+
+	void UnloadFx();
 
 private:
 

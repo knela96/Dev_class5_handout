@@ -116,7 +116,7 @@ bool j1App::Awake()
 bool j1App::Start()
 {
 	//DISABLE MODULES YOU DON'T WANT
-	scene->Disable();
+	scene2->Disable();
 
 
 
