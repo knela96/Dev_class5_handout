@@ -1,6 +1,6 @@
 # Tails Odyssey
 
-This two level plataformer was created by ɺric Canela, and Rafel Brau, 
+This two level plataformer was created by Éric Canela, and Rafel Brau, 
 both students in UPC's degree in Desing and Development of Videogames
 
 # Controls
