@@ -7,10 +7,10 @@
   </app>
 
   <audio>
-    <music>
+    <music volume="0.5">
       <folder>Assets/audio/music/</folder>
     </music>
-    <fx>
+    <fx volume="1">
       <folder>Assets/audio/fx/</folder>
     </fx>
   </audio>
@@ -90,6 +90,7 @@
         <frame x="179" y="97" w="34" h="33"/>
         <frame x="212" y="97" w="44" h="33"/>
         <frame x="256" y="97" w="36" h="33"/>
+        <fx>Plane.wav</fx>
       </plane>
       <death loop="true" speed="0.04f">
         <frame x="375" y="99" w="36" h="31"/>
