@@ -56322,6 +56322,8 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="196"/>
+   <tile gid="197"/>
    <tile/>
    <tile/>
    <tile/>
@@ -56540,10 +56542,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="232"/>
+   <tile gid="233"/>
    <tile/>
    <tile/>
    <tile/>
@@ -63458,7 +63458,7 @@
   <object id="50" name="0" x="3088" y="208" width="48" height="144"/>
   <object id="51" name="0" x="3120" y="0" width="32" height="208"/>
   <object id="52" name="0" x="2673" y="290" width="112" height="96"/>
-  <object id="53" name="3" x="2704" y="162.5" width="48" height="109.5"/>
+  <object id="53" name="3" x="2715" y="236.5" width="37" height="35.5"/>
   <object id="54" name="1" x="288" y="432" width="16" height="32"/>
   <object id="55" name="2" x="0" y="736" width="3200" height="16"/>
   <object id="57" name="0" x="1232" y="560" width="64" height="32"/>
