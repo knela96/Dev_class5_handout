@@ -1,10 +1,10 @@
 # Tails Odyssey
 
-This two level plataformer was created by ɺric Canela, and Rafel Brau, 
-both students in UPC's degree in Desing and Development of Videogames
+This two level plataformer was created by Éric Canela, and Rafel Brau, 
+both students in UPC's degree in Design and Development of Videogames
 
 # Controls
-##Gameplay
+## Gameplay
 
 A - Move left
 
@@ -14,7 +14,7 @@ Spacebar - Jump
 
 Spacebar while in the air - Glide for two seconds
 
-##Debug keys
+## Debug keys
 
 F1 - To start from the very first level
 
@@ -29,6 +29,8 @@ F9 - To view colliders and logic of the game
 F10 - God mode
 
 
-#Art
+# Art
 
-Background and tiles provided by ansimuz https://opengameart.org/content/magic-cliffs-environment
+Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
+
+Licensed by <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
