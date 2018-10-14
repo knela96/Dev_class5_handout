@@ -42,6 +42,11 @@ F9 - To view colliders and logic of the game
 F10 - God mode
 
 
+# Innovation 
+
+Pressing the spacebar while in the air lets you glide for two seconds, letting you be more accurate when landing, 
+besides this, when you fall from a platform you don't respawn at the start of the level, but the last position you were on ground.
+
 # Art
 
 Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
