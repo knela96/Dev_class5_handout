@@ -172,7 +172,7 @@ bool j1Player::Start() {
 
 bool j1Player::CleanUp()
 {
-	//App->audio->StopFx();
+	App->audio->StopFx();
 	//App->audio->UnloadFx();
 	LOG("Unloading Player assets");
 	App->tex->UnLoad(graphics);
@@ -183,9 +183,9 @@ bool j1Player::CleanUp()
 // Update: draw background
 bool j1Player::Update(float dt)
 {	
-	if (!dead) {
+	if (!dead || !win) {
 
-		if (!death_anim || !win) {
+		if (!death_anim) {
 			if (onGround)
 				lastPosition = position;
 			switch (currentState)
@@ -408,7 +408,8 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 		}
 	}
 	else if (collider2->gettype() == 3) {
-		App->audio->PlayFx(Win_fx, 1);
+		if(!win)
+			App->audio->PlayFx(Win_fx, 1);
 		win = true;
 	}
 }

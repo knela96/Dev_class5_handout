@@ -126,7 +126,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	//App->audio->StopMusic();
+	App->audio->StopMusic();
 	App->player->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
