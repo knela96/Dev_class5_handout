@@ -14,6 +14,7 @@ struct MapLayer {
 	uint width;
 	uint height;
 	uint* data = nullptr;
+	float speed = 1;
 	inline uint Get(int x, int y) const;
 };
 

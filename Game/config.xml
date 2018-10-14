@@ -20,8 +20,8 @@
   </renderer>
 
   <window>
-    <resolution width="800" height="600" scale="1"/>
-    <fullscreen value="true"/>
+    <resolution width="1024" height="768" scale="1"/>
+    <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
@@ -79,7 +79,7 @@
         <frame x="684" y="0" w="37" h="31"/>
         <frame x="731" y="0" w="37" h="31"/>
         <frame x="772" y="0" w="37" h="31"/>
-        <fx>Run.wav</fx>
+        <fx>Run1.wav</fx>
       </run>
       <plane loop ="true" speed="0.2f">
         <frame x="6" y="97" w="38" h="33"/>
