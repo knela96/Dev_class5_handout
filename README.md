@@ -1,7 +1,7 @@
 # Tails Odyssey
 
 This two level plataformer was created by Éric Canela, and Rafel Brau, 
-both students in UPC's degree in Desing and Development of Videogames
+both students in UPC's degree in Design and Development of Videogames
 
 # Controls
 ## Gameplay
@@ -32,3 +32,4 @@ F10 - God mode
 # Art
 
 Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
+Licensed by CC0
