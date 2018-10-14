@@ -74,6 +74,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_run.loop = config.child("animations").child("run").attribute("loop").as_bool();
 	anim_run.speed = config.child("animations").child("run").attribute("speed").as_float();
+	//Loading Fx
+	App->audio->LoadFx(config.child("animations").child("run").child("fx").child_value());
 
 
 	//Plane Pushbacks
@@ -88,6 +90,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_plane.loop = config.child("animations").child("plane").attribute("loop").as_bool();
 	anim_plane.speed = config.child("animations").child("plane").attribute("speed").as_float();
+	//Loading Fx
+	App->audio->LoadFx(config.child("animations").child("plane").child("fx").child_value());
 
 	//Death Pushbacks
 	for (pugi::xml_node push_node = config.child("animations").child("death").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
@@ -178,6 +182,8 @@ bool j1Player::Update(float dt)
 			{
 			case CharacterState::Stand:
 
+				App->audio->StopFx();
+
 				if (!onGround)
 				{
 					currentState = CharacterState::Jump;
@@ -210,12 +216,14 @@ bool j1Player::Update(float dt)
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP || App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
 				{
+					App->audio->StopFx();
 					currentState = CharacterState::Stand;
 					speed.x = 0;
 					break;
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
+					App->audio->PlayFx(Run_fx, 1);
 					flip = false;
 					speed.x += 1.0f;
 					if (speed.x > walkSpeed)
@@ -223,6 +231,7 @@ bool j1Player::Update(float dt)
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
+					App->audio->PlayFx(Run_fx, 1);
 					flip = true;
 					speed.x -= 1.0f;
 					if (speed.x < -walkSpeed)
@@ -243,6 +252,8 @@ bool j1Player::Update(float dt)
 					currentState = CharacterState::Jump;
 					break;
 				}
+
+
 				break;
 			case CharacterState::Jump:
 
@@ -257,19 +268,23 @@ bool j1Player::Update(float dt)
 					if (!plane && start_time == 0) {
 						start_time = SDL_GetTicks();
 						plane = true;
+    					App->audio->PlayFx(Plane_fx,1);
 					}
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-					if (SDL_GetTicks() - start_time < 500 && plane) {
+					if (SDL_GetTicks() - start_time < 1000 && plane) {
 						current_gravity = 1.0f;
 						current_animation = &anim_plane;
 					}
-					else
+					else {
 						plane = false;
+						App->audio->StopFx();
+					}
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
+					App->audio->StopFx();
 					if (speed.y < 0.0f)
 						speed.y = MAX(speed.y, -2.0f);
 					if (!onGround)

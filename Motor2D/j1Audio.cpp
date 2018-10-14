@@ -20,6 +20,12 @@ j1Audio::~j1Audio()
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)
 {
+	music_path.create(config.child("music").child("folder").child_value());
+	fx_path.create(config.child("fx").child("folder").child_value());
+
+	v_music =config.child("music").attribute("volume").as_float();
+	v_fx = config.child("fx").attribute("volume").as_float();
+
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -102,7 +108,11 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	p2SString tmp("%s%s", music_path.GetString(), path);
+
+	music = Mix_LoadMUS(tmp.GetString());
+
+	ChangeMusicVolume();
 
 	if(music == NULL)
 	{
@@ -129,6 +139,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		}
 	}
 
+	//Mix_VolumeMusic(1.0f);
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -141,7 +152,11 @@ unsigned int j1Audio::LoadFx(const char* path)
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	p2SString tmp("%s%s", fx_path.GetString(), path);
+
+	Mix_Chunk* chunk = Mix_LoadWAV(tmp.GetString());
+
+	ChangeFxVolume(chunk);
 
 	if(chunk == NULL)
 	{
@@ -170,4 +185,16 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	}
 
 	return ret;
+}
+
+void j1Audio::StopFx() {
+	Mix_HaltChannel(-1);
+}
+
+void j1Audio::ChangeMusicVolume() {
+	Mix_VolumeMusic(MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_music * MIX_MAX_VOLUME)));
+}
+
+void j1Audio::ChangeFxVolume(Mix_Chunk* fx) {
+	Mix_VolumeChunk(fx,MIX_MAX_VOLUME - (MIX_MAX_VOLUME - (int)(v_fx * MIX_MAX_VOLUME)));
 }

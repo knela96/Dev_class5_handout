@@ -29,10 +29,13 @@ bool j1Scene::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
-	map = config.child("scene1").child("map").child_value();
+	map.create(config.child("scene1").child("map").child_value());
 	cam_pos = { config.child("scene1").child("camera").attribute("x").as_int(),
 				config.child("scene1").child("camera").attribute("y").as_int()
 	};
+
+	music_path.create(config.child("scene1").child("audio").child_value());
+
 
 	return ret;
 }
@@ -45,6 +48,8 @@ bool j1Scene::Start()
 		App->map->Load(map.GetString());
 		App->collisions->Enable();
 		App->player->Enable();
+
+		App->audio->PlayMusic(music_path.GetString());
 
 	return true;
 }

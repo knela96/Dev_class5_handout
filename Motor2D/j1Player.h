@@ -18,6 +18,13 @@ enum CharacterState
 	Plane
 };
 
+enum CharacterFX {
+	Run_fx = 1,
+	Plane_fx,
+	Death_fx,
+	Jump_fx
+};
+
 class j1Player : public j1Module
 {
 public:
@@ -62,6 +69,11 @@ public:
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
 	j1Animation* current_animation = nullptr;
+	p2SString	fx_death;
+	p2SString	fx_jump;
+	p2SString	fx_plane;
+	p2SString	fx_run;
+	p2SString	fx_win;
 	iPoint position;
 
 	Uint32 start_time;

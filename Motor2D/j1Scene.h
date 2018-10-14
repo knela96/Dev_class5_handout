@@ -38,6 +38,8 @@ public:
 
 private:
 	p2SString map;
+	p2SString music_path;
+	p2SString fx_path;
 	iPoint cam_pos;
 	Levels load_scene;
 };

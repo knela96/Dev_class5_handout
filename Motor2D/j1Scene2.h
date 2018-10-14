@@ -40,6 +40,8 @@ private:
 	p2SString map;
 	iPoint cam_pos;
 	Levels load_scene;
+	p2SString music_path;
+	p2SString fx_path;
 };
 
 #endif // __j1SCENE_H__
