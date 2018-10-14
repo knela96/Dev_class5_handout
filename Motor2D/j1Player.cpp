@@ -172,7 +172,7 @@ bool j1Player::Start() {
 
 bool j1Player::CleanUp()
 {
-	//App->audio->StopFx();
+	App->audio->StopFx();
 	//App->audio->UnloadFx();
 	LOG("Unloading Player assets");
 	App->tex->UnLoad(graphics);
@@ -184,8 +184,7 @@ bool j1Player::CleanUp()
 bool j1Player::Update(float dt)
 {	
 	if (!dead || !win) {
-
-		if (!death_anim ) {
+		if (!death_anim) {
 			if (onGround)
 				lastPosition = position;
 			switch (currentState)
