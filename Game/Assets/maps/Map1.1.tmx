@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="208" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="67">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="208" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="67">
  <tileset firstgid="1" name="tileset.ajusted" tilewidth="16" tileheight="16" tilecount="720" columns="36">
   <image source="tileset.ajusted.png" width="576" height="320"/>
  </tileset>
- <imagelayer id="10" name="sky">
-  <image source="sky.png"/>
+ <tileset firstgid="721" name="Sky" tilewidth="16" tileheight="16" tilecount="133" columns="7">
+  <image source="sky1.png" width="112" height="304"/>
+ </tileset>
+ <tileset firstgid="854" name="Clouds" tilewidth="16" tileheight="16" tilecount="476" columns="34">
+  <image source="clouds1.png" width="544" height="236"/>
+ </tileset>
+ <tileset firstgid="1330" name="Far Groung" tilewidth="16" tileheight="16" tilecount="228" columns="38">
+  <image source="far-grounds1.png" width="616" height="110"/>
+ </tileset>
+ <tileset firstgid="1558" name="Sea" tilewidth="16" tileheight="16" tilecount="42" columns="7">
+  <image source="sea1.png" width="112" height="96"/>
+ </tileset>
+ <imagelayer id="18" name="Image Layer 2">
+  <image source="sky.png" width="3328" height="640"/>
  </imagelayer>
- <imagelayer id="11" name="clouds">
-  <image source="clouds.png"/>
+ <imagelayer id="20" name="Image Layer 4">
+  <image source="clouds.png" width="3328" height="640"/>
  </imagelayer>
- <imagelayer id="12" name="sea">
-  <image source="sea.png"/>
+ <imagelayer id="19" name="Image Layer 3">
+  <image source="sea.png" width="3328" height="640"/>
  </imagelayer>
- <imagelayer id="9" name="far ground" offsetx="988" offsety="531">
-  <image source="far-grounds.png"/>
+ <imagelayer id="17" name="Image Layer 1" offsetx="960" offsety="530.667">
+  <image source="far-grounds1.png" width="616" height="110"/>
  </imagelayer>
  <layer id="2" name="fons roques" width="208" height="40">
   <data>
@@ -25036,7 +25048,7 @@
   <object id="55" name="0" x="2864" y="416" width="32" height="144"/>
   <object id="56" name="0" x="2832" y="480" width="32" height="96"/>
   <object id="57" name="0" x="2862" y="549"/>
-  <object id="60" name="1" x="305" y="335" width="50" height="50"/>
+  <object id="60" name="1" x="305.333" y="335" width="25.3333" height="39.3333"/>
   <object id="61" name="3" x="2987.82" y="5.33333" width="79.0359" height="218.667"/>
   <object id="64" name="2" x="0" y="624" width="3328" height="16"/>
   <object id="66" name="0" x="48" y="192" width="176" height="432"/>
