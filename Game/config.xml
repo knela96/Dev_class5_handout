@@ -34,12 +34,12 @@
   <scenes>
     <scene1>
       <map>Map1.2.tmx</map>
-      <camera x="500" y ="200" />
+      <camera x="0" y ="0" />
       <audio>The_Waters_Cleansed.ogg</audio>
     </scene1>
     <scene2>
       <map>Map2.1.tmx</map>
-      <camera x="500" y ="200" />
+      <camera x="0" y ="0" />
       <audio>Naru_Embracing_the_Light.ogg</audio>
     </scene2>
   </scenes>
@@ -79,7 +79,7 @@
         <frame x="684" y="0" w="37" h="31"/>
         <frame x="731" y="0" w="37" h="31"/>
         <frame x="772" y="0" w="37" h="31"/>
-        <fx>Run1.wav</fx>
+        <fx>Run.wav</fx>
       </run>
       <plane loop ="true" speed="0.2f">
         <frame x="6" y="97" w="38" h="33"/>

@@ -5,10 +5,10 @@
 	<textures />
 	<audio />
 	<map />
-	<scenes value="1" />
+	<scenes value="0" />
 	<player>
 		<speed x="0" y="0" />
-		<position x="288" y="448" />
+		<position x="300" y="369" />
 		<life value="3" />
 		<jumpSpeed value="25" />
 		<maxFallingSpeed value="10" />
@@ -18,6 +18,6 @@
 	<collisions />
 	<fade />
 	<renderer>
-		<camera x="60" y="84" />
+		<camera x="60" y="0" />
 	</renderer>
 </game_state>

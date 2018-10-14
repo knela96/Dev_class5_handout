@@ -153,7 +153,7 @@ bool j1Player::Start() {
 	graphics = App->tex->Load(texture_path.GetString());
 
 	App->render->camera.x = 60 * App->win->GetScale();
-	App->render->camera.y = App->win->height / 2 - 300;
+	App->render->camera.y = 0;
 
 	currentState = CharacterState::Jump;
 
@@ -407,7 +407,7 @@ void j1Player::cameraPos()
 		App->render->camera.x += speed.x * App->win->GetScale();
 	else if (position.x * App->win->GetScale() < App->render->camera.x + App->render->camera.w / 2 - 100 && App->render->camera.x > 60)
 		App->render->camera.x += speed.x * App->win->GetScale();
-
+	
 	if (App->render->camera.y + App->render->camera.h < (App->map->data.height * 16 * App->win->GetScale()) && App->render->camera.y > 0) {
 		if ((position.y + collider->rect.h) * App->win->GetScale() > App->render->camera.h + App->render->camera.y - (50 * App->win->GetScale()))
 			App->render->camera.y += speed.y * App->win->GetScale();

@@ -44,8 +44,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(scene2);
-	AddModule(player);
 	AddModule(collisions);
+	AddModule(player);
 	AddModule(fade);
 
 
@@ -116,7 +116,7 @@ bool j1App::Awake()
 bool j1App::Start()
 {
 	//DISABLE MODULES YOU DON'T WANT
-	scene->Disable();
+	scene2->Disable();
 
 
 

@@ -69,11 +69,6 @@ public:
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
 	j1Animation* current_animation = nullptr;
-	p2SString	fx_death;
-	p2SString	fx_jump;
-	p2SString	fx_plane;
-	p2SString	fx_run;
-	p2SString	fx_win;
 	iPoint position;
 
 	Uint32 start_time;
