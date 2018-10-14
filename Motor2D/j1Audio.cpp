@@ -20,6 +20,9 @@ j1Audio::~j1Audio()
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)
 {
+	music_path.create(config.child("music").child("folder").child_value());
+	fx_path.create(config.child("fx").child("folder").child_value());
+
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -43,7 +46,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	}
 
 	//Initialize SDL_mixer
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
 	{
 		LOG("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		active = false;
@@ -102,7 +105,9 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		Mix_FreeMusic(music);
 	}
 
-	music = Mix_LoadMUS(path);
+	p2SString tmp("%s%s", music_path.GetString(), path);
+
+	music = Mix_LoadMUS(tmp.GetString());
 
 	if(music == NULL)
 	{
@@ -129,6 +134,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		}
 	}
 
+	//Mix_VolumeMusic(1.0f);
 	LOG("Successfully playing %s", path);
 	return ret;
 }
@@ -141,7 +147,9 @@ unsigned int j1Audio::LoadFx(const char* path)
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	p2SString tmp("%s%s", fx_path.GetString(), path);
+
+	Mix_Chunk* chunk = Mix_LoadWAV(tmp.GetString());
 
 	if(chunk == NULL)
 	{

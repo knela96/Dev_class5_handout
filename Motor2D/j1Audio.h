@@ -38,6 +38,8 @@ private:
 
 	_Mix_Music*			music;
 	p2List<Mix_Chunk*>	fx;
+	p2SString			music_path;
+	p2SString			fx_path;
 };
 
 #endif // __j1AUDIO_H__

@@ -74,6 +74,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_run.loop = config.child("animations").child("run").attribute("loop").as_bool();
 	anim_run.speed = config.child("animations").child("run").attribute("speed").as_float();
+	//Loading Fx
+	App->audio->LoadFx(config.child("animations").child("run").child("fx").child_value());
 
 
 	//Plane Pushbacks
@@ -201,6 +203,8 @@ bool j1Player::Update(float dt)
 
 				break;
 			case CharacterState::Walk:
+
+				App->audio->PlayFx(Run_fx,1);
 
 				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 				{

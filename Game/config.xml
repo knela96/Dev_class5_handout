@@ -8,10 +8,10 @@
 
   <audio>
     <music>
-      <folder>Assets/audio/music</folder>
+      <folder>Assets/audio/music/</folder>
     </music>
     <fx>
-      <folder>Assets/audio/fx</folder>
+      <folder>Assets/audio/fx/</folder>
     </fx>
   </audio>
 	
@@ -35,12 +35,12 @@
     <scene1>
       <map>Map1.2.tmx</map>
       <camera x="500" y ="200" />
-      <audio>the-waters-cleansed.ogg</audio>
+      <audio>The_Waters_Cleansed.ogg</audio>
     </scene1>
     <scene2>
       <map>Map2.1.tmx</map>
       <camera x="500" y ="200" />
-      <audio>naru-embracing-the-light.ogg</audio>
+      <audio>Naru_Embracing_the_Light.ogg</audio>
     </scene2>
   </scenes>
 
@@ -66,7 +66,6 @@
         <frame x="222" y="0" w="37" h="31"/>
         <frame x="266" y="0" w="37" h="31"/>
         <frame x="311" y="0" w="37" h="31"/>
-        <fx></fx>
       </idle>
       <run loop="true" speed="0.15f">
         <frame x="350" y="0" w="37" h="31"/>
@@ -80,6 +79,7 @@
         <frame x="684" y="0" w="37" h="31"/>
         <frame x="731" y="0" w="37" h="31"/>
         <frame x="772" y="0" w="37" h="31"/>
+        <fx>Run.wav</fx>
       </run>
       <plane loop ="true" speed="0.2f">
         <frame x="6" y="97" w="38" h="33"/>
