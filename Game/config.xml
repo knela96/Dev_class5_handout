@@ -5,6 +5,15 @@
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
+
+  <audio>
+    <music>
+      <folder>Assets/audio/music</folder>
+    </music>
+    <fx>
+      <folder>Assets/audio/fx</folder>
+    </fx>
+  </audio>
 	
   <renderer>
     <vsync value="true"/>
@@ -26,10 +35,12 @@
     <scene1>
       <map>Map1.2.tmx</map>
       <camera x="500" y ="200" />
+      <audio>the-waters-cleansed.mp3</audio>
     </scene1>
     <scene2>
       <map>Map2.1.tmx</map>
       <camera x="500" y ="200" />
+      <audio>naru-embracing-the-light</audio>
     </scene2>
   </scenes>
 
@@ -55,6 +66,7 @@
         <frame x="222" y="0" w="37" h="31"/>
         <frame x="266" y="0" w="37" h="31"/>
         <frame x="311" y="0" w="37" h="31"/>
+        <fx></fx>
       </idle>
       <run loop="true" speed="0.15f">
         <frame x="350" y="0" w="37" h="31"/>
@@ -92,9 +104,6 @@
         <frame x="693" y="56" w="31" h="35"/>
         <frame x="725" y="56" w="31" h="35"/>
       </jump_down>
-      
-      
-      
     </animations>
   </player>
 
