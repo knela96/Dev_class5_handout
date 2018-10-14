@@ -1,7 +1,20 @@
-# Tails Odyssey
+﻿# Tails Odyssey
 
 This two level plataformer was created by Éric Canela, and Rafel Brau, 
 both students in UPC's degree in Design and Development of Videogames
+
+Github Link:
+
+https://github.com/knela96/Tails-Odyssey
+
+Éric Canela's github:
+
+https://github.com/knela96
+
+Rafel Brau's github:
+
+https://github.com/Rafefix
+
 
 # Controls
 ## Gameplay
@@ -29,8 +42,16 @@ F9 - To view colliders and logic of the game
 F10 - God mode
 
 
+# Innovation 
+
+Pressing the spacebar while in the air lets you glide for two seconds, letting you be more accurate when landing, 
+besides this, when you fall from a platform you don't respawn at the start of the level, but the last position you were on ground.
+
 # Art
 
 Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
 
 Licensed by <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+
+"http://creativecommons.org/licenses/by/4.0/"
