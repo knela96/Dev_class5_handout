@@ -61,7 +61,4 @@ Songs from the Game Ori and the Blind Forest developed by Moon Studios https://w
 
 All effects taken from the website https://freesound.org/ with a Creative Commons 0 License
 
-Licensed by <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-
-
-"http://creativecommons.org/licenses/by/4.0/"
+Licensed by <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.es_ES%22%3E"><img alt="Creative Commons License" style="border-width:0" src="https://www.fairkom.eu/sites/default/files/styles/middlecolumn_full/public/image/cc0-300x169.png?itok=W3DC-8TA" /></a>
