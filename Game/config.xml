@@ -21,7 +21,7 @@
 
   <window>
     <resolution width="800" height="600" scale="1"/>
-    <fullscreen value="true"/>
+    <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
     <fullscreen_window value="false"/>
@@ -97,13 +97,16 @@
         <frame x="413" y="99" w="36" h="31"/>
         <frame x="451" y="99" w="36" h="31"/>
         <frame x="487" y="99" w="36" h="31"/>
+        <fx>Death.wav</fx>
       </death>
       <jump_up loop="false" speed="0">
         <frame x="656" y="59" w="30" h="30"/>
+        <fx>Jump.wav</fx>
       </jump_up>
       <jump_down loop="false" speed="0.1f">
         <frame x="693" y="56" w="31" h="35"/>
         <frame x="725" y="56" w="31" h="35"/>
+        <fx>Win.wav</fx>
       </jump_down>
     </animations>
   </player>
