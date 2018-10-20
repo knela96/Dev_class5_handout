@@ -60,7 +60,6 @@ j1Collisions::~j1Collisions()
 bool j1Collisions::PreUpdate()
 {
 	// Remove all colliders scheduled for deletion
-	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < data.colliders.count(); ++i)
 	{
 		if (data.colliders[i] != nullptr && data.colliders[i]->to_delete == true)
@@ -71,6 +70,7 @@ bool j1Collisions::PreUpdate()
 	}
 
 	// Calculate collisions
+	
 	Collider* c1;
 	Collider* c2;
 
@@ -103,7 +103,7 @@ bool j1Collisions::PreUpdate()
 			}
 		}
 	}
-
+	
 	return true;
 }
 
@@ -264,32 +264,36 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 	SDL_Rect overlay;
 	SDL_IntersectRect(collider1, collider2, &overlay);
 
-	if (new_speed.y > 0) {
-		if (collider1->y + collider1->h > collider2->y ) {
+	if (new_speed.y >= 0) {
+		if (collider1->y + collider1->h >= collider2->y ) {
 			if (new_speed.x > 0) {
-				if ((overlay.w > 1) && overlay.w  < overlay.h && collider1->x < collider2->x + collider2->w)
-					new_speed.x -= overlay.w;
-				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
-					new_speed.x += overlay.w;
-				else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
-					new_speed.y += overlay.h;
-				}
-				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
-					new_speed.y -= overlay.h;
+				if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y && collider1->y < collider2->y) {
+					new_speed.y -= overlay.h;		//Ground
 					onGround = true;
+				}
+				else if (overlay.h < overlay.w && collider1->y < collider2->y + collider2->h) {
+					new_speed.y += overlay.h;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x < collider2->x + collider2->w && collider1->x > collider2->x) {
+					new_speed.x += overlay.w;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x + collider1->w > collider2->x) {
+					new_speed.x -= overlay.w;		//Lateral Wall
 				}
 			}
 			else if (new_speed.x < 0) {
-				if ((overlay.w > 1) && overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
-					new_speed.x += overlay.w;
-				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
-					new_speed.x -= overlay.w;
-				else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
-					new_speed.y += overlay.h;
-				}
-				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
-					new_speed.y -= overlay.h;
+				if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y && collider1->y < collider2->y) {
+					new_speed.y -= overlay.h;		//Ground
 					onGround = true;
+				}
+				else if (overlay.h < overlay.w && collider1->y < collider2->y + collider2->h) {
+					new_speed.y += overlay.h;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x + collider1->w > collider2->x && collider1->x < collider2->x) {
+					new_speed.x -= overlay.w;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x < collider2->x + collider2->w) {
+					new_speed.x += overlay.w;		//Lateral Wall
 				}
 			}
 			else {
@@ -297,42 +301,35 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 				onGround = true;
 			}
 		}
-		else {
-			if (new_speed.x > 0) {
-				if (collider1->x + collider1->w > collider2->x)
-					new_speed.x -= overlay.w;
-			}
-			else if (new_speed.x < 0)
-				if (collider1->x > collider2->x + collider2->w)
-					new_speed.x += overlay.w;
-		}
 	}
 	else if (new_speed.y < 0) {
-		if (collider1->y <= collider2->y + collider2->h) {
+		if (collider1->y < collider2->y + collider2->h) {
 			if (new_speed.x > 0) {
-				if (new_speed.x > 0) {
-					if ((overlay.w > 1) && overlay.w  < overlay.h && collider1->x < collider2->x + collider2->w)
-						new_speed.x -= overlay.w;
-					else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
-						new_speed.x += overlay.w;
-					else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
-						new_speed.y += overlay.h;
-					}
-					else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
-						new_speed.y -= overlay.h;
-					}
+				if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y && collider1->y < collider2->y) {
+					new_speed.y -= overlay.h;		//Ground
+				}
+				else if (overlay.h < overlay.w && collider1->y < collider2->y + collider2->h) {
+					new_speed.y += overlay.h;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x < collider2->x + collider2->w && collider1->x > collider2->x) {
+					new_speed.x += overlay.w;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x + collider1->w > collider2->x) {
+					new_speed.x -= overlay.w;		//Lateral Wall
 				}
 			}
 			else if (new_speed.x < 0) {
-				if ((overlay.w > 1) && overlay.w < overlay.h && collider1->x < collider2->x + collider2->w)
-					new_speed.x += overlay.w;
-				else if (overlay.w < overlay.h && collider1->x + collider1->w > collider2->x)
-					new_speed.x -= overlay.w;
-				else if ((overlay.h > 1) && overlay.h < overlay.w && collider1->y > collider2->y) {
-					new_speed.y += overlay.h;
+				if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y && collider1->y < collider2->y) {
+					new_speed.y -= overlay.h;		//Ground
 				}
-				else if (overlay.h < overlay.w && collider1->y + collider1->h > collider2->y) {
-					new_speed.y -= overlay.h;
+				else if (overlay.h < overlay.w && collider1->y < collider2->y + collider2->h) {
+					new_speed.y += overlay.h;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x + collider1->w > collider2->x && collider1->x < collider2->x) {
+					new_speed.x -= overlay.w;		//Corners
+				}
+				else if (overlay.w <= overlay.h && collider1->x < collider2->x + collider2->w) {
+					new_speed.x += overlay.w;		//Lateral Wall
 				}
 			}
 			else {
@@ -341,15 +338,9 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 			}
 		}
 	}
-	else {
-		if (new_speed.x > 0) {
-			if (collider1->x + collider1->w > collider2->x)
-				new_speed.x -= overlay.w;
-		}
-		else if (new_speed.x < 0)
-			if (collider1->x < collider2->x + collider2->w)
-				new_speed.x += overlay.w;
-	}
 
 	return new_speed;
+
+
+	
 }

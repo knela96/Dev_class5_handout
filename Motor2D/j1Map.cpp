@@ -50,9 +50,10 @@ void j1Map::Draw()
 					if (id != 0) {
 						SDL_Rect *rect = &item->data->GetTileRect(id);
 						iPoint pos = MapToWorld(x, y);
-						if (pos.x  >= App->render->camera.x * layer->data->speed - 50 && pos.x <= App->render->camera.x * layer->data->speed + App->render->camera.w + 50 &&
-							pos.y > App->render->camera.y * layer->data->speed - 50 && pos.y < App->render->camera.y * layer->data->speed + App->render->camera.h + 50)
-								App->render->Blit(item->data->texture, pos.x, pos.y, rect,SDL_FLIP_NONE,1,layer->data->speed);
+						if (pos.x >= App->render->camera.x * layer->data->speed - 50 && pos.x <= App->render->camera.x * layer->data->speed + App->render->camera.w + 50 &&
+							pos.y > App->render->camera.y * layer->data->speed - 50 && pos.y < App->render->camera.y * layer->data->speed + App->render->camera.h + 50) {
+							App->render->Blit(item->data->texture, pos.x, pos.y, rect,SDL_FLIP_NONE,1,layer->data->speed);
+						}
 					}
 				}
 			};

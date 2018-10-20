@@ -379,10 +379,11 @@ bool j1Player::Update(float dt)
 			break;
 		}
 		//Collider
+		
 		if(flip)
-			collider->SetPos(position.x + 4, position.y);
+			collider->SetPos(position.x+4, position.y);//+4
 		else
-			collider->SetPos(position.x + 10, position.y);
+			collider->SetPos(position.x+10, position.y);//+10
 
 		// Draw everything --------------------------------------
 		if(flip)
