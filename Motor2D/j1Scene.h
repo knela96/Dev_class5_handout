@@ -42,6 +42,8 @@ private:
 	p2SString fx_path;
 	iPoint cam_pos;
 	Levels load_scene;
+
+	SDL_Texture* debug_tex;
 };
 
 #endif // __j1SCENE_H__
