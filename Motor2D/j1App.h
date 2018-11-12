@@ -18,6 +18,7 @@ class j1Map;
 class j1Player;
 class j1FadeToBlack;
 class j1Collisions;
+class j1PathFinding;
 
 class j1App
 {
@@ -86,6 +87,7 @@ public:
 	j1Render*			render;
 	j1Textures*			tex;
 	j1Audio*			audio;
+	j1PathFinding*		path;
 	j1Scene*			scene;
 	j1Scene2*			scene2;
 	j1Map*				map;

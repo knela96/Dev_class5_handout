@@ -15,6 +15,7 @@
 #include "j1Player.h"
 #include "j1Collisions.h"
 #include "j1Scene2.h"
+#include "j1Pathfinding.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -26,6 +27,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	win = new j1Window();
 	tex = new j1Textures();
 	audio = new j1Audio();
+	path = new j1PathFinding();
 	map = new j1Map();
 	scene = new j1Scene();
 	scene2 = new j1Scene2();
@@ -42,6 +44,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(path);
 	AddModule(scene);
 	AddModule(scene2);
 	AddModule(collisions);
