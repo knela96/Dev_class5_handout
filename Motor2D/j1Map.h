@@ -36,8 +36,20 @@ struct MapLayer {
 	uint height;
 	uint* data = nullptr;
 	Properties properties;
+
+	MapLayer() : data(NULL)
+	{}
+
+	~MapLayer()
+	{
+		RELEASE(data);
+	}
+
 	float speed = 1;
-	inline uint Get(int x, int y) const;
+	inline uint Get(int x, int y) const
+	{
+		return data[(y*width) + x];
+	}
 };
 
 

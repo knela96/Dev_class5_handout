@@ -81,7 +81,6 @@ bool j1Scene::PreUpdate()
 	{
 		if (origin_selected == true)
 		{
-
 			App->path->CreatePath(origin, p);
 			origin_selected = false;
 		}
@@ -116,16 +115,16 @@ bool j1Scene::Update(float dt)
 		App->player->godmode = !App->player->godmode;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y += 3;
-
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y -= 3;
 
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y += 3;
+
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x -= 3;
+		App->render->camera.x += 3;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 3;
+		App->render->camera.x -= 3;
 
 	if (App->player->win)
 		App->fade->FadeToBlack(this, App->scene2);

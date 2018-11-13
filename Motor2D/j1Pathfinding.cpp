@@ -195,7 +195,6 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 				Close.list.end->data.FindWalkableAdjacents(adjacent);
 
-
 				// TODO 6: Iterate adjancent nodes:
 				// ignore nodes in the closed list
 				// If it is NOT found, calculate its F and add it to the open list
@@ -218,9 +217,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 
 					}
 				};
-
 				adjacent.list.clear();
-
 			}
 
 			// TODO 4: If we just added the destination, we are done!
@@ -236,12 +233,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				last_path.Flip();
 				return 1;
 			}
-
-
-
-
 		}
-
 	}
 
 	

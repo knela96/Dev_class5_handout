@@ -130,8 +130,8 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		scale = App->win->GetScale();
 
 	SDL_Rect rect;
-	rect.x = (int)(-camera.x * speed) + x * scale;
-	rect.y = (int)(-camera.y) + y * scale;
+	rect.x = (int)(camera.x * speed) + x * scale;
+	rect.y = (int)(camera.y) + y * scale;
 
 	if(section != NULL)
 	{
@@ -176,8 +176,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(-camera.x + rect.x * scale);
-		rec.y = (int)(-camera.y + rect.y * scale);
+		rec.x = (int)(camera.x + rect.x * scale);
+		rec.y = (int)(camera.y + rect.y * scale);
 		rec.w *= scale;
 		rec.h *= scale;
 	}

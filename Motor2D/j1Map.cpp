@@ -33,65 +33,114 @@ void j1Map::Draw()
 		return;
 
 
-	p2List_item<MapLayer*>* layer; //Map
-	layer = data.layers.start;
+	p2List_item<MapLayer*>* item = data.layers.start;
 
-	p2List_item<TileSet*>* item; //Sprites_Layer
+	for (; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
 
-	while (layer != nullptr) {
-		item = data.tilesets.start;
-		while (item != nullptr) {
-			for (int y = 0; y < data.height; ++y) {
-				for (int x = 0; x < data.width; ++x) {
-					uint id = layer->data->Get(x, y);
+		//if(layer->properties.Get("Nodraw") != 0)
+		//continue;
 
-					id = layer->data->data[id];
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = layer->Get(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
 
-					if (id != 0) {
-						SDL_Rect *rect = &item->data->GetTileRect(id);
-						iPoint pos = MapToWorld(x, y);
-						if (pos.x >= App->render->camera.x * layer->data->speed - 50 && pos.x <= App->render->camera.x * layer->data->speed + App->render->camera.w + 50 &&
-							pos.y > App->render->camera.y * layer->data->speed - 50 && pos.y < App->render->camera.y * layer->data->speed + App->render->camera.h + 50) {
-							App->render->Blit(item->data->texture, pos.x, pos.y, rect,SDL_FLIP_NONE,1,layer->data->speed);
-						}
-					}
+					SDL_Rect r = tileset->GetTileRect(tile_id);
+					iPoint pos = MapToWorld(x, y);
+					/*if (pos.x >= App->render->camera.x * layer->speed - 50 && pos.x <= App->render->camera.x * layer->speed + App->render->camera.w + 50 &&
+						pos.y > App->render->camera.y * layer->speed - 50 && pos.y < App->render->camera.y * layer->speed + App->render->camera.h + 50) {
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 1, layer->speed);
+					}*/
+					App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 1, layer->speed);
 				}
-			};
-			item = item->next;
+			}
 		}
-		layer = layer->next;
 	}
 }
 
+int Properties::Get(const char* value, int default_value) const
+{
+	p2List_item<Property*>* item = list.start;
+
+	while (item)
+	{
+		if (item->data->name == value)
+			return item->data->value;
+		item = item->next;
+	}
+
+	return default_value;
+}
+
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	p2List_item<TileSet*>* item = data.tilesets.start;
+	TileSet* set = item->data;
+
+	while (item)
+	{
+		if (id < item->data->firstgid)
+		{
+			set = item->prev->data;
+			break;
+		}
+		set = item->data;
+		item = item->next;
+	}
+
+	return set;
+}
 
 iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
-	switch (data.type) {
-	case MAPTYPE_ORTHOGONAL:
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
 		ret.x = x * data.tile_width;
 		ret.y = y * data.tile_height;
-		break;
-	case MAPTYPE_ISOMETRIC:
-		ret.x = (data.tile_width / 2)*(x - y);
-		ret.y = (data.tile_height / 2)*(x + y);
-		break;
 	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
 	return ret;
 }
 
 iPoint j1Map::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
-	switch (data.type) {
-	case MAPTYPE_ORTHOGONAL:
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
 
-		break;
-	case MAPTYPE_ISOMETRIC:
-		// TODO 3: Add the case for isometric maps to WorldToMap
-		break;
+		float half_width = data.tile_width * 0.5f;
+		float half_height = data.tile_height * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2) - 1;
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
 	}
 
 	return ret;
@@ -106,10 +155,6 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
 	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
 	return rect;
-}
-
-uint MapLayer::Get(int x, int y) const {
-	return (y * width) + x;
 }
 
 // Called before quitting
@@ -386,40 +431,6 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 
 	return ret;
-}
-
-int Properties::Get(const char* value, int default_value) const
-{
-	p2List_item<Property*>* item = list.start;
-
-	while (item)
-	{
-		if (item->data->name == value)
-			return item->data->value;
-		item = item->next;
-	}
-
-	return default_value;
-}
-
-
-TileSet* j1Map::GetTilesetFromTileId(int id) const
-{
-	p2List_item<TileSet*>* item = data.tilesets.start;
-	TileSet* set = item->data;
-
-	while (item)
-	{
-		if (id < item->data->firstgid)
-		{
-			set = item->prev->data;
-			break;
-		}
-		set = item->data;
-		item = item->next;
-	}
-
-	return set;
 }
 
 
