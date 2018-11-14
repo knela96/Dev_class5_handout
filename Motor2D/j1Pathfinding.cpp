@@ -124,21 +124,36 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 	cell.create(pos.x, pos.y + 1);
 	if(App->path->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
-	// south
-	cell.create(pos.x, pos.y - 1);
-	if(App->path->IsWalkable(cell))
+	// north east
+	cell.create(pos.x - 1, pos.y + 1);
+	if (App->path->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
 	// east
 	cell.create(pos.x + 1, pos.y);
-	if(App->path->IsWalkable(cell))
+	if (App->path->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
+	// south east
+	cell.create(pos.x - 1, pos.y - 1);
+	if (App->path->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	// south
+	cell.create(pos.x, pos.y - 1);
+	if (App->path->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	// south weast
+	cell.create(pos.x + 1, pos.y - 1);
+	if (App->path->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 	// west
 	cell.create(pos.x - 1, pos.y);
-	if(App->path->IsWalkable(cell))
+	if (App->path->IsWalkable(cell))
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	// north west
+	cell.create(pos.x + 1, pos.y + 1);
+	if (App->path->IsWalkable(cell))
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+
 
 	return list_to_fill.list.count();
 }
@@ -157,7 +172,14 @@ int PathNode::Score() const
 int PathNode::CalculateF(const iPoint& destination)
 {
 	g = parent->g + 1;
-	h = pos.DistanceTo(destination);
+	//h = pos.DistanceTo(destination);
+	double D = 1;
+	double D2 = 2;
+	int dx = abs(pos.x - destination.x);
+	int dy = abs(pos.y - destination.y);
+
+	//Calculating H
+	h = D * (dx + dy) + (D2 - 2 * D) * min(dx, dy);
 
 	return g + h;
 }

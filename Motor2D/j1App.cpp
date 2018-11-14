@@ -81,6 +81,8 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
+	PERF_START(ptimer);
+
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
@@ -98,6 +100,9 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+		// TODO 1: Read from config file your framerate cap
+		frame_cap = config.child("app").attribute("framerate_cap").as_int();
+		LOG("%i frame cap", frame_cap);
 	}
 
 	if(ret == true)
@@ -111,6 +116,7 @@ bool j1App::Awake()
 			item = item->next;
 		}
 	}
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -121,7 +127,7 @@ bool j1App::Start()
 	//DISABLE MODULES YOU DON'T WANT
 	scene2->Disable();
 
-
+	PERF_START(ptimer);
 
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -133,6 +139,8 @@ bool j1App::Start()
 			ret = item->data->Start();
 		item = item->next;
 	}
+
+	PERF_PEEK(ptimer);
 
 	return ret;
 }
@@ -177,7 +185,11 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	frame_count++;
+	last_sec_frame_count++;
 
+	// TODO 4: Calculate the dt: differential time since last frame
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -188,6 +200,33 @@ void j1App::FinishUpdate()
 
 	if(want_to_load == true)
 		LoadGameNow();
+
+	// Framerate calculations --
+
+	if (last_sec_frame_time.Read() > 1000)
+	{
+		last_sec_frame_time.Start();
+		prev_last_sec_frame_count = last_sec_frame_count;
+		last_sec_frame_count = 0;
+	}
+
+	float avg_fps = float(frame_count) / startup_time.ReadSec();
+	float seconds_since_startup = startup_time.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	uint32 frames_on_last_update = prev_last_sec_frame_count;
+
+	static char title[256];
+	/*sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
+		frame_cap, avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);*/
+	sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u",
+		frame_cap, avg_fps, last_frame_ms);
+	App->win->SetTitle(title);
+
+	delay_timer.Start();
+	// TODO 2: Use SDL_Delay to make sure you get your capped framerate
+	SDL_Delay(1000 / frame_cap - last_frame_ms);
+	// TODO3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
+	LOG("We waited for %i milliseconds and got back in %f", 1000 / frame_cap - last_frame_ms, delay_timer.ReadMs());
 }
 
 // Call modules before each loop iteration
@@ -239,7 +278,7 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(dt);
+		ret = item->data->Update(ptimer.ReadMs());
 	}
 
 	return ret;

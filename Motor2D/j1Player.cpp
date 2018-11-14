@@ -160,7 +160,7 @@ bool j1Player::Start() {
 
 	graphics = App->tex->Load(texture_path.GetString());
 
-	App->render->camera.x = 60 * App->win->GetScale();
+	App->render->camera.x = -60 * App->win->GetScale();
 	App->render->camera.y = 0;
 
 	currentState = CharacterState::Jump;
