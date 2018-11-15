@@ -3,7 +3,7 @@
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
-#include "j1Module.h"
+#include "j1Entity.h"
 
 
 enum ColliderTypes
@@ -22,7 +22,7 @@ struct Collider {
 	SDL_Rect rect;
 	bool to_delete = false;
 	ColliderTypes type;
-	j1Module* callback = nullptr;
+	j1Entity* callback = nullptr;
 	bool onGround;
 	bool isFalling;
 
@@ -41,7 +41,7 @@ struct Collider {
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	fPoint AvoidCollision(fPoint speed, Collider& collider);
+	fPoint AvoidCollision(fPoint speed, Collider& collider, float dt);
 	fPoint CollisionSpeed(SDL_Rect* collider1, SDL_Rect* Collider, fPoint speed);
 };
 

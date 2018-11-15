@@ -56,7 +56,7 @@ bool j1Scene::Start()
 			RELEASE_ARRAY(data);
 		}
 		App->collisions->Enable();
-		App->player->Enable();
+		//App->entitymanager->player->Enable();
 
 		App->audio->PlayMusic(music_path.GetString());
 
@@ -96,7 +96,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->player->current_life <= 0)
+	if (App->entitymanager->player->current_life <= 0)
 		App->fade->FadeToBlack(this, this);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -112,38 +112,39 @@ bool j1Scene::Update(float dt)
 		App->SaveGame();
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		App->player->godmode = !App->player->godmode;
+		App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 3;
+		App->render->camera.y -= 100 * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 3;
+		App->render->camera.y += 100 * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 3;
+		App->render->camera.x += 100 * dt;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 3;
+		App->render->camera.x -= 100 * dt;
 
-	if (App->player->win)
+	if (App->entitymanager->player->win)
 		App->fade->FadeToBlack(this, App->scene2);
 
 	App->map->Draw();
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
+
+	/*iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Tails Odyssey Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 		App->map->data.width, App->map->data.height,
 		App->map->data.tile_width, App->map->data.tile_height,
 		App->map->data.tilesets.count(),
 		map_coordinates.x, map_coordinates.y);
 
-	App->win->SetTitle(title.GetString());
+	App->win->SetTitle(title.GetString());*/
 
 	// Debug pathfinding ------------------------------
 
+	int x, y;
+	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 	p = App->map->MapToWorld(p.x, p.y);
@@ -177,7 +178,7 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
-	App->player->Disable();
+	//App->entitymanager->player->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;

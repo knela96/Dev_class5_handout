@@ -67,6 +67,12 @@ typedef struct SDL_Rect
     int w, h;
 } SDL_Rect;
 
+typedef struct SDL_FRect
+{
+	int x, y;
+	int w, h;
+} SDL_FRect;
+
 /**
  *  \brief Returns true if point resides inside a rectangle.
  */

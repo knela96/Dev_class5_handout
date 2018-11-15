@@ -44,7 +44,7 @@ bool j1Scene2::Start()
 	App->map->Enable();
 	App->map->Load(map.GetString());
 	App->collisions->Enable();
-	App->player->Enable();
+	//App->entitymanager->player->Enable();
 
 
 	App->audio->PlayMusic(music_path.GetString());
@@ -61,7 +61,7 @@ bool j1Scene2::PreUpdate()
 // Called each loop iteration
 bool j1Scene2::Update(float dt)
 {
-	if (App->player->current_life <= 0)
+	if (App->entitymanager->player->current_life <= 0)
 		App->fade->FadeToBlack(this, App->scene);
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -77,7 +77,7 @@ bool j1Scene2::Update(float dt)
 		App->SaveGame();
 	
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		App->player->godmode = !App->player->godmode;
+		App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y += 3;
@@ -91,7 +91,7 @@ bool j1Scene2::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 3;
 
-	if (App->player->win)
+	if (App->entitymanager->player->win)
 		App->fade->FadeToBlack(this, App->scene);
 
 	App->map->Draw();
@@ -125,7 +125,7 @@ bool j1Scene2::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
-	App->player->Disable();
+	//App->entitymanager->player->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;

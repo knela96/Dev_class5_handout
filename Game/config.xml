@@ -43,18 +43,18 @@
       <audio>Naru_Embracing_the_Light.ogg</audio>
     </scene2>
   </scenes>
-
-  <player>
+  <entities>
+    <player>
     <position x="0" y="0"/>
     <life value="3"/>
     <dead value="false"/>
     <folder>Assets/Sprites/Character/</folder>
     <texture source="Player.png" />
     <collider w="50" h="50" />
-    <gravity value="2"/>2
-    <jumpSpeed value="25"/>
-    <maxFallingSpeed value="10"/>
-    <walkSpeed value="7" />
+    <gravity value="1200"/>2
+    <jumpSpeed value="350"/>
+    <maxFallingSpeed value="1800"/>
+    <walkSpeed value="250" />
     <speed x ="0" y="0" />
     <animations>
       <idle loop="true" speed="0.15f">
@@ -110,5 +110,6 @@
       </jump_down>
     </animations>
   </player>
+  </entities>
 
 </config>

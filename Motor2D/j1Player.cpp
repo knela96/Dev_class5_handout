@@ -12,12 +12,14 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1Map.h"
+#include "j1EntityManager.h"
+#include "j1Entity.h"
 
 #include "SDL/include/SDL.h"
 
-j1Player::j1Player()
+j1Player::j1Player() : j1Entity(EntityType::PLAYER)
 {
-	name.create("player");	
+	name.create("player");
 }
 
 j1Player::~j1Player()
@@ -209,8 +211,7 @@ bool j1Player::Update(float dt)
 				{
 					App->audio->StopFx();
 					App->audio->PlayFx(Jump_fx, 0);
-					speed.y = -jumpSpeed;
-					//speed.y -= 5.0f;
+					speed.y -= 500.0f * dt;
 					currentState = CharacterState::Jump;
 					onGround = false;
 					break;
@@ -236,7 +237,7 @@ bool j1Player::Update(float dt)
 				{
 					App->audio->PlayFx(Run_fx, 1);
 					flip = false;
-					speed.x += 1.0f;
+					speed.x += 100.0f;
 					if (speed.x > walkSpeed)
 						speed.x = walkSpeed;
 				}
@@ -244,7 +245,7 @@ bool j1Player::Update(float dt)
 				{
 					App->audio->PlayFx(Run_fx, 1);
 					flip = true;
-					speed.x -= 1.0f;
+					speed.x -= 100.0f;
 					if (speed.x < -walkSpeed)
 						speed.x = -walkSpeed;
 				}
@@ -254,9 +255,8 @@ bool j1Player::Update(float dt)
 					App->audio->StopFx();
 					App->audio->PlayFx(Jump_fx, 0); 
 
-					speed.y = -jumpSpeed;
+					speed.y -= 4000.0f * dt;
 
-					//speed.y -= 1.0f;
 					currentState = CharacterState::Jump;
 
 					onGround = false;
@@ -275,12 +275,15 @@ bool j1Player::Update(float dt)
 			case CharacterState::Jump:
 
 				current_gravity = gravity;
+
+				
+
 				if (speed.y <= 0) {
 					current_animation = &anim_jumpup;
 				}
 				else if (speed.y > 0)
 					current_animation = &anim_jumpdown;
-
+				
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 					if (!plane && start_time == 0) {
 						start_time = SDL_GetTicks();
@@ -290,8 +293,18 @@ bool j1Player::Update(float dt)
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+					LOG("entering");
+					if (speed.y > -jumpSpeed && !isFalling) {
+						speed.y -= 4000 * dt;
+						LOG("jumping");
+					}
+					else {
+						isFalling = true;
+						LOG("falling");
+					}
+					
 					if (SDL_GetTicks() - start_time < 800 && plane) {
-						current_gravity = 1.0f;
+ 						current_gravity = gravity * 0.1f;
 						current_animation = &anim_plane;
 					}
 					else {
@@ -303,7 +316,7 @@ bool j1Player::Update(float dt)
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
 					App->audio->StopFx();
 					if (speed.y < 0.0f)
-						speed.y = MAX(speed.y, -2.0f);
+						speed.y = 0, isFalling = true;
 					if (!onGround)
 						plane = false;
 				}
@@ -349,16 +362,28 @@ bool j1Player::Update(float dt)
 				break;
 			}
 
-			speed.y += current_gravity;
-			if (!plane)
-				speed.y = MIN(speed.y, maxFallingSpeed);
-			else
-				speed.y = MIN(speed.y, current_gravity);
+			
+			if (position.y > 335) {
+				position.y = 335;
+				onGround = true;
+				isFalling = false;
+			}
+			if(isFalling && current_gravity < maxFallingSpeed) {
+				speed.y += current_gravity * dt;
+			}
+			
+			//speed = collider->AvoidCollision(speed, *collider, dt);
+			position.x += speed.x * dt;
+			position.y += speed.y * dt;
 
-			speed = collider->AvoidCollision(speed, *collider);
+			/*if (isFalling && current_gravity < maxFallingSpeed) {
+				speed.y += current_gravity * dt;
+			}
 
-			position.x += (int)speed.x;
-			position.y += (int)speed.y;
+			fPoint new_speed = collider->AvoidCollision(speed, *collider,dt);
+			position.x += new_speed.x * dt;
+			position.y += new_speed.y * dt;*/
+
 		}
 		
 		if(death_anim)
@@ -385,12 +410,16 @@ bool j1Player::Update(float dt)
 		else
 			collider->SetPos(position.x+10, position.y);//+10
 
-		// Draw everything --------------------------------------
-		if(flip)
-			App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
-		else
-			App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_NONE);
 	}
+	return true;
+}
+
+bool j1Player::Update() {
+	// Draw everything --------------------------------------
+	if (flip)
+		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
+	else
+		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_NONE);
 	return true;
 }
 
@@ -418,24 +447,27 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 void j1Player::setGround(bool ground, bool falling)
 {
 	onGround = ground;
-	isFalling = falling;
+	if(onGround)
+		isFalling = true;
+	else
+		isFalling = false;
 }
 
 void j1Player::cameraPos()
 {
-	if ((position.x + collider->rect.w) * App->win->GetScale() > App->render->camera.w / 2 + -App->render->camera.x + 100)
-		App->render->camera.x -= speed.x * App->win->GetScale();
-	else if (position.x * App->win->GetScale() < -App->render->camera.x + App->render->camera.w / 2 - 100 && -App->render->camera.x > 60)
-		App->render->camera.x -= speed.x * App->win->GetScale();
-	
-	if (App->render->camera.y + App->render->camera.h < (App->map->data.height * 16 * App->win->GetScale()) && App->render->camera.y > 0) {
+	if (-(position.x + collider->rect.w) <= App->render->camera.x + -App->render->camera.w + 200)
+		App->render->camera.x = App->render->camera.w - 200 + -(position.x + collider->rect.w);
+	else if (-(position.x) >= App->render->camera.x  - 200)
+		App->render->camera.x = 200 + -position.x;
+
+	/*if (App->render->camera.y + App->render->camera.h < (App->map->data.height * 16 * App->win->GetScale()) && -App->render->camera.y > 0) {
 		if ((position.y + collider->rect.h) * App->win->GetScale() > App->render->camera.h + App->render->camera.y - (50 * App->win->GetScale()))
 			App->render->camera.y -= speed.y * App->win->GetScale();
 		else if (position.y * App->win->GetScale() < App->render->camera.y + (50 * App->win->GetScale()))
 			App->render->camera.y -= speed.y * App->win->GetScale();
 		else
 			App->render->camera.y = (position.y * App->win->GetScale() + collider->rect.h / 2 - App->win->height / 2);
-	}
+	}*/
 }
 
 void j1Player::deathAnim()
@@ -475,6 +507,8 @@ void j1Player::resetPlayer()
 	dead = false;
 	win = false;
 	death_anim = false;
+	isFalling = true;
+	onGround = false;
 	plane = false;
 	current_life = life;
 }

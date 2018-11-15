@@ -209,8 +209,9 @@ bool j1Collisions::setColliders() {
 	{
 		switch (data.colliders[i]->type) {
 		case COLLIDER_PLAYER:
-			data.colliders[i]->callback = App->player;
-			App->player->collider = data.colliders[i];
+			data.colliders[i]->callback = App->entitymanager->player;
+			App->entitymanager->player->collider = data.colliders[i];
+			LOG("Added Player COllider");
 			break;
 		}
 	}
@@ -225,37 +226,47 @@ bool Collider::CheckCollision(const SDL_Rect & r) const
 		return true;
 }
 
-fPoint Collider::AvoidCollision(fPoint speed, Collider& collider){
+fPoint Collider::AvoidCollision(fPoint speed, Collider& collider, float dt){
+	fPoint new_speed = { 0,0 }, dt_speed = { 0,0 };
+	for (float i = 0; i < 10; ++i) {
+		new_speed = { speed.x * dt, new_speed.y += speed.y / 10 };
+		dt_speed = { speed.x * dt, dt_speed.y += speed.y / 10 };
+		Collider c1 = collider;
+		c1.rect.x += new_speed.x;
+		c1.rect.y += new_speed.y;
 
-	fPoint new_speed = speed;
-	Collider c1 = collider;
-	c1.rect.x += speed.x;
-	c1.rect.y += speed.y;
+		onGround = false;
 
-	onGround = false;
-	
-	for (uint i = 0; i < App->collisions->data.colliders.count(); ++i)
-	{
-		// skip empty colliders
-		if (App->collisions->data.colliders[i] == nullptr)
-			continue;
-
-		Collider* c2 = App->collisions->data.colliders[i];
-
-		if (c1.CheckCollision(c2->rect) == true)
+		for (uint i = 0; i < App->collisions->data.colliders.count(); ++i)
 		{
-			if (c2->gettype() == 0) {
-				new_speed = CollisionSpeed(&c1.rect, &c2->rect, new_speed);
-				if (speed.y == new_speed.y)
-					onGround = false;
-			}
-			c1.rect.y -= (speed.y - new_speed.y);
-			c1.rect.x -= (speed.x - new_speed.x);
-		}
+			if (App->collisions->data.colliders[i] == nullptr)
+				continue;
 
+			Collider* c2 = App->collisions->data.colliders[i];
+
+			if (c1.CheckCollision(c2->rect) == true)
+			{
+				if (c2->gettype() == 0) {
+					new_speed = CollisionSpeed(&c1.rect, &c2->rect, new_speed);
+					LOG("x:%f y:%f - x:%f y:%f", dt_speed.x, dt_speed.y, new_speed.x, new_speed.y);
+					if (new_speed.x < 0.001f && new_speed.x > 0.0f)
+						new_speed.x = 0;
+					if (new_speed.y < -0.1f && new_speed.y <= 0.0f)
+						new_speed.y = 0;
+					if (dt_speed.y == new_speed.y)
+						onGround = false;
+				}
+				c1.rect.y -= (dt_speed.y - new_speed.y);
+				c1.rect.x -= (dt_speed.x - new_speed.x);
+			}
+
+		}
 	}
 
 	collider.callback->setGround(onGround,isFalling);
+
+	new_speed.x = new_speed.x / dt;
+	new_speed.y = new_speed.y / dt;
 
 	return new_speed;
 }
@@ -340,7 +351,4 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 	}
 
 	return new_speed;
-
-
-	
 }
