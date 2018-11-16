@@ -100,6 +100,7 @@ public:
 	float previous_time;
 	float current_time;
 	uint				frame_cap;
+	float accumulated = 0;
 
 private:
 

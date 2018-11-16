@@ -364,7 +364,7 @@ bool j1Player::Update(float dt)
 		}
 		
 		if(death_anim)
-			deathAnim();
+			deathAnim(dt);
 
 		cameraPos();
 
@@ -387,6 +387,8 @@ bool j1Player::Update(float dt)
 		else
 			collider->SetPos(position.x, position.y);//+10
 
+		animation_Rect = current_animation->GetCurrentFrame(dt);
+
 	}
 	return true;
 }
@@ -394,9 +396,9 @@ bool j1Player::Update(float dt)
 bool j1Player::Update() {
 	// Draw everything --------------------------------------
 	if (flip)
-		App->render->Blit(graphics, position.x + 4, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_HORIZONTAL);
+		App->render->Blit(graphics, position.x + 4, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
 	else
-		App->render->Blit(graphics, position.x - 20, position.y, &current_animation->GetCurrentFrame(), SDL_FLIP_NONE);
+		App->render->Blit(graphics, position.x - 20, position.y, &animation_Rect, SDL_FLIP_NONE);
 	return true;
 }
 
@@ -487,21 +489,21 @@ void j1Player::cameraPos()
 	}*/
 }
 
-void j1Player::deathAnim()
+void j1Player::deathAnim(float dt)
 {
 	current_animation = &anim_death;
 
 	App->audio->PlayFx(Death_fx, 1);
 
 	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim) {
-		position.y -= 20;
+		position.y -= 800 * dt;
 		start_time = SDL_GetTicks();
 	}
 	else if (SDL_GetTicks() - start_time > 500)
 		isFalling = true;
 
 	if (isFalling && death_anim) {
-		position.y += 20;
+		position.y += 800 * dt;
 	}
 
 	if (isFalling && position.y > App->render->camera.y + App->render->camera.h) {

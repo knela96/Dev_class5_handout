@@ -121,6 +121,9 @@ bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
 	{
 		Collider* nextCollider = data.colliders[i];
 
+		if (nextCollider->type != COLLIDER_WALL)
+			continue;
+
 		if (c1->CheckCollision(nextCollider->rect) == true) {
 			if (matrix[c1->type][nextCollider->type] && c1->callback)
 				ret = true;

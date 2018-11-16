@@ -47,7 +47,7 @@ public:
 	void WallCollision(Collider * c1, Collider * c2);
 	void setGround(bool onGround, bool isFalling);
 	void cameraPos();
-	void deathAnim();
+	void deathAnim(float dt);
 	void resetPlayer();
 	void UpdatePhysics();
 
@@ -97,6 +97,7 @@ private:
 	fPoint				respawn;
 	bool flip;
 	bool death_anim;
+	SDL_Rect	animation_Rect;
 };
 
 #endif
