@@ -110,6 +110,57 @@
       </jump_down>
     </animations>
   </player>
+  <enemies>
+    <walking_enemy>
+      <position x="0" y="0"/>
+      <life value="1"/>
+      <dead value="false"/>
+      <folder>Assets/Sprites/Enemies/</folder>
+      <texture source="Enemies.png" />
+      <collider w="50" h="50" />
+      <gravity value="2"/>2
+      <jumpSpeed value="25"/>
+      <maxFallingSpeed value="10"/>
+      <walkSpeed value="7" />
+      <speed x ="0" y="0" />
+      <animations>
+        <walk loop="true" speed="0.15f">
+          <frame x="0" y="0" w="25" h="23"/>
+          <frame x="29" y="0" w="25" h="23"/>
+          <frame x="59" y="0" w="25" h="23"/>
+          <frame x="87" y="0" w="25" h="23"/>
+          <frame x="112" y="0" w="25" h="23"/>
+        </walk>
+        <die loop="false" speed="0.15f">
+          <frame x="139" y="0" w="30" h="25"/>
+          <frame x="168" y="0" w="30" h="25"/>
+          <frame x="201" y="0" w="30" h="25"/>
+        </die>
+      </animations>
+    </walking_enemy>
+    <flying_enemy>
+      <position x="0" y="0"/>
+      <life value="1"/>
+      <dead value="false"/>
+      <folder>Assets/Sprites/Enemies/</folder>
+      <texture source="Enemies.png" />
+      <collider w="50" h="50" />
+      <speed x ="0" y="0" />
+      <animations>
+        <walk loop="true" speed="0.15f">
+          <frame x="0" y="31" w="25" h="27"/>
+          <frame x="29" y="31" w="25" h="27"/>
+          <frame x="60" y="31" w="25" h="27"/>
+          <frame x="93" y="31" w="25" h="27"/>
+        </walk>
+        <die loop="false" speed="0.15f">
+          <frame x="139" y="0" w="30" h="25"/>
+          <frame x="168" y="0" w="30" h="25"/>
+          <frame x="201" y="0" w="30" h="25"/>
+        </die>
+      </animations>
+      </flying_enemy>
+  </enemies>
   </entities>
 
 </config>
