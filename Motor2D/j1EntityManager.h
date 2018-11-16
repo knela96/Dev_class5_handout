@@ -35,6 +35,7 @@ public:
 public:
 	p2List<j1Entity*> entities;
 	j1Player* player;
+	j1Player* player2;
 
 private:
 	float accumulated_time;

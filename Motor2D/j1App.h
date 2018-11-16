@@ -123,13 +123,14 @@ private:
 	j1Timer				startup_time;
 	j1Timer				frame_time;
 	j1Timer				last_sec_frame_time;
-	j1PerfTimer			delay_timer;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
 	float				avg_fps;
 	float				seconds_since_startup;
 	uint32				last_frame_ms;
 	uint32				frames_on_last_update;
+	bool				cap_frames = false;
+	int					capped_ms;
 
 };
 

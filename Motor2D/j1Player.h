@@ -44,10 +44,12 @@ public:
 	bool CleanUp();
 
 	void OnCollision(Collider* collider1, Collider* collider2);
+	void WallCollision(Collider * c1, Collider * c2);
 	void setGround(bool onGround, bool isFalling);
 	void cameraPos();
 	void deathAnim();
 	void resetPlayer();
+	void UpdatePhysics();
 
 public:
 	CharacterState currentState = Stand;
@@ -56,9 +58,12 @@ public:
 	float walkSpeed;
 	float gravity;
 	float current_gravity;
-	fPoint speed;
+	fPoint speed; 
+	fPoint OldSpeed;
+	fPoint position;
+	fPoint OldPosition;
 
-	bool onGround = false;
+	//bool onGround = false;
 	bool isFalling = false;
 	bool plane = false;
 	bool b_respawn = false;
@@ -71,12 +76,12 @@ public:
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
 	j1Animation* current_animation = nullptr;
-	fPoint position;
 
 	Uint32 start_time;
 	Uint32 aux_time;
 
 	Collider* collider;
+	SDL_Rect collider_aux;
 
 	bool dead = false;
 	bool win = false;

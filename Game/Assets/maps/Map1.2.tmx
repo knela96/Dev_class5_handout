@@ -69988,7 +69988,7 @@
   <object id="47" name="0" x="2928" y="256" width="160" height="320"/>
   <object id="49" name="0" x="3088" y="352" width="32" height="224"/>
   <object id="50" name="0" x="3120" y="464" width="32" height="112"/>
-  <object id="60" name="1" x="300.875" y="0" width="19.125" height="31"/><!--335-->
+  <object id="60" name="1" x="300.875" y="100" width="19.125" height="31"/><!--335-->
   <object id="61" name="3" x="2987.82" y="188" width="36.3692" height="36.0003"/>
   <object id="64" name="2" x="0" y="748" width="3328" height="16"/>
   <object id="66" name="0" x="48" y="192" width="176" height="432"/>

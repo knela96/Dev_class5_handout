@@ -103,8 +103,11 @@ bool j1App::Awake()
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
 		// TODO 1: Read from config file your framerate cap
-		frame_cap = config.child("app").attribute("framerate_cap").as_int();
-		LOG("%i frame cap", frame_cap);
+		frame_cap = config.child("app").attribute("framerate_cap").as_int(-1);
+		if (frame_cap > 0)
+		{
+			capped_ms = 1000 / frame_cap;
+		}
 	}
 
 	if(ret == true)
@@ -189,10 +192,8 @@ void j1App::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
-	dt = frame_time.ReadSec();
 
-	frame_time.Start();
-	delay_timer.Start();
+	ptimer.Start();
 }
 
 // ---------------------------------------------
@@ -215,20 +216,28 @@ void j1App::FinishUpdate()
 
 	avg_fps = float(frame_count) / startup_time.ReadSec();
 	seconds_since_startup = startup_time.ReadSec();
-	last_frame_ms = frame_time.Read();
+	uint32 current_ms_frame = ptimer.ReadMs();
+	last_frame_ms = current_ms_frame;
+
+	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		cap_frames = !cap_frames;
+
+	if (cap_frames) {
+
+		if (capped_ms > 0 && last_frame_ms < capped_ms) {
+			j1PerfTimer t;
+ 			SDL_Delay(capped_ms - last_frame_ms);
+			LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+		}
+	}
+
+	float framerate = 1000.0f / ptimer.ReadMs();
+	dt = 1.0f / framerate;
 
 	static char title[256];
-	/*sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
-		frame_cap, avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);*/
-	sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u",
-		prev_last_sec_frame_count, avg_fps, last_frame_ms);
+	sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Cap: %i VSync %i",
+		prev_last_sec_frame_count, avg_fps, last_frame_ms, cap_frames, App->render->vsync);
 	App->win->SetTitle(title);
-
-	int delay = (1000 / frame_cap) - last_frame_ms;
-	if (delay > 0) {
-		SDL_Delay((Uint32)delay);
-		//LOG("We waited for %u milliseconds and got back in %f", delay, delay_timer.ReadMs());
-	}
 }
 
 // Call modules before each loop iteration

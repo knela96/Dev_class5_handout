@@ -70,6 +70,8 @@ public:
 
 	bool PreUpdate();
 
+	bool CheckGroundCollision(Collider * hitbox) const;
+
 	bool Update(float dt);
 
 	//bool PostUpdate();

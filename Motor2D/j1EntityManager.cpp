@@ -79,6 +79,19 @@ bool j1EntityManager::PreUpdate()
 	}
 	return true;
 }
+bool j1EntityManager::PostUpdate()
+{
+	bool ret = true;
+	p2List_item<j1Entity*>* item;
+	item = entities.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->PostUpdate();
+		item = item->next;
+	}
+	return true;
+}
 
 bool j1EntityManager::Update(float dt)
 {
@@ -118,11 +131,6 @@ bool j1EntityManager::UpdateAll(float dt, bool do_logic)
 	}
 
 	return ret;
-}
-
-bool j1EntityManager::PostUpdate()
-{
-	return true;
 }
 
 bool j1EntityManager::CleanUp()

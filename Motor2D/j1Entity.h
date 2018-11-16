@@ -49,9 +49,21 @@ public:
 
 public:
 	p2SString name;
+	bool PushedRightWall;
+	bool PushesRightWall;
+
+	bool PushedLeftWall;
+	bool PushesLeftWall;
+
+	bool WasOnGround;
+	bool OnGround;
+
+	bool WasAtCeiling;
+	bool AtCeiling;
 
 private:
 	EntityType type;
+
 };
 
 #endif //__Entity__

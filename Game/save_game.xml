@@ -5,19 +5,12 @@
 	<textures />
 	<audio />
 	<map />
+	<pathfinding />
 	<scenes value="0" />
-	<player>
-		<speed x="0" y="0" />
-		<position x="300" y="369" />
-		<life value="3" />
-		<jumpSpeed value="25" />
-		<maxFallingSpeed value="10" />
-		<walkSpeed value="7" />
-		<gravity value="2" />
-	</player>
 	<collisions />
+	<entities />
 	<fade />
 	<renderer>
-		<camera x="60" y="0" />
+		<camera x="-912" y="0" />
 	</renderer>
 </game_state>

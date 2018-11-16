@@ -74,8 +74,10 @@ bool j1Collisions::PreUpdate()
 	Collider* c1;
 	Collider* c2;
 
+
 	for (uint i = 0; i < data.colliders.count(); ++i)
 	{
+		int c = 0;
 		// skip empty colliders
 		if (data.colliders[i] == nullptr)
 			continue;
@@ -102,9 +104,31 @@ bool j1Collisions::PreUpdate()
 				}
 			}
 		}
+
 	}
-	
 	return true;
+}
+
+bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
+{
+	bool ret = false;
+	
+	Collider* c1 = hitbox;
+	c1->rect.y++;
+	Collider* c2;
+
+	for (uint i = 0; i < data.colliders.count(); ++i)
+	{
+		Collider* nextCollider = data.colliders[i];
+
+		if (c1->CheckCollision(nextCollider->rect) == true) {
+			if (matrix[c1->type][nextCollider->type] && c1->callback)
+				ret = true;
+			if (matrix[nextCollider->type][c1->type] && nextCollider->callback)
+				ret = true;
+		}
+	}
+	return ret;
 }
 
 void j1Collisions::Draw()
@@ -220,7 +244,7 @@ bool j1Collisions::setColliders() {
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {
-	if (r.y + r.h <= rect.y || r.y >= rect.y + rect.h || r.x + r.w <= rect.x || r.x >= rect.x + rect.w)
+	if (r.y + r.h < rect.y || r.y > rect.y + rect.h || r.x + r.w < rect.x || r.x > rect.x + rect.w)
 		return false;
 	else
 		return true;
