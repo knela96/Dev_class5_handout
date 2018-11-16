@@ -17,6 +17,7 @@ class j1Audio;
 class j1Scene;
 class j1Scene2;
 class j1Map;
+class j1EntityManager;
 class j1Player;
 class j1FadeToBlack;
 class j1Collisions;
@@ -95,9 +96,10 @@ public:
 	j1Map*				map;
 	j1Collisions*		collisions;
 	j1FadeToBlack*		fade;
-	j1Player*			player;
+	j1EntityManager*	entitymanager;
 	float previous_time;
 	float current_time;
+	uint				frame_cap;
 
 private:
 
@@ -124,7 +126,10 @@ private:
 	j1PerfTimer			delay_timer;
 	uint32				last_sec_frame_count = 0;
 	uint32				prev_last_sec_frame_count = 0;
-	int					frame_cap;
+	float				avg_fps;
+	float				seconds_since_startup;
+	uint32				last_frame_ms;
+	uint32				frames_on_last_update;
 
 };
 

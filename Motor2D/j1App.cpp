@@ -12,15 +12,16 @@
 #include "j1Map.h"
 #include "j1App.h"
 #include "j1FadeToBlack.h"
-#include "j1Player.h"
 #include "j1Collisions.h"
 #include "j1Scene2.h"
+#include "j1EntityManager.h"
 #include "j1Pathfinding.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
+	PERF_START(ptimer);
+
 	want_to_save = want_to_load = false;
 
 	input = new j1Input();
@@ -32,7 +33,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	scene2 = new j1Scene2();
 	collisions = new j1Collisions();
-	player = new j1Player();
+	entitymanager = new j1EntityManager();
 	render = new j1Render();
 	fade = new j1FadeToBlack();
 
@@ -48,13 +49,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(scene2);
 	AddModule(collisions);
-	AddModule(player);
+	AddModule(entitymanager);
 	AddModule(fade);
 
 
 	// render last to swap buffer
 	AddModule(render);
 
+	PERF_PEEK(ptimer);
 }
 
 // Destructor
@@ -187,9 +189,10 @@ void j1App::PrepareUpdate()
 {
 	frame_count++;
 	last_sec_frame_count++;
+	dt = frame_time.ReadSec();
 
-	// TODO 4: Calculate the dt: differential time since last frame
 	frame_time.Start();
+	delay_timer.Start();
 }
 
 // ---------------------------------------------
@@ -210,23 +213,22 @@ void j1App::FinishUpdate()
 		last_sec_frame_count = 0;
 	}
 
-	float avg_fps = float(frame_count) / startup_time.ReadSec();
-	float seconds_since_startup = startup_time.ReadSec();
-	uint32 last_frame_ms = frame_time.Read();
-	uint32 frames_on_last_update = prev_last_sec_frame_count;
+	avg_fps = float(frame_count) / startup_time.ReadSec();
+	seconds_since_startup = startup_time.ReadSec();
+	last_frame_ms = frame_time.Read();
 
 	static char title[256];
 	/*sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i  Time since startup: %.3f Frame Count: %lu ",
 		frame_cap, avg_fps, last_frame_ms, frames_on_last_update, seconds_since_startup, frame_count);*/
 	sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u",
-		frame_cap, avg_fps, last_frame_ms);
+		prev_last_sec_frame_count, avg_fps, last_frame_ms);
 	App->win->SetTitle(title);
 
-	delay_timer.Start();
-	// TODO 2: Use SDL_Delay to make sure you get your capped framerate
-	SDL_Delay(1000 / frame_cap - last_frame_ms);
-	// TODO3: Measure accurately the amount of time it SDL_Delay actually waits compared to what was expected
-	LOG("We waited for %i milliseconds and got back in %f", 1000 / frame_cap - last_frame_ms, delay_timer.ReadMs());
+	int delay = (1000 / frame_cap) - last_frame_ms;
+	if (delay > 0) {
+		SDL_Delay((Uint32)delay);
+		//LOG("We waited for %u milliseconds and got back in %f", delay, delay_timer.ReadMs());
+	}
 }
 
 // Call modules before each loop iteration
@@ -259,17 +261,6 @@ bool j1App::DoUpdate()
 	item = modules.start;
 	j1Module* pModule = NULL;
 
-	/*
-	previous_time = current_time;
-	current_time = SDL_GetTicks();
-
-	dt = (current_time - previous_time);
-	LOG("%f", dt);
-
-	if (dt > 0.10f) {
-		dt = 0.15f;
-	}*/
-
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
@@ -278,7 +269,7 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(ptimer.ReadMs());
+		ret = item->data->Update(dt);
 	}
 
 	return ret;

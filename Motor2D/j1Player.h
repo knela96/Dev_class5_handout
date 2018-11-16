@@ -1,7 +1,7 @@
 #ifndef __j1Player_H__
 #define __j1Player_H__
 
-#include "j1Module.h"
+#include "j1Entity.h"
 #include "j1Animation.h"
 #include "p2Point.h"
 
@@ -26,7 +26,7 @@ enum CharacterFX {
 	Win_fx
 };
 
-class j1Player : public j1Module
+class j1Player : public j1Entity
 {
 public:
 	j1Player();
@@ -34,7 +34,8 @@ public:
 
 	bool Awake(pugi::xml_node& config);
 	bool Start();
-	bool Update(float dt);	
+	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
 	bool Save(pugi::xml_node& data) const;
 	bool Load(pugi::xml_node& data);
@@ -70,7 +71,7 @@ public:
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
 	j1Animation* current_animation = nullptr;
-	iPoint position;
+	fPoint position;
 
 	Uint32 start_time;
 	Uint32 aux_time;
@@ -87,8 +88,8 @@ private:
 	p2SString			texture_path;
 	p2SString			folder;
 	uint				heightjump;
-	iPoint				lastPosition;
-	iPoint				respawn;
+	fPoint				lastPosition;
+	fPoint				respawn;
 	bool flip;
 	bool death_anim;
 };
