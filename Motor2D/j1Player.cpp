@@ -425,7 +425,7 @@ void j1Player::WallCollision(Collider* c1, Collider* c2)
 	SDL_IntersectRect(&c1->rect, &c2->rect, &collisionOverlay);
 
 	if (collisionOverlay.w >= collisionOverlay.h) {
-		if (c1->rect.y + c1->rect.h > c2->rect.y && c1->rect.y < c2->rect.y && speed.y > 0.0f) {	//Ground
+		if (c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y < c2->rect.y ) {	//Ground
 			while (c1->CheckCollision(c2->rect) == true) {
 				c1->rect.y--;
 			}
@@ -434,7 +434,7 @@ void j1Player::WallCollision(Collider* c1, Collider* c2)
 			OnGround = true; 
 			isFalling = false;
 		}
-		else if (c1->rect.y < c2->rect.y + c2->rect.h && c1->rect.y + c1->rect.h > c2->rect.y + c2->rect.h && speed.y < 0.0f) {	//Ceiling
+		else if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y + c1->rect.h > c2->rect.y + c2->rect.h ) {	//Ceiling
 			while (c1->CheckCollision(c2->rect) == true) {
 				c1->rect.y++;
 			}
@@ -444,14 +444,14 @@ void j1Player::WallCollision(Collider* c1, Collider* c2)
 		position.y = c1->rect.y;
 	}
 	else {
-		if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x < c2->rect.x && speed.x > 0.0f) {	//Right
+		if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x < c2->rect.x ) {	//Right
 			while (c1->CheckCollision(c2->rect) == true) {
 				c1->rect.x--;
 			}
 			
 			speed.x = 0.0f;
 		}
-		else if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x + c1->rect.w > c2->rect.x + c2->rect.w && speed.x < 0.0f) {	//Left
+		else if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x + c1->rect.w > c2->rect.x + c2->rect.w ) {	//Left
 			while (c1->CheckCollision(c2->rect) == true) {
 				c1->rect.x++;
 			}			

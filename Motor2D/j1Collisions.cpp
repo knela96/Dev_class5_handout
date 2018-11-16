@@ -244,7 +244,7 @@ bool j1Collisions::setColliders() {
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {
-	if (r.y + r.h < rect.y || r.y > rect.y + rect.h || r.x + r.w < rect.x || r.x > rect.x + rect.w)
+	if (r.y + r.h <= rect.y || r.y >= rect.y + rect.h || r.x + r.w <= rect.x || r.x >= rect.x + rect.w)
 		return false;
 	else
 		return true;
