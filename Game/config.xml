@@ -45,72 +45,71 @@
   </scenes>
   <entities>
     <player>
-    <position x="0" y="0"/>
-    <life value="3"/>
-    <dead value="false"/>
-    <folder>Assets/Sprites/Character/</folder>
-    <texture source="Player.png" />
-    <collider w="50" h="50" />
-    <gravity value="1800"/>1200
-    <jumpSpeed value="500"/>350
-    <maxFallingSpeed value="400"/>1800
-    <walkSpeed value="250" />250
-    <speed x ="0" y="0" />
-    <animations>
-      <idle loop="true" speed="10.0f">
-        <frame x="0" y="0" w="37" h="31"/>
-        <frame x="44" y="0" w="37" h="31"/>
-        <frame x="88" y="0" w="37" h="31"/>
-        <frame x="133" y="0" w="37" h="31"/>
-        <frame x="178" y="0" w="37" h="31"/>
-        <frame x="222" y="0" w="37" h="31"/>
-        <frame x="266" y="0" w="37" h="31"/>
-        <frame x="311" y="0" w="37" h="31"/>
-      </idle>
-      <run loop="true" speed="10.0f">
-        <frame x="350" y="0" w="37" h="31"/>
-        <frame x="391" y="0" w="37" h="31"/>
-        <frame x="434" y="0" w="37" h="31"/>
-        <frame x="475" y="0" w="37" h="31"/>
-        <frame x="517" y="0" w="37" h="31"/>
-        <frame x="560" y="0" w="37" h="31"/>
-        <frame x="601" y="0" w="37" h="31"/>
-        <frame x="640" y="0" w="37" h="31"/>
-        <frame x="684" y="0" w="37" h="31"/>
-        <frame x="731" y="0" w="37" h="31"/>
-        <frame x="772" y="0" w="37" h="31"/>
-        <fx>Run.wav</fx>
-      </run>
-      <plane loop ="true" speed="15.0f">
-        <frame x="6" y="97" w="38" h="33"/>
-        <frame x="39" y="97" w="34" h="33"/>
-        <frame x="74" y="97" w="38" h="33"/>
-        <frame x="114" y="97" w="34" h="33"/>
-        <frame x="148" y="97" w="34" h="33"/>
-        <frame x="179" y="97" w="34" h="33"/>
-        <frame x="212" y="97" w="44" h="33"/>
-        <frame x="256" y="97" w="36" h="33"/>
-        <fx>Plane.wav</fx>
-      </plane>
-      <death loop="true" speed="4.0">
-        <frame x="375" y="99" w="36" h="31"/>
-        <frame x="413" y="99" w="36" h="31"/>
-        <frame x="451" y="99" w="36" h="31"/>
-        <frame x="487" y="99" w="36" h="31"/>
-        <fx>Death.wav</fx>
-      </death>
-      <jump_up loop="false" speed="1.0f">
-        <frame x="656" y="59" w="30" h="30"/>
-        <fx>Jump.wav</fx>
-      </jump_up>
-      <jump_down loop="false" speed="1.0f">
-        <frame x="693" y="56" w="31" h="35"/>
-        <frame x="725" y="56" w="31" h="35"/>
-        <fx>Win.wav</fx>
-      </jump_down>
-    </animations>
+      <position x="0" y="0"/>
+      <life value="3"/>
+      <dead value="false"/>
+      <folder>Assets/Sprites/Character/</folder>
+      <texture source="Player.png" />
+      <collider w="50" h="50" />
+      <gravity value="1800"/>
+      <jumpSpeed value="500"/>
+      <maxFallingSpeed value="400"/>
+      <walkSpeed value="250" />
+      <speed x ="0" y="0" />
+      <animations>
+        <idle loop="true" speed="10.0f">
+          <frame x="0" y="0" w="37" h="31"/>
+          <frame x="44" y="0" w="37" h="31"/>
+          <frame x="88" y="0" w="37" h="31"/>
+          <frame x="133" y="0" w="37" h="31"/>
+          <frame x="178" y="0" w="37" h="31"/>
+          <frame x="222" y="0" w="37" h="31"/>
+          <frame x="266" y="0" w="37" h="31"/>
+          <frame x="311" y="0" w="37" h="31"/>
+        </idle>
+        <run loop="true" speed="10.0f">
+          <frame x="350" y="0" w="37" h="31"/>
+          <frame x="391" y="0" w="37" h="31"/>
+          <frame x="434" y="0" w="37" h="31"/>
+          <frame x="475" y="0" w="37" h="31"/>
+          <frame x="517" y="0" w="37" h="31"/>
+          <frame x="560" y="0" w="37" h="31"/>
+          <frame x="601" y="0" w="37" h="31"/>
+          <frame x="640" y="0" w="37" h="31"/>
+          <frame x="684" y="0" w="37" h="31"/>
+          <frame x="731" y="0" w="37" h="31"/>
+          <frame x="772" y="0" w="37" h="31"/>
+          <fx>Run.wav</fx>
+        </run>
+        <plane loop ="true" speed="15.0f">
+          <frame x="6" y="97" w="38" h="33"/>
+          <frame x="39" y="97" w="34" h="33"/>
+          <frame x="74" y="97" w="38" h="33"/>
+          <frame x="114" y="97" w="34" h="33"/>
+          <frame x="148" y="97" w="34" h="33"/>
+          <frame x="179" y="97" w="34" h="33"/>
+          <frame x="212" y="97" w="44" h="33"/>
+          <frame x="256" y="97" w="36" h="33"/>
+          <fx>Plane.wav</fx>
+        </plane>
+        <death loop="true" speed="4.0">
+          <frame x="375" y="99" w="36" h="31"/>
+          <frame x="413" y="99" w="36" h="31"/>
+          <frame x="451" y="99" w="36" h="31"/>
+          <frame x="487" y="99" w="36" h="31"/>
+          <fx>Death.wav</fx>
+        </death>
+        <jump_up loop="false" speed="1.0f">
+          <frame x="656" y="59" w="30" h="30"/>
+          <fx>Jump.wav</fx>
+        </jump_up>
+        <jump_down loop="false" speed="1.0f">
+          <frame x="693" y="56" w="31" h="35"/>
+          <frame x="725" y="56" w="31" h="35"/>
+          <fx>Win.wav</fx>
+        </jump_down>
+      </animations>
   </player>
-  <enemies>
     <walking_enemy>
       <position x="0" y="0"/>
       <life value="1"/>
@@ -124,14 +123,14 @@
       <walkSpeed value="7" />
       <speed x ="0" y="0" />
       <animations>
-        <walk loop="true" speed="0.15f">
+        <walk loop="true" speed="15.0f">
           <frame x="0" y="0" w="25" h="23"/>
           <frame x="29" y="0" w="25" h="23"/>
           <frame x="59" y="0" w="25" h="23"/>
           <frame x="87" y="0" w="25" h="23"/>
           <frame x="112" y="0" w="25" h="23"/>
         </walk>
-        <die loop="false" speed="0.15f">
+        <die loop="false" speed="15.0f">
           <frame x="139" y="0" w="30" h="25"/>
           <frame x="168" y="0" w="30" h="25"/>
           <frame x="201" y="0" w="30" h="25"/>
@@ -147,20 +146,19 @@
       <collider w="50" h="50" />
       <speed x ="0" y="0" />
       <animations>
-        <walk loop="true" speed="0.15f">
+        <walk loop="true" speed="15.0f">
           <frame x="0" y="31" w="25" h="27"/>
           <frame x="29" y="31" w="25" h="27"/>
           <frame x="60" y="31" w="25" h="27"/>
           <frame x="93" y="31" w="25" h="27"/>
         </walk>
-        <die loop="false" speed="0.15f">
+        <die loop="false" speed="15.0f">
           <frame x="139" y="0" w="30" h="25"/>
           <frame x="168" y="0" w="30" h="25"/>
           <frame x="201" y="0" w="30" h="25"/>
         </die>
       </animations>
-      </flying_enemy>
-  </enemies>
+    </flying_enemy>
   </entities>
 
 </config>
