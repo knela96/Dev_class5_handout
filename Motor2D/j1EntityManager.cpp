@@ -4,6 +4,7 @@
 #include "j1EntityManager.h"
 #include "j1Player.h"
 #include "j1Enemy_Flying.h"
+#include "j1Enemy_Walking.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -26,6 +27,8 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type)
 	case EntityType::FLYING_ENEMY:		
 		ret = new j1Enemy_Flying();
 		break;
+	case EntityType::WALKING_ENEMY:
+		ret = new j1Enemy_Walking();
 	}
 	if (ret != nullptr)
 		entities.add(ret);

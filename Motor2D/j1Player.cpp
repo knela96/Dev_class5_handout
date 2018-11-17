@@ -384,9 +384,12 @@ bool j1Player::Update(float dt, bool do_logic)
 
 bool j1Player::Update() {
 	// Draw everything --------------------------------------
+
 	if (flip)
-		App->render->Blit(graphics, position.x + 4, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
-	else
+		App->render->Blit(graphics, position.x , position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
+	else if (current_animation ==  &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
+		App->render->Blit(graphics, position.x - 15, position.y, &animation_Rect, SDL_FLIP_NONE);
+	else 
 		App->render->Blit(graphics, position.x - 20, position.y, &animation_Rect, SDL_FLIP_NONE);
 	return true;
 }
