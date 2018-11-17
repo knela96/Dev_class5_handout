@@ -11,7 +11,8 @@ enum class EntityType
 {
 	NONE = -1,
 	PLAYER,
-	ENEMY
+	ENEMY_FLYING,
+	ENEMY_WWALKING,
 };
 
 class j1Entity
@@ -45,7 +46,6 @@ public:
 	virtual void Draw() {};
 
 	virtual void OnCollision(Collider*, Collider*) {}
-	virtual void setGround(bool onGround, bool isFalling) {}
 
 public:
 	p2SString name;

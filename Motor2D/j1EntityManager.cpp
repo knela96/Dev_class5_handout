@@ -3,11 +3,13 @@
 #include "j1App.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
+#include "j1Enemy_Flying.h"
 
 j1EntityManager::j1EntityManager()
 {
 	name.create("entities");
 	player = (j1Player*)CreateEntity(EntityType::PLAYER);
+	enemy_flying = (j1Enemy_Flying*)CreateEntity(EntityType::ENEMY_FLYING);
 }
 
 j1EntityManager::~j1EntityManager()
@@ -22,8 +24,8 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type)
 	case EntityType::PLAYER:
 		ret = new j1Player();
 		break;
-	case EntityType::ENEMY:		
-		ret = new j1Player(); 
+	case EntityType::ENEMY_FLYING:		
+		ret = new j1Enemy_Flying(EntityType::ENEMY_FLYING);
 		break;
 	}
 	if (ret != nullptr)
