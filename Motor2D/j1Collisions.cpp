@@ -245,7 +245,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 
 	// Load all colliders info ----------------------------------------------
 	pugi::xml_node collider;
-	for (collider = map_file.child("map").find_child_by_attribute("name","colliders walls"); collider && ret; collider = collider.next_sibling("objectgroup"))
+	for (collider = map_file.child("map").find_child_by_attribute("name","colliders walls"); collider && ret; collider = collider.next_sibling("objectgroup").find_child_by_attribute("name", "colliders walls"))
 	{
 		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
 		{
@@ -260,7 +260,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		}
 	}
 
-	for (collider = map_file.child("map").find_child_by_attribute("name", "spawn"); collider && ret; collider = collider.next_sibling("objectgroup"))
+	for (collider = map_file.child("map").find_child_by_attribute("name", "spawn"); collider && ret; collider = collider.next_sibling("objectgroup").find_child_by_attribute("name", "spawn"))
 	{
 		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
 		{
@@ -282,29 +282,32 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 
 
 bool j1Collisions::setColliders() {
-	for (uint i = 0; i < data.colliders.count(); ++i)
+	for (uint i = 0; i < data.info_spawns.count(); ++i)
 	{
 		j1Entity * entity;
-		switch (data.colliders[i]->type) {
+		switch (data.info_spawns[i]->type) {
 		case COLLIDER_PLAYER:
-			entity = new j1Entity(EntityType::PLAYER);
+			entity = new j1Entity(EntityType::NONE);
 			entity = App->entitymanager->CreateEntity(EntityType::PLAYER);
-			data.colliders[i]->callback = (j1Player*)entity;
-			((j1Player*)entity)->collider = data.colliders[i];
+			data.info_spawns[i]->callback = (j1Player*)entity;
+			data.colliders.add(data.info_spawns[i]);
+			((j1Player*)entity)->collider = data.colliders.end->data;
 			LOG("Added Player Entity");
 			break; 
 		case COLLIDER_FLYING_ENEMY:
 			entity = new j1Entity(EntityType::FLYING_ENEMY);
 			entity = App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY);
-			data.colliders[i]->callback = (j1Player*)entity;
-			((j1Player*)entity)->collider = data.colliders[i];
+			data.info_spawns[i]->callback = (j1Player*)entity;
+			data.colliders.add(data.info_spawns[i]);
+			((j1Player*)entity)->collider = data.colliders.end->data;
 			LOG("Added Player Entity");
 			break;
 		case COLLIDER_PLATFORM_ENEMY:
 			entity = new j1Entity(EntityType::PLATFORMER_ENEMY);
 			entity = App->entitymanager->CreateEntity(EntityType::PLATFORMER_ENEMY);
-			data.colliders[i]->callback = (j1Player*)entity;
-			((j1Player*)entity)->collider = data.colliders[i];
+			data.info_spawns[i]->callback = (j1Player*)entity;
+			data.colliders.add(data.info_spawns[i]);
+			((j1Player*)entity)->collider = data.colliders.end->data;
 			LOG("Added Player Entity");
 			break;
 		}
