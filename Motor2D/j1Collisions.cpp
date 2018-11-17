@@ -229,6 +229,17 @@ bool j1Collisions::CleanUp()
 	}
 
 	data.colliders.clear();
+
+	for (uint i = 0; i < data.info_spawns.count(); ++i)
+	{
+		if (data.info_spawns[i] != nullptr)
+		{
+			//delete data.info_spawns[i];
+			data.info_spawns[i] = nullptr;
+		}
+	}
+
+	data.info_spawns.clear();
 	
 	return true;
 }

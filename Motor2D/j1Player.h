@@ -96,6 +96,7 @@ private:
 	fPoint				respawn;
 	bool flip;
 	bool death_anim;
+	bool hit = false;
 	SDL_Rect	animation_Rect;
 };
 
