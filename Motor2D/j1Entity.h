@@ -46,7 +46,6 @@ public:
 	virtual void Draw() {};
 
 	virtual void OnCollision(Collider*, Collider*) {}
-	virtual void setGround(bool onGround, bool isFalling) {}
 
 public:
 	p2SString name;

@@ -79,6 +79,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="j1Enemy_Flying.cpp" />
+    <ClCompile Include="j1Enemy_Walking.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
@@ -100,6 +102,8 @@
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="j1Enemy_Flying.h" />
+    <ClInclude Include="j1Enemy_Walking.h" />
     <ClInclude Include="j1Entity.h" />
     <ClInclude Include="j1Animation.h" />
     <ClInclude Include="j1Collisions.h" />

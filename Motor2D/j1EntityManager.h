@@ -6,6 +6,7 @@
 
 class j1Entity;
 class j1Player;
+class j1Enemy_Flying;
 enum class EntityType;
 
 class j1EntityManager : public j1Module
@@ -37,6 +38,7 @@ public:
 	p2List<j1Entity*> entities;
 	j1Player* player;
 	j1Player* player2;
+	j1Enemy_Flying* enemy_flying;
 
 private:
 	float accumulated_time;
