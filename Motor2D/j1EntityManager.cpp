@@ -4,6 +4,7 @@
 #include "j1EntityManager.h"
 #include "j1Player.h"
 #include "j1Enemy_Flying.h"
+#include "j1Collisions.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -66,6 +67,9 @@ bool j1EntityManager::Start()
 {
 	bool ret = true;
 
+	App->collisions->setColliders();
+
+	LOG("Added E: %i", entities.count());
 	AwakeEntities();
 
 	p2List_item<j1Entity*>* item;
@@ -114,9 +118,10 @@ bool j1EntityManager::Update(float dt)
 	float delay = 1000 / App->frame_cap;
 	
 	if (accumulated_time >= delay)
-		do_logic = true;
+		do_logic = true, App->path->ClearPath();
 
-	UpdateAll(dt, do_logic);
+	if(dt > 0)
+		UpdateAll(dt, do_logic);
 
 	if (do_logic == true) {
 		accumulated_time -= delay;
@@ -149,9 +154,13 @@ bool j1EntityManager::CleanUp()
 	p2List_item<j1Entity*>* item;
 	for (item = entities.end; item != NULL && ret == true; item = item->prev)
 	{
-		ret = item->data->CleanUp();
+		item->data->CleanUp();
+		delete item->data;
+		item->data = nullptr;
 	}
-
+	entities.clear();
+	
+	LOG("Cleaned E:%i", entities.count());
 	return ret;
 }
 

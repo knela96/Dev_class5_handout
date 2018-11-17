@@ -56,7 +56,7 @@ bool j1Scene::Start()
 			RELEASE_ARRAY(data);
 		}
 		App->collisions->Enable();
-		//App->entitymanager->player->Enable();
+		App->entitymanager->Enable();
 
 		App->audio->PlayMusic(music_path.GetString());
 
@@ -143,21 +143,14 @@ bool j1Scene::Update(float dt)
 
 	// Debug pathfinding ------------------------------
 
-	int x, y;
+	/*int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);
 	p = App->map->MapToWorld(p.x, p.y);
 
 	App->render->Blit(debug_tex, p.x, p.y);
-
-	/*const p2DynArray<iPoint>* path = App->path->GetLastPath();
-
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		App->render->Blit(debug_tex, pos.x, pos.y);
-	}*/
+	*/
 
 	return true;
 }
@@ -178,7 +171,7 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
-	App->entitymanager->player->CleanUp();
+	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;

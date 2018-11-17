@@ -33,6 +33,8 @@ public:
 
 	void OnCollision(Collider* col_1, Collider* col_2);
 
+	void WallCollision(Collider * c1, Collider * c2);
+
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 	
@@ -61,6 +63,8 @@ private:
 	j1Animation* current_animation = nullptr;
 	SDL_Rect	animation_Rect;
 	bool flip;
+	bool target_found;
+	bool debug_draw = false;
 };
 
 

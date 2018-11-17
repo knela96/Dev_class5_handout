@@ -127,7 +127,7 @@ bool j1Collisions::PreUpdate()
 			c2 = data.colliders[k];
 			if (c2 != nullptr) {
 
-				if (c1->CheckCollision(c2->rect) == true)
+				if (c1->CheckCollision(c2->rect) == true && !c1->to_delete && !c2->to_delete)
 				{
 					if (matrix[c1->type][c2->type] && c1->callback)
 						c1->callback->OnCollision(c1, c2);
@@ -157,7 +157,7 @@ bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
 			if (nextCollider->type != COLLIDER_WALL)
 				continue;
 
-			if (c1->CheckCollision(nextCollider->rect) == true) {
+			if (c1->CheckCollision(nextCollider->rect) == true && !c1->to_delete && !nextCollider->to_delete) {
 				if (matrix[c1->type][nextCollider->type] && c1->callback)
 					ret = true;
 				if (matrix[nextCollider->type][c1->type] && nextCollider->callback)
@@ -277,7 +277,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		}
 	}
 
-	ret = setColliders();
+	//ret = setColliders();
 
 	return ret;
 }
@@ -289,7 +289,7 @@ bool j1Collisions::setColliders() {
 		j1Entity * entity;
 		switch (data.info_spawns[i]->type) {
 		case COLLIDER_PLAYER:
-			entity = new j1Entity(EntityType::NONE);
+			entity = new j1Entity(EntityType::PLAYER);
 			entity = App->entitymanager->CreateEntity(EntityType::PLAYER);
 			data.info_spawns[i]->callback = (j1Player*)entity;
 			data.colliders.add(data.info_spawns[i]);

@@ -144,7 +144,7 @@
       <folder>Assets/Sprites/Enemies/</folder>
       <texture source="Enemies.png" />
       <collider w="25" h="27" />
-      <walkSpeed value="220" />
+      <walkSpeed value="100" />
       <animations>
         <walk loop="true" speed="15.0f">
           <frame x="0" y="31" w="25" h="27"/>

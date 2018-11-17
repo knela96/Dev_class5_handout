@@ -23,7 +23,14 @@ j1Player::j1Player() : j1Entity(EntityType::PLAYER)
 }
 
 j1Player::~j1Player()
-{}
+{
+	App->audio->StopFx();
+	//App->audio->UnloadFx();
+	LOG("Unloading Player assets");
+	App->tex->UnLoad(graphics);
+	graphics = nullptr;
+	collider = nullptr;
+}
 
 // Load assets
 bool j1Player::Awake(pugi::xml_node& config)
@@ -166,7 +173,6 @@ bool j1Player::Start() {
 	App->render->camera.y = 0;
 
 
-	collider_aux = collider->rect;
 
 	currentState = CharacterState::Jump;
 
@@ -177,12 +183,6 @@ bool j1Player::Start() {
 
 bool j1Player::CleanUp()
 {
-	App->audio->StopFx();
-	//App->audio->UnloadFx();
-	LOG("Unloading Player assets");
-	App->tex->UnLoad(graphics);
-	graphics = nullptr;
-	collider = nullptr;
 	return true;
 }
 
@@ -196,6 +196,10 @@ bool j1Player::PostUpdate()
 // Update: draw background
 bool j1Player::Update(float dt, bool do_logic)
 {
+	if (dt == 0) {
+		position.x = respawn.x;
+		position.y = respawn.y;
+	}
 	OnGround = App->collisions->CheckGroundCollision(collider);
 	if (OnGround)
 		isFalling = false;
@@ -385,7 +389,9 @@ bool j1Player::Update(float dt, bool do_logic)
 bool j1Player::Update() {
 	// Draw everything --------------------------------------
 	if (flip)
-		App->render->Blit(graphics, position.x + 4, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
+	else if (current_animation == &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
+		App->render->Blit(graphics, position.x - 10, position.y, &animation_Rect, SDL_FLIP_NONE);
 	else
 		App->render->Blit(graphics, position.x - 20, position.y, &animation_Rect, SDL_FLIP_NONE);
 	return true;
@@ -395,12 +401,18 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	if(collider2->gettype() == 0) {
 		WallCollision(collider1, collider2);
 	}
-	else if (collider2->gettype() == 2) {
-		if (death_anim == false) {
+	else if (collider2->gettype() == COLLIDER_ENEMY) {
+		if (death_anim == false && collider2->gettype() == COLLIDER_ENEMY) {
 			if (godmode == false)
 				current_life--;
 			death_anim = true;
 		}
+		else {
+			current_life--;
+		}
+	}
+	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim) {
+
 	}
 	else if (collider2->gettype() == 3) {
 		if (!win) 
@@ -463,7 +475,7 @@ void j1Player::setGround(bool ground, bool falling)
 
 void j1Player::cameraPos()
 {
-	if (-(position.x + collider->rect.w) <= App->render->camera.x + -App->render->camera.w + 200)
+	if (-(position.x + collider->rect.w) <= App->render->camera.x + -App->render->camera.w + 200 && App->render->camera.x < 0)
 		App->render->camera.x = App->render->camera.w - 200 + -(position.x + collider->rect.w);
 	else if (-(position.x) >= App->render->camera.x  - 200)
 		App->render->camera.x = 200 + -position.x;
@@ -519,6 +531,7 @@ void j1Player::resetPlayer()
 	OnGround = false;
 	plane = false;
 	current_life = life;
+
 }
 
 // Load Game State
