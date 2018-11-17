@@ -73,12 +73,13 @@ bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 
 	BROFILER_CATEGORY("FlyingEnemyUpdate", Profiler::Color::LightSeaGreen);
 	// pathfinfding process
-	origin = App->map->WorldToMap(position.x + collider->rect.w / 2, position.y + collider->rect.h / 2);
-	if(App->entitymanager->player->position.x > position.x)
-		destination = App->map->WorldToMap(floor(App->entitymanager->player->position.x + App->entitymanager->player->collider->rect.w / 2), floor(App->entitymanager->player->position.y + App->entitymanager->player->collider->rect.h / 2));
-	else
-		destination = App->map->WorldToMap(App->entitymanager->player->position.x + App->entitymanager->player->collider->rect.w / 2, App->entitymanager->player->position.y + App->entitymanager->player->collider->rect.h / 2);
-
+	origin = App->map->WorldToMap(
+		position.x + collider->rect.w / 2, 
+		position.y + collider->rect.h / 2	);
+	destination = App->map->WorldToMap(
+		App->entitymanager->player->position.x + App->entitymanager->player->collider->rect.w / 2,
+		App->entitymanager->player->position.y + App->entitymanager->player->collider->rect.h / 2	);
+	
 
 	if ((int)sqrt(pow(destination.x - origin.x, 2) + pow(destination.y - origin.y, 2)) <= 20) {
 		if (do_logic) {
@@ -103,7 +104,7 @@ bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 }
 
 bool j1Enemy_Flying::Update(){
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
 		debug_draw = !debug_draw;
 	}
 
@@ -128,7 +129,7 @@ void j1Enemy_Flying::Move(const p2DynArray<iPoint>* path, float dt)
 	if (path->Count() > 1) {
 		iPoint pos_path1 = *path->At(0);
 		iPoint pos_path2 = *path->At(1);
-
+		LOG("%i_%i - %i_%i", pos_path1.x, pos_path1.y, pos_path2.x, pos_path2.y);
 		if (pos_path1.x > pos_path2.x) {
 			position.x -= speed * dt;
 			flip = true;
@@ -148,11 +149,11 @@ void j1Enemy_Flying::Move(const p2DynArray<iPoint>* path, float dt)
 	else {
 		if (origin.x > destination.x) {
 			position.x -= speed * dt;
-			flip = true;
+			
 		}
 		else if (origin.x < destination.x) {
 			position.x += speed * dt;
-			flip = false;
+			
 		}
 	}
 }
@@ -163,9 +164,7 @@ bool j1Enemy_Flying::CleanUp() {
 
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
-
-	if (collider != nullptr)
-		collider->to_delete = true;
+	collider = nullptr;
 
 	return true;
 	}
