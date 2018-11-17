@@ -7,7 +7,7 @@
 j1EntityManager::j1EntityManager()
 {
 	name.create("entities");
-	player = (j1Player*)CreateEntity(EntityType::PLAYER);
+	//player = (j1Player*)CreateEntity(EntityType::PLAYER);
 }
 
 j1EntityManager::~j1EntityManager()
@@ -21,8 +21,9 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type)
 	switch (type) {
 	case EntityType::PLAYER:
 		ret = new j1Player();
+		player = (j1Player*)ret;
 		break;
-	case EntityType::ENEMY:		
+	case EntityType::FLYING_ENEMY:		
 		ret = new j1Player(); 
 		break;
 	}
@@ -40,20 +41,33 @@ void j1EntityManager::DestroyEntity(j1Entity* entity)
 bool j1EntityManager::Awake(pugi::xml_node& config)
 {
 	bool ret = true;
+
+	_config = App->LoadConfig(config_file).child("entities");
+	
+	return true;
+}
+
+bool j1EntityManager::AwakeEntities() {
+	bool ret = true;
+
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->Awake(config.child(item->data->name.GetString()));
+		ret = item->data->Awake(_config.child(item->data->name.GetString()));
 		item = item->next;
 	}
+
 	return true;
 }
 
 bool j1EntityManager::Start()
 {
 	bool ret = true;
+
+	AwakeEntities();
+
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 	do_logic = false;

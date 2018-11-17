@@ -11,7 +11,8 @@ enum class EntityType
 {
 	NONE = -1,
 	PLAYER,
-	ENEMY
+	FLYING_ENEMY,
+	PLATFORMER_ENEMY
 };
 
 class j1Entity

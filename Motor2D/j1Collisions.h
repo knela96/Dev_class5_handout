@@ -13,6 +13,8 @@ enum ColliderTypes
 	COLLIDER_PLAYER,
 	COLLIDER_ENEMY,
 	COLLIDER_WIN,
+	COLLIDER_FLYING_ENEMY,
+	COLLIDER_PLATFORM_ENEMY,
 	COLLIDER_ENEMY_SHOT,
 	COLLIDER_POWERUP,
 	COLLIDER_MAX,
@@ -48,6 +50,8 @@ struct Collider {
 
 struct ColliderData {
 	p2List<Collider*> colliders;
+	p2List<Collider*> info_spawns;
+
 };
 
 

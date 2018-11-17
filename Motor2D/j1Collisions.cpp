@@ -13,6 +13,8 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_WALL][COLLIDER_WALL] = false;
 	matrix[COLLIDER_WALL][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_WALL][COLLIDER_FLYING_ENEMY] = true;
+	matrix[COLLIDER_WALL][COLLIDER_PLATFORM_ENEMY] = true;
 	matrix[COLLIDER_WALL][COLLIDER_WIN] = false;
 	matrix[COLLIDER_WALL][COLLIDER_ENEMY_SHOT] = true;
 	matrix[COLLIDER_WALL][COLLIDER_POWERUP] = false;
@@ -20,6 +22,8 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_FLYING_ENEMY] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_PLATFORM_ENEMY] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_WIN] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_ENEMY_SHOT] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_POWERUP] = true;
@@ -27,6 +31,8 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_ENEMY][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_FLYING_ENEMY] = false;
+	matrix[COLLIDER_ENEMY][COLLIDER_PLATFORM_ENEMY] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_WIN] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_ENEMY][COLLIDER_POWERUP] = false;
@@ -34,6 +40,8 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_WIN][COLLIDER_WALL] = true;
 	matrix[COLLIDER_WIN][COLLIDER_PLAYER] = false;
 	matrix[COLLIDER_WIN][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_WIN][COLLIDER_FLYING_ENEMY] = false;
+	matrix[COLLIDER_WIN][COLLIDER_PLATFORM_ENEMY] = false;
 	matrix[COLLIDER_WIN][COLLIDER_WIN] = false;
 	matrix[COLLIDER_WIN][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_WIN][COLLIDER_POWERUP] = false;
@@ -41,6 +49,8 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_WALL] = true;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_FLYING_ENEMY] = false;
+	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_PLATFORM_ENEMY] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_WIN] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_ENEMY_SHOT][COLLIDER_POWERUP] = false;
@@ -48,9 +58,30 @@ j1Collisions::j1Collisions() : j1Module()
 	matrix[COLLIDER_POWERUP][COLLIDER_WALL] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_PLAYER] = true;
 	matrix[COLLIDER_POWERUP][COLLIDER_ENEMY] = false;
+	matrix[COLLIDER_POWERUP][COLLIDER_FLYING_ENEMY] = false;
+	matrix[COLLIDER_POWERUP][COLLIDER_PLATFORM_ENEMY] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_WIN] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_ENEMY_SHOT] = false;
 	matrix[COLLIDER_POWERUP][COLLIDER_POWERUP] = false;
+
+
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_WALL] = true;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_FLYING_ENEMY] = true;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_PLATFORM_ENEMY] = true;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_WIN] = false;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_ENEMY_SHOT] = false;
+	matrix[COLLIDER_FLYING_ENEMY][COLLIDER_POWERUP] = false;
+
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_WALL] = true;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_PLAYER] = true;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_ENEMY] = true;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_FLYING_ENEMY] = false;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_PLATFORM_ENEMY] = false;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_WIN] = false;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_ENEMY_SHOT] = false;
+	matrix[COLLIDER_PLATFORM_ENEMY][COLLIDER_POWERUP] = false;
 }
 
 // Destructor
@@ -112,25 +143,27 @@ bool j1Collisions::PreUpdate()
 bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
 {
 	bool ret = false;
-	
-	Collider* c1 = hitbox;
-	c1->rect.y++;
-	Collider* c2;
+	if (hitbox != nullptr) {
+		Collider* c1 = hitbox;
+		c1->rect.y++;
+		Collider* c2;
 
-	for (uint i = 0; i < data.colliders.count(); ++i)
-	{
-		Collider* nextCollider = data.colliders[i];
+		for (uint i = 0; i < data.colliders.count(); ++i)
+		{
+			Collider* nextCollider = data.colliders[i];
 
-		if (nextCollider->type != COLLIDER_WALL)
-			continue;
+			if (nextCollider->type != COLLIDER_WALL)
+				continue;
 
-		if (c1->CheckCollision(nextCollider->rect) == true) {
-			if (matrix[c1->type][nextCollider->type] && c1->callback)
-				ret = true;
-			if (matrix[nextCollider->type][c1->type] && nextCollider->callback)
-				ret = true;
+			if (c1->CheckCollision(nextCollider->rect) == true) {
+				if (matrix[c1->type][nextCollider->type] && c1->callback)
+					ret = true;
+				if (matrix[nextCollider->type][c1->type] && nextCollider->callback)
+					ret = true;
+			}
 		}
 	}
+	
 	return ret;
 }
 
@@ -161,7 +194,9 @@ void j1Collisions::Draw()
 		case COLLIDER_PLAYER: // green
 			App->render->DrawQuad(data.colliders[i]->rect, 0, 255, 0, alpha);
 			break;
-		case COLLIDER_ENEMY: // red
+		case COLLIDER_ENEMY:
+		case COLLIDER_FLYING_ENEMY:
+		case COLLIDER_PLATFORM_ENEMY:// red
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		case COLLIDER_WIN: // yellow
@@ -210,7 +245,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 
 	// Load all colliders info ----------------------------------------------
 	pugi::xml_node collider;
-	for (collider = map_file.child("map").child("objectgroup"); collider && ret; collider = collider.next_sibling("objectgroup"))
+	for (collider = map_file.child("map").find_child_by_attribute("name","colliders walls"); collider && ret; collider = collider.next_sibling("objectgroup"))
 	{
 		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
 		{
@@ -225,6 +260,21 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		}
 	}
 
+	for (collider = map_file.child("map").find_child_by_attribute("name", "spawn"); collider && ret; collider = collider.next_sibling("objectgroup"))
+	{
+		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
+		{
+			Collider* col = new Collider();
+			col->rect.x = object.attribute("x").as_uint();
+			col->rect.y = object.attribute("y").as_uint();
+			col->rect.w = object.attribute("width").as_uint();
+			col->rect.h = object.attribute("height").as_uint();
+			col->type = (ColliderTypes)object.attribute("name").as_uint();
+
+			data.info_spawns.add(col);
+		}
+	}
+
 	ret = setColliders();
 
 	return ret;
@@ -234,11 +284,28 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 bool j1Collisions::setColliders() {
 	for (uint i = 0; i < data.colliders.count(); ++i)
 	{
+		j1Entity * entity;
 		switch (data.colliders[i]->type) {
 		case COLLIDER_PLAYER:
-			data.colliders[i]->callback = App->entitymanager->player;
-			App->entitymanager->player->collider = data.colliders[i];
-			LOG("Added Player COllider");
+			entity = new j1Entity(EntityType::PLAYER);
+			entity = App->entitymanager->CreateEntity(EntityType::PLAYER);
+			data.colliders[i]->callback = (j1Player*)entity;
+			((j1Player*)entity)->collider = data.colliders[i];
+			LOG("Added Player Entity");
+			break; 
+		case COLLIDER_FLYING_ENEMY:
+			entity = new j1Entity(EntityType::FLYING_ENEMY);
+			entity = App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY);
+			data.colliders[i]->callback = (j1Player*)entity;
+			((j1Player*)entity)->collider = data.colliders[i];
+			LOG("Added Player Entity");
+			break;
+		case COLLIDER_PLATFORM_ENEMY:
+			entity = new j1Entity(EntityType::PLATFORMER_ENEMY);
+			entity = App->entitymanager->CreateEntity(EntityType::PLATFORMER_ENEMY);
+			data.colliders[i]->callback = (j1Player*)entity;
+			((j1Player*)entity)->collider = data.colliders[i];
+			LOG("Added Player Entity");
 			break;
 		}
 	}
