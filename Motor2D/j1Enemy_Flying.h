@@ -17,7 +17,7 @@ class j1Enemy_Flying : public j1Entity
 {
 public:
 
-	j1Enemy_Flying(EntityType type);
+	j1Enemy_Flying();
 
 	virtual ~j1Enemy_Flying();
 

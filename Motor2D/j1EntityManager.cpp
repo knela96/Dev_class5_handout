@@ -8,9 +8,6 @@
 j1EntityManager::j1EntityManager()
 {
 	name.create("entities");
-	player = (j1Player*)CreateEntity(EntityType::PLAYER);
-	enemy_flying = (j1Enemy_Flying*)CreateEntity(EntityType::ENEMY_FLYING);
-	//player = (j1Player*)CreateEntity(EntityType::PLAYER);
 }
 
 j1EntityManager::~j1EntityManager()
@@ -27,7 +24,7 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type)
 		player = (j1Player*)ret;
 		break;
 	case EntityType::FLYING_ENEMY:		
-		ret = new j1Enemy_Flying(EntityType::FLYING_ENEMY);
+		ret = new j1Enemy_Flying();
 		break;
 	}
 	if (ret != nullptr)

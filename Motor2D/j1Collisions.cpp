@@ -5,6 +5,8 @@
 #include "j1Input.h"
 #include "j1Collisions.h"
 #include "j1Player.h"
+#include "j1Enemy_Walking.h"
+#include "j1Enemy_Flying.h"
 
 j1Collisions::j1Collisions() : j1Module()
 {
@@ -297,18 +299,18 @@ bool j1Collisions::setColliders() {
 		case COLLIDER_FLYING_ENEMY:
 			entity = new j1Entity(EntityType::FLYING_ENEMY);
 			entity = App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY);
-			data.info_spawns[i]->callback = (j1Player*)entity;
+			data.info_spawns[i]->callback = (j1Enemy_Flying*)entity;
 			data.colliders.add(data.info_spawns[i]);
-			((j1Player*)entity)->collider = data.colliders.end->data;
-			LOG("Added Player Entity");
+			((j1Enemy_Flying*)entity)->collider = data.colliders.end->data;
+			LOG("Added Flying Entity");
 			break;
 		case COLLIDER_PLATFORM_ENEMY:
-			entity = new j1Entity(EntityType::PLATFORMER_ENEMY);
+			/*entity = new j1Entity(EntityType::PLATFORMER_ENEMY);
 			entity = App->entitymanager->CreateEntity(EntityType::PLATFORMER_ENEMY);
-			data.info_spawns[i]->callback = (j1Player*)entity;
+			data.info_spawns[i]->callback = (j1Enemy_Walking*)entity;
 			data.colliders.add(data.info_spawns[i]);
-			((j1Player*)entity)->collider = data.colliders.end->data;
-			LOG("Added Player Entity");
+			((j1Enemy_Walking*)entity)->collider = data.colliders.end->data;
+			LOG("Added Player Entity");*/
 			break;
 		}
 	}
@@ -323,7 +325,7 @@ bool Collider::CheckCollision(const SDL_Rect & r) const
 		return true;
 }
 
-fPoint Collider::AvoidCollision(fPoint speed, Collider& collider, float dt){
+/*fPoint Collider::AvoidCollision(fPoint speed, Collider& collider, float dt){
 	fPoint new_speed = { 0,0 }, dt_speed = { 0,0 };
 	for (float i = 0; i < 10; ++i) {
 		new_speed = { speed.x * dt, new_speed.y += speed.y / 10 };
@@ -449,3 +451,4 @@ fPoint Collider::CollisionSpeed(SDL_Rect* collider1, SDL_Rect* collider2, fPoint
 
 	return new_speed;
 }
+*/

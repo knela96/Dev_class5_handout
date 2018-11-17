@@ -19,7 +19,7 @@
 #include "SDL/include/SDL.h"
 
 
-j1Enemy_Flying::j1Enemy_Flying(EntityType type) : j1Entity(EntityType::FLYING_ENEMY)
+j1Enemy_Flying::j1Enemy_Flying() : j1Entity(EntityType::FLYING_ENEMY)
 {
 	name.create("enemy_flying");
 }
@@ -40,6 +40,7 @@ bool j1Enemy_Flying::Update(float dt) {
 	BROFILER_CATEGORY("FlyingEnemyUpdate", Profiler::Color::LightSeaGreen);
 	collider->SetPos(position.x, position.y);
 	// pathfinfding process
+	return true;
 }
 
 bool j1Enemy_Flying::CleanUp() {
@@ -56,15 +57,16 @@ bool j1Enemy_Flying::CleanUp() {
 
 void j1Enemy_Flying::OnCollision(Collider* col_1, Collider* col_2) {
 
-	}
+}
 
 bool j1Enemy_Flying::Load(pugi::xml_node&) {
 
-	}
+	return true;
+}
 bool j1Enemy_Flying::Save(pugi::xml_node&) const {
-
-	}
+	return true;
+}
 	
 void j1Enemy_Flying::Move(p2DynArray<iPoint>& path, float dt) {
 
-	}
+}
