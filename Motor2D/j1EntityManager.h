@@ -21,6 +21,7 @@ public:
 	void DestroyEntity(j1Entity * entity);
 	
 	bool Awake(pugi::xml_node& config);
+	bool AwakeEntities();
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt); //pathfinding
@@ -42,6 +43,9 @@ public:
 private:
 	float accumulated_time;
 	bool do_logic;
+
+	pugi::xml_document	config_file;
+	pugi::xml_node _config;
 };
 
 #endif //__j1ENTITYMANAGER__

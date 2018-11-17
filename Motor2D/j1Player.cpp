@@ -241,19 +241,13 @@ bool j1Player::Update(float dt)
 				{
 					App->audio->PlayFx(Run_fx, 1);
 					flip = false;
-					if (PushesRightWall)
-						speed.x = 0.0f;
-					else
-						speed.x = walkSpeed;
+					speed.x = walkSpeed;
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
 					App->audio->PlayFx(Run_fx, 1);
 					flip = true;
-					if (PushesLeftWall)
-						speed.x = 0.0f;
-					else
-						speed.x = -walkSpeed;
+					speed.x = -walkSpeed;
 				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -285,8 +279,8 @@ bool j1Player::Update(float dt)
 					if (!plane && start_time == 0) {
 						start_time = SDL_GetTicks();
 						plane = true;
+						isFalling = true;
 						App->audio->PlayFx(Plane_fx, 1);
-						LOG("PLANE");
 					}
 				}else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
 					if (speed.y > -jumpSpeed && !isFalling) {
@@ -300,14 +294,16 @@ bool j1Player::Update(float dt)
 						speed.y = gravity * 0.1 * dt;
 						current_animation = &anim_plane;
 					}
-					else {
+					else if(plane) {
 						plane = false;
+						App->audio->StopFx();
 					}
 				}else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
-					if (speed.y < 0.0f)
-						speed.y = 0, isFalling = true;
-					if (!OnGround)
- 						plane = false;
+					if (plane) {
+						plane = false; 
+						App->audio->StopFx();
+					}
+					isFalling = true;
 				}
 
 
@@ -318,23 +314,16 @@ bool j1Player::Update(float dt)
 				else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
 					flip = false;
-					if (PushesRightWall)
-						speed.x = 0.0f;
-					else
-						speed.x = walkSpeed;
+					speed.x = walkSpeed;
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
 					flip = true;
-					if (PushesLeftWall)
-						speed.x = 0.0f;
-					else
-						speed.x = -walkSpeed;
+					speed.x = -walkSpeed;
 				}
 
 				if (OnGround)
 				{
-					App->audio->StopFx();
 					if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 					{
 						currentState = CharacterState::Stand;
@@ -530,17 +519,6 @@ void j1Player::resetPlayer()
 	OnGround = false;
 	plane = false;
 	current_life = life;
-}
-
-void j1Player::UpdatePhysics()
-{
-	OldPosition = position;
-	OldSpeed = speed;
-
-	WasOnGround = OnGround;
-	PushedRightWall = PushesRightWall;
-	PushedLeftWall = PushesLeftWall;
-	WasAtCeiling = AtCeiling;
 }
 
 // Load Game State

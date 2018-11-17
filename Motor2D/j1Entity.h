@@ -11,8 +11,8 @@ enum class EntityType
 {
 	NONE = -1,
 	PLAYER,
-	ENEMY_FLYING,
-	ENEMY_WWALKING,
+	FLYING_ENEMY,
+	PLATFORMER_ENEMY
 };
 
 class j1Entity
@@ -49,17 +49,7 @@ public:
 
 public:
 	p2SString name;
-	bool PushedRightWall;
-	bool PushesRightWall;
-
-	bool PushedLeftWall;
-	bool PushesLeftWall;
-
-	bool WasOnGround;
 	bool OnGround;
-
-	bool WasAtCeiling;
-	bool AtCeiling;
 
 private:
 	EntityType type;

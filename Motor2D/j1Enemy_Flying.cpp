@@ -19,7 +19,7 @@
 #include "SDL/include/SDL.h"
 
 
-j1Enemy_Flying::j1Enemy_Flying(EntityType type) : j1Entity(EntityType::ENEMY_FLYING)
+j1Enemy_Flying::j1Enemy_Flying(EntityType type) : j1Entity(EntityType::FLYING_ENEMY)
 {
 	name.create("enemy_flying");
 }

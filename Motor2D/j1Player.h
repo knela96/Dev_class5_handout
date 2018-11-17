@@ -49,7 +49,6 @@ public:
 	void cameraPos();
 	void deathAnim(float dt);
 	void resetPlayer();
-	void UpdatePhysics();
 
 public:
 	CharacterState currentState = Stand;

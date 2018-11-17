@@ -178,7 +178,7 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
-	//App->entitymanager->player->Disable();
+	App->entitymanager->player->CleanUp();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;
