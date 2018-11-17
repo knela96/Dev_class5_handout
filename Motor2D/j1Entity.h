@@ -12,7 +12,7 @@ enum class EntityType
 	NONE = -1,
 	PLAYER,
 	FLYING_ENEMY,
-	PLATFORMER_ENEMY
+	WALKING_ENEMY
 };
 
 class j1Entity

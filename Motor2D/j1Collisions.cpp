@@ -305,12 +305,12 @@ bool j1Collisions::setColliders() {
 			LOG("Added Flying Entity");
 			break;
 		case COLLIDER_PLATFORM_ENEMY:
-			/*entity = new j1Entity(EntityType::PLATFORMER_ENEMY);
-			entity = App->entitymanager->CreateEntity(EntityType::PLATFORMER_ENEMY);
+			entity = new j1Entity(EntityType::WALKING_ENEMY);
+			entity = App->entitymanager->CreateEntity(EntityType::WALKING_ENEMY);
 			data.info_spawns[i]->callback = (j1Enemy_Walking*)entity;
 			data.colliders.add(data.info_spawns[i]);
 			((j1Enemy_Walking*)entity)->collider = data.colliders.end->data;
-			LOG("Added Player Entity");*/
+			LOG("Added Walking Entity");
 			break;
 		}
 	}
