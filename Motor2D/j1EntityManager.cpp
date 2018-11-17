@@ -121,7 +121,7 @@ bool j1EntityManager::Update(float dt)
 	float delay = 1000 / App->frame_cap;
 	
 	if (accumulated_time >= delay)
-		do_logic = true, App->path->ClearPath();
+		do_logic = true;
 
 	if(dt > 0)
 		UpdateAll(dt, do_logic);

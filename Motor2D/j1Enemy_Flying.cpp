@@ -160,7 +160,7 @@ void j1Enemy_Flying::Move(const p2DynArray<iPoint>* path, float dt)
 
 bool j1Enemy_Flying::CleanUp() {
 
-	LOG("Unloading harpy");
+	LOG("Unloading flying_enemy");
 
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
