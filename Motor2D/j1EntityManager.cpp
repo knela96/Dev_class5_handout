@@ -133,17 +133,12 @@ bool j1EntityManager::UpdateAll(float dt, bool do_logic)
 	p2List_item<j1Entity*>* item;
 	for (item = entities.start; item != nullptr && ret == true; item = item->next)
 	{
-		if (do_logic) {
-			ret = item->data->UpdateLogic(dt);
-		}
-
-		if (ret)
-			ret = item->data->Update(dt);
+		ret = item->data->Update(dt, do_logic);
 
 		if (ret)
 			ret = item->data->Update();
 	}
-
+	
 	return ret;
 }
 

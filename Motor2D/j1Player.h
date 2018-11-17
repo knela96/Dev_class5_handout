@@ -35,7 +35,7 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool Start();
 	bool Update();
-	bool Update(float dt);
+	bool Update(float dt, bool do_logic);
 	bool PostUpdate();
 	bool Save(pugi::xml_node& data) const;
 	bool Load(pugi::xml_node& data);

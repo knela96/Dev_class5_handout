@@ -29,9 +29,7 @@ public:
 
 	virtual bool PreUpdate() { return true; }
 
-	virtual bool UpdateLogic(float dt) { return true; }
-
-	virtual bool Update(float dt) { return true; }
+	virtual bool Update(float dt, bool do_logic) { return true; }
 
 	virtual bool Update() { return true; }
 

@@ -194,7 +194,7 @@ bool j1Player::PostUpdate()
 
 
 // Update: draw background
-bool j1Player::Update(float dt)
+bool j1Player::Update(float dt, bool do_logic)
 {
 	OnGround = App->collisions->CheckGroundCollision(collider);
 	if (OnGround)

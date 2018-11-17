@@ -21,9 +21,13 @@ public:
 
 	virtual ~j1Enemy_Flying();
 
+	bool Awake(pugi::xml_node & config);
+
 	bool Start();
 
-	bool Update(float dt);
+	bool Update(float dt, bool do_logic);
+
+	bool Update();
 
 	bool CleanUp();
 
@@ -32,21 +36,31 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 	
-	void Move(p2DynArray<iPoint>& path, float dt);
+	void Move(const p2DynArray<iPoint>* path, float dt);
 
 public:
 
 	j1Animation flying;
 
-	p2DynArray<iPoint>* path;
-
 	bool path_created = false;
 
+	const p2DynArray<iPoint>* path;
 
 	fPoint position;
-	SDL_Texture * tex;
+	SDL_Texture * graphics;
 	Collider* collider;
 	SDL_Rect collider_aux;
+
+private:
+	SDL_Texture * debug_tex; 
+	iPoint origin;
+	iPoint destination;
+	float speed;
+	p2SString			texture_path;
+	p2SString			folder;
+	j1Animation* current_animation = nullptr;
+	SDL_Rect	animation_Rect;
+	bool flip;
 };
 
 
