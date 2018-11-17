@@ -294,12 +294,12 @@ bool j1Player::Update(float dt)
 						speed.y = gravity * 0.1 * dt;
 						current_animation = &anim_plane;
 					}
-					else {
+					else if(plane) {
 						plane = false;
+						App->audio->StopFx();
 					}
 				}else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_UP) {
-					if (speed.y < 0.0f)
-					if (!OnGround && plane) {
+					if (plane) {
 						plane = false; 
 						App->audio->StopFx();
 					}
