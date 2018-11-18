@@ -43,7 +43,6 @@ bool j1Scene2::Awake(pugi::xml_node& config)
 bool j1Scene2::Start()
 {
 	App->map->Enable();
-
 	if (App->map->Load(map.GetString()) == true) {
 
 		int w, h;
@@ -53,11 +52,8 @@ bool j1Scene2::Start()
 
 		RELEASE_ARRAY(data);
 	}
-
-	App->map->Load(map.GetString());
 	App->collisions->Enable();
-	
-
+	App->entitymanager->Enable();
 
 	App->audio->PlayMusic(music_path.GetString());
 
@@ -95,8 +91,16 @@ bool j1Scene2::PreUpdate()
 // Called each loop iteration
 bool j1Scene2::Update(float dt)
 {
-	if (App->entitymanager->player->current_life <= 0)
-		App->fade->FadeToBlack(this, App->scene);
+	if (App->entitymanager->player != nullptr) {
+		if (App->entitymanager->player->current_life <= 0)
+			App->fade->FadeToBlack(this, App->scene);
+
+		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+			App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
+
+		if (App->entitymanager->player->win)
+			App->fade->FadeToBlack(this, App->scene);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
@@ -110,23 +114,18 @@ bool j1Scene2::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame();
 	
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y += 3;
+		App->render->camera.y -= 100 * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y -= 3;
+		App->render->camera.y += 100 * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x -= 3;
+		App->render->camera.x += 100 * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x += 3;
-
-	if (App->entitymanager->player->win)
-		App->fade->FadeToBlack(this, App->scene);
+		App->render->camera.x -= 100 * dt;
 
 	App->map->Draw();
 /*
@@ -159,6 +158,8 @@ bool j1Scene2::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
+	App->audio->UnloadFx();
+	//App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;

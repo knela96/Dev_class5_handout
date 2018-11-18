@@ -8,7 +8,44 @@
 	<pathfinding />
 	<scenes value="0" />
 	<collisions />
-	<entities />
+	<entities>
+		<player>
+			<speed x="0" y="0" />
+			<position x="455" y="369" />
+			<life value="3" />
+			<jumpSpeed value="500" />
+			<maxFallingSpeed value="400" />
+			<walkSpeed value="250" />
+			<gravity value="1800" />
+		</player>
+		<flying_enemy>
+			<position x="931" y="134" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<walking_enemy>
+			<position x="592.836975" y="377" />
+			<speed x="0" />
+			<speed y="0" />
+		</walking_enemy>
+		<flying_enemy>
+			<position x="1570" y="43" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<walking_enemy>
+			<position x="1135" y="313" />
+			<speed x="0" />
+			<speed y="0" />
+		</walking_enemy>
+		<flying_enemy>
+			<position x="2587" y="193" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<walking_enemy>
+			<position x="1788" y="233" />
+			<speed x="0" />
+			<speed y="0" />
+		</walking_enemy>
+	</entities>
 	<fade />
 	<renderer>
 		<camera x="-60" y="0" />

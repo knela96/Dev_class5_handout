@@ -55,16 +55,14 @@ bool j1Enemy_Walking::Awake(pugi::xml_node& config) {
 	walking.loop = config.child("animations").child("walk").attribute("loop").as_bool();
 	walking.speed = config.child("animations").child("walk").attribute("speed").as_float();
 
-	pugi::xml_node push_node = config.child("animations").child("walk").child("frame");
+	pugi::xml_node push_node = config.child("animations").child("idle").child("frame");
 	idle.PushBack({
 		push_node.attribute("x").as_int(),
 		push_node.attribute("y").as_int(),
 		push_node.attribute("w").as_int(),
 		push_node.attribute("h").as_int()
 		});
-
-	current_animation = &idle;
-
+	
 	return ret;
 
 }
@@ -75,10 +73,13 @@ bool j1Enemy_Walking::Start() {
 
 	debug_tex = App->tex->Load("Assets/maps/path2.png");
 
-	current_animation = &walking;
+	current_animation = &idle;
 
 	position.x = collider->rect.x;
 	position.y = collider->rect.y;
+
+	speed = { 0,0 };
+
 	return true;
 }
 
@@ -97,23 +98,33 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 		Fall = checkPlatform({origin.x + 2,origin.y});
 	else
 		Fall = checkPlatform({ origin.x - 2,origin.y});
-	LOG("Fall: %i", Fall);
+	LOG("Fall: %f", Fall);
 
 	if ((int)sqrt(pow(destination.x - origin.x, 2) + pow(destination.y - origin.y, 2)) <= 20) {
 		if (do_logic) {
 			target_found = App->path->CreatePath(origin, destination);
 			if (target_found && !Fall) {
 				path = App->path->GetLastPath();
-				Move(path, dt);
-			}else
+				if(path->Count() < 20)
+					Move(path, dt);
+			}
+			else {
+				speed.x = 0.0f;
+				current_animation = &idle;
 				App->path->ClearPath();
+			}
 		}
-	}else
+	}
+	else {
+		speed.x = 0.0f;
 		App->path->ClearPath();
+		current_animation = &idle;
+	}
 
-	if (!OnGround || !Fall)
+	if (!OnGround)
 		speed.y += gravity * dt;
 
+	position.x += speed.x * dt;
 	position.y += speed.y * dt;
 
 	collider->rect.x = position.x;
@@ -125,7 +136,7 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 }
 
 bool j1Enemy_Walking::Update() {
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
 		debug_draw = !debug_draw;
 	}
 
@@ -177,7 +188,7 @@ void j1Enemy_Walking::Move(const p2DynArray<iPoint>* path, float dt)
 			speed.x = walkSpeed;
 		}
 	}
-	position.x += speed.x * dt;
+	current_animation = &walking;
 }
 
 bool j1Enemy_Walking::CleanUp() {
@@ -239,7 +250,6 @@ bool j1Enemy_Walking::checkPlatform(iPoint position) {
 	for (int i = 1; i < 10; ++i) {
 		ret = App->path->IsWalkable({ position.x,position.y + i });
 		if (ret == false) {
-			current_animation = &walking;
 			return false;
 		}
 	}
@@ -253,7 +263,9 @@ bool j1Enemy_Walking::Load(pugi::xml_node& data) {
 
 	position.y = data.child("position").attribute("y").as_uint();
 
-	speed.x = data.child("walkSpeed").attribute("value").as_float();
+	speed.x = data.child("speed").attribute("x").as_float();
+
+	speed.y = data.child("speed").attribute("y").as_float();
 
 	return true;
 }
@@ -265,7 +277,10 @@ bool j1Enemy_Walking::Save(pugi::xml_node& data) const {
 
 	enemy_walking.child("position").append_attribute("y") = position.y;
 
-	enemy_walking.append_child("walkSpeed").append_attribute("value") = speed.x;
+	enemy_walking.append_child("speed").append_attribute("x") = 0;
+
+	enemy_walking.append_child("speed").append_attribute("y") = 0;
+
 
 
 	return true;
