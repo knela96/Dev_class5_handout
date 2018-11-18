@@ -70004,6 +70004,7 @@
  <layer id="31" name="Meta" width="208" height="48">
   <properties>
    <property name="Navigation" type="int" value="1"/>
+   <property name="Nodraw" type="int" value="1"/>
   </properties>
   <data>
    <tile/>
