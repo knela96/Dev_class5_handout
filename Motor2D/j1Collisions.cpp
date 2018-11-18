@@ -217,6 +217,7 @@ void j1Collisions::Draw()
 			App->render->DrawQuad(data.colliders[i]->rect, 0, 255, 255, alpha);
 			break;
 		case COLLIDER_POWERUP:
+		case COLLIDER_PLAYER_SHOT:
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 0, 255, alpha);
 			break;
 		}

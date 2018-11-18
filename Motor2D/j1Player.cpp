@@ -407,8 +407,17 @@ bool j1Player::Update(float dt, bool do_logic)
 						currentState = CharacterState::Jump;
 						OnGround = false;
 					}
-					
+					//Destroy Collider					
 				}
+				else {
+					if (attack_col == nullptr){
+						if (flip)
+							attack_col = App->collisions->AddCollider({ (int)position.x,(int)position.y, 8, 16 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
+						else
+							attack_col = App->collisions->AddCollider({ (int)position.x,(int)position.y, 8, 16 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
+					}
+				}
+
 				break;
 
 			}

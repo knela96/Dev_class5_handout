@@ -74,11 +74,13 @@ public:
 	j1Animation anim_jumpdown;
 	j1Animation anim_attack;
 
+	Collider* attack_col;
+
 	Uint32 start_time;
 	Uint32 aux_time;
 	bool dead = false;
 	bool win = false;
-	bool godmode = false;
+	bool godmode = true;
 	bool blink = false;
 	uint life;
 	uint c_blink = 0;
