@@ -131,7 +131,7 @@ private:
 	float				seconds_since_startup;
 	uint32				last_frame_ms;
 	uint32				frames_on_last_update;
-	bool				cap_frames = false;
+	bool				cap_frames = true;
 	int					capped_ms;
 
 };

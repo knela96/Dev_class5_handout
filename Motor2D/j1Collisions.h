@@ -94,8 +94,8 @@ private:
 
 
 public:
-	ColliderData data;
-	bool				debug;
+	ColliderData		data;
+	bool				debug = false;
 
 private:
 
