@@ -78,7 +78,7 @@ bool j1EntityManager::Start()
 {
 	bool ret = true;
 
-	App->collisions->setColliders();
+	//App->collisions->setColliders();
 
 	LOG("Added E: %i", entities.count());
 	AwakeEntities();
@@ -177,11 +177,9 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Load(pugi::xml_node & data )
 {
-	//CleanUp();
-	//App->collisions->CleanUp();
-
 	//App->collisions->setColliders();
-	/*
+
+	
 	p2List_item<j1Entity*>* iterator = entities.start;
 	pugi::xml_node object = data.child("player");
 	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
@@ -208,7 +206,7 @@ bool j1EntityManager::Load(pugi::xml_node & data )
 			iterator->data->Load(object);
 			object = object.next_sibling("walking_enemy");
 		}
-	}*/
+	}
 	return true;
 }
 

@@ -314,7 +314,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		}
 	}
 
-	//ret = setColliders();
+	ret = setColliders();
 
 	return ret;
 }

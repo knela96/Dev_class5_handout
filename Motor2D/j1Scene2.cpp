@@ -159,8 +159,8 @@ bool j1Scene2::CleanUp()
 	LOG("Freeing scene");
 	App->audio->StopMusic();
 	App->audio->UnloadFx();
-	App->collisions->Disable();
 	App->entitymanager->Disable();
+	App->collisions->Disable();
 	App->map->Disable();
 	return true;
 }
