@@ -19,6 +19,8 @@ public:
 	
 	j1Entity* CreateEntity(EntityType type, SDL_Rect* col);
 
+	bool deleteEntity(j1Entity * collider);
+
 	bool Awake(pugi::xml_node& config);
 	j1Player * GetPlayer();
 	bool AwakeEntities();

@@ -198,15 +198,19 @@ void j1Enemy_Walking::Move(const p2DynArray<iPoint>* path, float dt)
 bool j1Enemy_Walking::CleanUp() {
 
 	LOG("Unloading walking_enemy");
-
 	App->tex->UnLoad(graphics);
-
+	graphics = nullptr;
 	return true;
 }
 
 void j1Enemy_Walking::OnCollision(Collider* collider1, Collider* collider2) {
 	if (collider2->gettype() == 0) {
 		WallCollision(collider1, collider2);
+	}
+	else if (collider2->gettype() == COLLIDER_PLAYER_SHOT) {
+		App->collisions->deleteCollider(collider);
+		collider = nullptr;
+		App->entitymanager->deleteEntity(this);
 	}
 }
 

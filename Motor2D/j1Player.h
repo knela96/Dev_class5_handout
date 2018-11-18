@@ -74,6 +74,8 @@ public:
 	j1Animation anim_jumpdown;
 	j1Animation anim_attack;
 
+	Collider* attack_col;
+
 	Uint32 start_time;
 	Uint32 aux_time;
 	bool dead = false;
