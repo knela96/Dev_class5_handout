@@ -167,6 +167,9 @@ bool j1Enemy_Flying::CleanUp() {
 
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
+
+	App->tex->UnLoad(debug_tex);
+	debug_tex = nullptr;
 	collider = nullptr;
 
 	return true;

@@ -20,9 +20,9 @@ public:
 	j1Entity* CreateEntity(EntityType type, SDL_Rect* col);
 
 	bool deleteEntity(j1Entity * collider);
+	j1Player * GetPlayer();
 
 	bool Awake(pugi::xml_node& config);
-	j1Player * GetPlayer();
 	bool AwakeEntities();
 	bool Start();
 	bool PreUpdate();
@@ -40,8 +40,6 @@ public:
 
 public:
 	p2List<j1Entity*> entities;
-	//j1Player* player2;
-	//j1Enemy_Flying* enemy_flying;
 
 private:
 

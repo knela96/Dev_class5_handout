@@ -203,13 +203,6 @@ bool j1Player::CleanUp()
 	return true;
 }
 
-bool j1Player::PostUpdate()
-{
-	return true;
-}
-
-
-
 // Update: draw background
 bool j1Player::Update(float dt, bool do_logic)
 {
@@ -419,9 +412,9 @@ bool j1Player::Update(float dt, bool do_logic)
 				else {
 					if (attack_col == nullptr){
 						if (flip)
-							attack_col = App->collisions->AddCollider({ (int)position.x - 16,(int)position.y, 15, 24 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
+							attack_col = App->collisions->AddCollider({ (int)position.x - 16,(int)position.y, 20, 31 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
 						else
-							attack_col = App->collisions->AddCollider({ (int)position.x + 16,(int)position.y, 15, 24 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
+							attack_col = App->collisions->AddCollider({ (int)position.x + 16,(int)position.y, 20, 31 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
 					}
 				}
 				break;

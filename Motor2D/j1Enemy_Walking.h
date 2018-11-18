@@ -54,7 +54,6 @@ private:
 	iPoint origin;
 	iPoint destination;
 	bool target_found;
-	bool debug_draw = false;
 	float jumpSpeed;
 	float maxFallingSpeed;
 	float walkSpeed;

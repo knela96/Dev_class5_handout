@@ -37,7 +37,6 @@ public:
 	bool Start();
 	bool Update();
 	bool Update(float dt, bool do_logic);
-	bool PostUpdate();
 	bool Save(pugi::xml_node& data) const;
 	bool Load(pugi::xml_node& data);
 
@@ -74,7 +73,7 @@ public:
 	j1Animation anim_jumpdown;
 	j1Animation anim_attack;
 
-	Collider* attack_col;
+	Collider* attack_col;//Particle
 
 	Uint32 start_time;
 	Uint32 aux_time;

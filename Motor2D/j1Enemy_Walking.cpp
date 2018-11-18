@@ -200,6 +200,8 @@ bool j1Enemy_Walking::CleanUp() {
 	LOG("Unloading walking_enemy");
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
+	App->tex->UnLoad(debug_tex);
+	debug_tex = nullptr;
 	return true;
 }
 
