@@ -169,6 +169,7 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Load(pugi::xml_node &)
 {
+
 	return true;
 }
 

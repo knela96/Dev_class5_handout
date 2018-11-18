@@ -48,6 +48,7 @@ public:
 public:
 	p2SString name;
 	bool OnGround;
+	bool Fall;
 
 private:
 	EntityType type;

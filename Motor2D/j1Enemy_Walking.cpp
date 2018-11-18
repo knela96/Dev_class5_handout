@@ -12,6 +12,7 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1Map.h"
+#include "p2Point.h"
 #include "j1EntityManager.h"
 #include "j1Player.h"
 #include "j1Entity.h"
@@ -35,7 +36,12 @@ bool j1Enemy_Walking::Awake(pugi::xml_node& config) {
 
 	folder.create(config.child("folder").child_value());
 	texture_path.create("%s%s", folder.GetString(), config.child("texture").attribute("source").as_string());
-	speed = config.child("walkSpeed").attribute("value").as_float();
+	speed.x = config.child("walkSpeed").attribute("value").as_float();
+
+	jumpSpeed = config.child("jumpSpeed").attribute("value").as_float();
+	maxFallingSpeed = config.child("maxFallingSpeed").attribute("value").as_float();
+	walkSpeed = config.child("walkSpeed").attribute("value").as_float();
+	gravity = config.child("gravity").attribute("value").as_float();
 
 	for (pugi::xml_node push_node = config.child("animations").child("walk").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
@@ -48,6 +54,16 @@ bool j1Enemy_Walking::Awake(pugi::xml_node& config) {
 	}
 	walking.loop = config.child("animations").child("walk").attribute("loop").as_bool();
 	walking.speed = config.child("animations").child("walk").attribute("speed").as_float();
+
+	pugi::xml_node push_node = config.child("animations").child("walk").child("frame");
+	idle.PushBack({
+		push_node.attribute("x").as_int(),
+		push_node.attribute("y").as_int(),
+		push_node.attribute("w").as_int(),
+		push_node.attribute("h").as_int()
+		});
+
+	current_animation = &idle;
 
 	return ret;
 
@@ -75,21 +91,30 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 	destination = App->map->WorldToMap(
 		App->entitymanager->player->position.x + App->entitymanager->player->collider->rect.w / 2,
 		App->entitymanager->player->position.y + App->entitymanager->player->collider->rect.h / 2);
-
+	
+	OnGround = App->collisions->CheckGroundCollision(collider);
+	if(!flip)
+		Fall = checkPlatform({origin.x + 2,origin.y});
+	else
+		Fall = checkPlatform({ origin.x - 2,origin.y});
+	LOG("Fall: %i", Fall);
 
 	if ((int)sqrt(pow(destination.x - origin.x, 2) + pow(destination.y - origin.y, 2)) <= 20) {
 		if (do_logic) {
 			target_found = App->path->CreatePath(origin, destination);
-			if (target_found)
+			if (target_found && !Fall) {
 				path = App->path->GetLastPath();
-			else {
-				LOG("target not found");
-			}
+				Move(path, dt);
+			}else
+				App->path->ClearPath();
 		}
-		if (path != NULL && target_found) {
-			Move(path, dt);
-		}
-	}
+	}else
+		App->path->ClearPath();
+
+	if (!OnGround || !Fall)
+		speed.y += gravity * dt;
+
+	position.y += speed.y * dt;
 
 	collider->rect.x = position.x;
 	collider->rect.y = position.y;
@@ -104,6 +129,11 @@ bool j1Enemy_Walking::Update() {
 		debug_draw = !debug_draw;
 	}
 
+	if (App->entitymanager->player->position.x >= position.x)
+		flip = false;
+	else
+		flip = true;
+
 	if (path != NULL && debug_draw) {
 		for (uint i = 0; i < path->Count(); ++i)
 		{
@@ -116,6 +146,11 @@ bool j1Enemy_Walking::Update() {
 		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
 	else
 		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_NONE);
+	/* //BLIT ENEMY SENSOR
+	for (int i = 1; i < 10; ++i) {
+		App->render->Blit(debug_tex, position.x + 2 * 16, position.y + i * 16);
+		App->render->Blit(debug_tex, position.x - 2 * 16, position.y + i * 16);
+	}*/
 
 	return true;
 }
@@ -125,31 +160,21 @@ void j1Enemy_Walking::Move(const p2DynArray<iPoint>* path, float dt)
 	if (path->Count() > 1) {
 		iPoint pos_path1 = *path->At(0);
 		iPoint pos_path2 = *path->At(1);
-		LOG("%i_%i - %i_%i", pos_path1.x, pos_path1.y, pos_path2.x, pos_path2.y);
 		if (pos_path1.x > pos_path2.x) {
-			position.x -= speed * dt;
-			//flip = true;
+			position.x -= speed.x * dt;
+			LOG("%f", speed.x * dt);
 		}
 		else if (pos_path1.x < pos_path2.x) {
-			position.x += speed * dt;
-			//flip = false;
-		}
-
-		if (pos_path1.y > pos_path2.y) {
-			position.y -= speed * dt;
-		}
-		else if (pos_path1.y < pos_path2.y) {
-			position.y += speed * dt;
+			position.x += speed.x * dt;
 		}
 	}
 	else {
 		if (origin.x > destination.x) {
-			position.x -= speed * dt;
+			position.x -= speed.x * dt;
 
 		}
 		else if (origin.x < destination.x) {
-			position.x += speed * dt;
-
+			position.x += speed.x * dt;
 		}
 	}
 }
@@ -163,8 +188,61 @@ bool j1Enemy_Walking::CleanUp() {
 	return true;
 }
 
-void j1Enemy_Walking::OnCollision(Collider* col_1, Collider* col_2) {
+void j1Enemy_Walking::OnCollision(Collider* collider1, Collider* collider2) {
+	if (collider2->gettype() == 0) {
+		WallCollision(collider1, collider2);
+	}
+}
 
+void j1Enemy_Walking::WallCollision(Collider* c1, Collider* c2)
+{
+	SDL_Rect collisionOverlay;
+	SDL_IntersectRect(&c1->rect, &c2->rect, &collisionOverlay);
+
+	if (collisionOverlay.w >= collisionOverlay.h) {
+		if (c1->rect.y + c1->rect.h >= c2->rect.y && c1->rect.y < c2->rect.y) {	//Ground
+			while (c1->CheckCollision(c2->rect) == true) {
+				c1->rect.y--;
+			}
+
+			speed.y = 0.0f;
+			OnGround = true;
+		}
+		else if (c1->rect.y <= c2->rect.y + c2->rect.h && c1->rect.y + c1->rect.h > c2->rect.y + c2->rect.h) {	//Ceiling
+			while (c1->CheckCollision(c2->rect) == true) {
+				c1->rect.y++;
+			}
+			speed.y = 0.0f;
+		}
+		position.y = c1->rect.y;
+	}
+	else {
+		if (c1->rect.x + c1->rect.w >= c2->rect.x && c1->rect.x < c2->rect.x) {	//Right
+			while (c1->CheckCollision(c2->rect) == true) {
+				c1->rect.x--;
+			}
+
+		}
+		else if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x + c1->rect.w > c2->rect.x + c2->rect.w) {	//Left
+			while (c1->CheckCollision(c2->rect) == true) {
+				c1->rect.x++;
+			}
+		}
+		position.x = c1->rect.x;
+	}
+}
+
+bool j1Enemy_Walking::checkPlatform(iPoint position) {
+	bool ret = true;
+	for (int i = 1; i < 10; ++i) {
+		ret = App->path->IsWalkable({ position.x,position.y + i });
+		if (ret == false) {
+			current_animation = &walking;
+			return false;
+		}
+	}
+	current_animation = &idle;
+	return ret;
 }
 
 bool j1Enemy_Walking::Load(pugi::xml_node&) {

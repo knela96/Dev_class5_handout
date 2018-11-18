@@ -11,6 +11,6 @@
 	<entities />
 	<fade />
 	<renderer>
-		<camera x="-88" y="0" />
+		<camera x="-60" y="0" />
 	</renderer>
 </game_state>

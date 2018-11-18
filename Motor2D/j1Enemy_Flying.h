@@ -65,6 +65,7 @@ private:
 	bool flip;
 	bool target_found;
 	bool debug_draw = false;
+	bool OnGround = true;
 };
 
 
