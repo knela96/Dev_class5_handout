@@ -73,6 +73,8 @@ public:
 	// Called each loop iteration
 	void Draw();
 
+	bool deleteCollider(Collider * collider);
+
 	// Called before quitting
 	bool CleanUp();
 

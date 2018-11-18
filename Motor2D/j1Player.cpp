@@ -179,11 +179,12 @@ bool j1Player::Start() {
 bool j1Player::CleanUp()
 {
 
-	App->audio->StopFx();
-	//App->audio->UnloadFx();
 	LOG("Unloading Player assets");
+	App->audio->StopFx();
+	App->audio->UnloadFx();
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
+	App->collisions->deleteCollider(collider);
 	collider = nullptr;
 	return true;
 }

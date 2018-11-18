@@ -11,7 +11,7 @@
 	<entities>
 		<player>
 			<speed x="0" y="0" />
-			<position x="455" y="369" />
+			<position x="311.792542" y="369" />
 			<life value="3" />
 			<jumpSpeed value="500" />
 			<maxFallingSpeed value="400" />
@@ -23,7 +23,7 @@
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="604.820129" y="377" />
+			<position x="473.131134" y="377" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>

@@ -15,9 +15,7 @@ j1EntityManager::j1EntityManager()
 }
 
 j1EntityManager::~j1EntityManager()
-{
-	
-}
+{}
 
 j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 {
@@ -25,6 +23,7 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 	switch (type) {
 	case EntityType::PLAYER:
 		ret = new j1Player(col);
+		App->entitymanager->player = (j1Player*)ret;
 		break;
 	case EntityType::FLYING_ENEMY:		
 		ret = new j1Enemy_Flying(col);
@@ -36,11 +35,6 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 		entities.add(ret);
 
 	return ret;
-}
-
-void j1EntityManager::DestroyEntity(j1Entity* entity)
-{
-	delete entity;
 }
 
 bool j1EntityManager::Awake(pugi::xml_node& config)
@@ -212,7 +206,7 @@ bool j1EntityManager::Save(pugi::xml_node & data ) const
 
 void j1EntityManager::OnCollision(Collider* c1, Collider* c2)
 {
-	//for (uint i = 0; i < entities.count(); ++i)
-		//if (entities[i] != nullptr && entities[i]->GetCollider() == c1)
-			//entities[i]->OnCollision(c1,c2);
+	for (uint i = 0; i < entities.count(); ++i)
+		if (entities[i] != nullptr && entities[i]->collider == c1)
+			entities[i]->OnCollision(c1,c2);
 }

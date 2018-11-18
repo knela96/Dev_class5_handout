@@ -26,7 +26,7 @@ j1Enemy_Walking::j1Enemy_Walking(SDL_Rect* collider_rect) : j1Entity(collider_re
 {
 	name.create("walking_enemy");
 
-	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_ENEMY, (j1Module*)App->entitymanager);
+	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_PLATFORM_ENEMY, (j1Module*)App->entitymanager);
 }
 
 j1Enemy_Walking::~j1Enemy_Walking()

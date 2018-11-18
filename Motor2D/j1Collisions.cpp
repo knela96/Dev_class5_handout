@@ -223,6 +223,22 @@ void j1Collisions::Draw()
 	}
 }
 
+bool j1Collisions::deleteCollider(Collider* collider)
+{
+	if (collider != nullptr)
+	{
+		for (uint i = 0; i < data.colliders.count(); ++i)
+		{
+			if (data.colliders[i] == collider)
+			{
+				collider->to_delete = true;
+				break;
+			}
+		}
+	}
+	return false;
+}
+
 // Called before quitting
 bool j1Collisions::CleanUp()
 {
@@ -313,19 +329,11 @@ bool j1Collisions::setColliders() {
 			LOG("Added Player Entity");
 			break; 
 		case COLLIDER_FLYING_ENEMY:
-			/*entity = new j1Entity(EntityType::FLYING_ENEMY);
-			entity = App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY);
-			data.info_spawns[i]->callback = (j1Enemy_Flying*)entity;
-			data.colliders.add(data.info_spawns[i]);
-			((j1Enemy_Flying*)entity)->collider = data.colliders.end->data;*/
+			App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY, &data.info_spawns[i]->rect);
 			LOG("Added Flying Entity");
 			break;
 		case COLLIDER_PLATFORM_ENEMY:
-			/*entity = new j1Entity(EntityType::WALKING_ENEMY);
-			entity = App->entitymanager->CreateEntity(EntityType::WALKING_ENEMY);
-			data.info_spawns[i]->callback = (j1Enemy_Walking*)entity;
-			data.colliders.add(data.info_spawns[i]);
-			((j1Enemy_Walking*)entity)->collider = data.colliders.end->data;*/
+			App->entitymanager->CreateEntity(EntityType::WALKING_ENEMY, &data.info_spawns[i]->rect);
 			LOG("Added Walking Entity");
 			break;
 		}
@@ -333,8 +341,7 @@ bool j1Collisions::setColliders() {
 	return true;
 }
 
-Collider::Collider()
-{}
+Collider::Collider(){}
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {

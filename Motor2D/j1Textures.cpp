@@ -51,6 +51,7 @@ bool j1Textures::CleanUp()
 	for(item = textures.start; item != NULL; item = item->next)
 	{
 		SDL_DestroyTexture(item->data);
+		item->data = nullptr;
 	}
 
 	textures.clear();
