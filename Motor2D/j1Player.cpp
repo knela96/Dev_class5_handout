@@ -24,12 +24,6 @@ j1Player::j1Player() : j1Entity(EntityType::PLAYER)
 
 j1Player::~j1Player()
 {
-	App->audio->StopFx();
-	//App->audio->UnloadFx();
-	LOG("Unloading Player assets");
-	App->tex->UnLoad(graphics);
-	graphics = nullptr;
-	collider = nullptr;
 }
 
 // Load assets
@@ -183,6 +177,13 @@ bool j1Player::Start() {
 
 bool j1Player::CleanUp()
 {
+
+	App->audio->StopFx();
+	//App->audio->UnloadFx();
+	LOG("Unloading Player assets");
+	App->tex->UnLoad(graphics);
+	graphics = nullptr;
+	collider = nullptr;
 	return true;
 }
 
@@ -389,7 +390,7 @@ bool j1Player::Update(float dt, bool do_logic)
 bool j1Player::Update() {
 	// Draw everything --------------------------------------
 
-	if (flip)
+	if (flip && !hit)
 		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
 	else if (current_animation == &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
 		App->render->Blit(graphics, position.x - 10, position.y, &animation_Rect, SDL_FLIP_NONE);
@@ -413,7 +414,20 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 		}
 	}
 	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim) {
-
+		if (SDL_GetTicks() - start_time > 3000)
+			hit = !hit,	start_time = SDL_GetTicks();
+		if (!hit) {
+			start_time = SDL_GetTicks();
+			current_life--;
+			App->audio->StopFx();
+			App->audio->PlayFx(Death_fx,0);
+			LOG("HIT");
+			if (current_life <= 0) {
+				currentState = CharacterState::Jump;
+				death_anim = true;
+			}
+			hit = true;
+		}
 	}
 	else if (collider2->gettype() == 3) {
 		if (!win) 
@@ -517,6 +531,9 @@ void j1Player::deathAnim(float dt)
 		else {
 			position = lastPosition;
 			App->render->camera.x = -position.x * App->win->GetScale() + 300;
+			if (App->render->camera.x > 0)
+				App->render->camera.x = 0;
+			start_time = SDL_GetTicks();
 		}
 	}
 
