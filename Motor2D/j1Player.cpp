@@ -517,6 +517,7 @@ bool j1Player::Update() {
 }
 
 void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
+
 	if(collider2->gettype() == 0) {
 		WallCollision(collider1, collider2);
 	}
@@ -532,7 +533,7 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 			current_life--;
 		}
 	}
-	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim) {
+	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY && !godmode || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim && !godmode) {
 
 		LOG("blink %i",c_blink);
 		if (!hit && c_blink == 0) {
