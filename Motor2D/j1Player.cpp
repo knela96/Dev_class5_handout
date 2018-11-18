@@ -279,8 +279,10 @@ bool j1Player::Update(float dt, bool do_logic)
 				if (speed.y <= 0) {
 					current_animation = &anim_jumpup;
 				}
-				else if (speed.y > 0)
+				else if (speed.y > 0) {
+					App->audio->StopFx();
 					current_animation = &anim_jumpdown;
+				}
 
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 					if (!plane && start_time == 0) {
@@ -353,11 +355,16 @@ bool j1Player::Update(float dt, bool do_logic)
 				speed.y = maxFallingSpeed;
 
 
-			position.x += speed.x * dt;
-			position.y += speed.y * dt;
-		}
+			if (position.x < 0)
+				position.x = 0;
+			else
+				position.x += speed.x * dt;
 
-		
+			if (position.y < 0)
+				position.y = 0;
+			else
+				position.y += speed.y * dt;
+		}
 		
 		if(death_anim)
 			deathAnim(dt);
@@ -400,8 +407,16 @@ bool j1Player::Update(float dt, bool do_logic)
 			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 				speed.y = walkSpeed;
 			}
-			position.x += speed.x * dt;
-			position.y += speed.y * dt;
+			if (position.x < 0)
+				position.x = 0;
+			else
+				position.x += speed.x * dt;
+
+			if (position.y <= 0)
+				position.y = 0;
+			else
+				position.y += speed.y * dt;
+
 			current_animation = &anim_plane;
 		}
 
@@ -419,13 +434,17 @@ bool j1Player::Update(float dt, bool do_logic)
 
 bool j1Player::Update() {
 	// Draw everything --------------------------------------
+	if (hit)
+		hitanim();
 
-	if (flip)
-		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
-	else if (current_animation == &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
-		App->render->Blit(graphics, position.x - 10, position.y, &animation_Rect, SDL_FLIP_NONE);
-	else
-		App->render->Blit(graphics, position.x - 20, position.y, &animation_Rect, SDL_FLIP_NONE);
+	if (!blink){
+		if (flip)
+			App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
+		else if (current_animation == &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
+			App->render->Blit(graphics, position.x - 10, position.y, &animation_Rect, SDL_FLIP_NONE);
+		else
+			App->render->Blit(graphics, position.x - 20, position.y, &animation_Rect, SDL_FLIP_NONE);
+	}
 	return true;
 }
 
@@ -438,25 +457,32 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 			if (godmode == false)
 				current_life--;
 			death_anim = true;
+			App->audio->StopFx();
+			App->audio->PlayFx(Death_fx, 1);
 		}
 		else {
 			current_life--;
 		}
 	}
 	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim) {
-		if (SDL_GetTicks() - start_time > 3000)
-			hit = !hit,	start_time = SDL_GetTicks();
-		if (!hit && !godmode) {
-			start_time = SDL_GetTicks();
+
+		LOG("blink %i",c_blink);
+		if (!hit && c_blink == 0) {
+			LOG("HIT"); 
+			start_time = SDL_GetTicks() - start_time;
+			hit = true;
 			current_life--;
-			App->audio->StopFx();
-			App->audio->PlayFx(Death_fx,0);
-			LOG("HIT");
-			if (current_life <= 0) {
+			if (current_life == 0) {
+				hit = false;
 				currentState = CharacterState::Jump;
 				death_anim = true;
+				App->audio->StopFx();
+				App->audio->PlayFx(Death_fx, 1);
 			}
-			hit = true;
+			else {
+				App->audio->StopFx();
+				App->audio->PlayFx(Jump_fx, 0);
+			}
 		}
 	}
 	else if (collider2->gettype() == 3) {
@@ -534,13 +560,29 @@ void j1Player::cameraPos()
 			App->render->camera.y = (position.y * App->win->GetScale() + collider->rect.h / 2 - App->win->height / 2);
 	}*/
 }
+void j1Player::hitanim()
+{
+	if (SDL_GetTicks() - start_time > 100 && c_blink < 10) {
+		start_time = SDL_GetTicks();
+		if(c_blink % 2 == 0)
+			blink = true,
+			LOG("1");
+		else
+			blink = false,
+			LOG("0");
+		c_blink++;
+	}
+	if(c_blink == 10) {
+		hit = false;
+		c_blink = 0;
+	}
+}
+
 
 void j1Player::deathAnim(float dt)
 {
 	current_animation = &anim_death;
-
-	App->audio->PlayFx(Death_fx, 1);
-
+	
 	if (position.y > App->render->camera.y + App->render->camera.h - App->render->camera.h / 4 && !isFalling && death_anim) {
 		position.y -= 800 * dt;
 		start_time = SDL_GetTicks();

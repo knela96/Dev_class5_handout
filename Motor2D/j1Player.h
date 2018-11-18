@@ -47,6 +47,7 @@ public:
 	void WallCollision(Collider * c1, Collider * c2);
 	void setGround(bool onGround, bool isFalling);
 	void cameraPos();
+	void hitanim();
 	void deathAnim(float dt);
 	void resetPlayer();
 
@@ -75,7 +76,9 @@ public:
 	bool dead = false;
 	bool win = false;
 	bool godmode = false;
+	bool blink = false;
 	uint life;
+	uint c_blink = 0;
 	uint current_life;
 	char _godmode[8] = "godmode";
 private:

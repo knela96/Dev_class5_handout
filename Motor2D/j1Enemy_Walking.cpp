@@ -101,7 +101,6 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 		Fall = checkPlatform({origin.x + 2,origin.y});
 	else
 		Fall = checkPlatform({ origin.x - 2,origin.y});
-	LOG("Fall: %f", Fall);
 
 	if ((int)sqrt(pow(destination.x - origin.x, 2) + pow(destination.y - origin.y, 2)) <= 20) {
 		if (do_logic) {
