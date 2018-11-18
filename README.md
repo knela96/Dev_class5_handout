@@ -23,6 +23,8 @@ A - Move left
 
 D - Move right
 
+X - Attack forward
+
 Spacebar - Jump
 
 Spacebar while in the air - Glide for two seconds
@@ -52,6 +54,10 @@ besides this, when you fall from a platform you don't respawn at the start of th
 Background and tiles provided by Luis Zuno (aka ansimuz) https://opengameart.org/content/magic-cliffs-environment
 
 Player Sprites taken from the Sega Megadrive Sonic Mania
+
+Enemies Sprites taken from the game Klonoa: Empire of Dreams
+
+https://www.spriters-resource.com/game_boy_advance/klonoaeod/sheet/273/
 
 # Music
 

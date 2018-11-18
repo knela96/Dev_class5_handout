@@ -15,7 +15,8 @@ enum CharacterState
 	Stand,
 	Walk,
 	Jump,
-	Plane
+	Plane,
+	Attack
 };
 
 enum CharacterFX {
@@ -62,6 +63,7 @@ public:
 
 	bool isFalling = false;
 	bool plane = false;
+	bool attacked = false;
 	bool b_respawn = false;
 
 	j1Animation anim_idle;
@@ -70,6 +72,7 @@ public:
 	j1Animation anim_death;
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
+	j1Animation anim_attack;
 
 	Uint32 start_time;
 	Uint32 aux_time;
