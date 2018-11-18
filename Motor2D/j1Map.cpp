@@ -163,14 +163,18 @@ SDL_Rect TileSet::GetTileRect(int id) const
 bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
-
+	App->tex->CleanUp();
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
 	while(item != NULL)
 	{
-		RELEASE(item->data);
+		if (item->data != nullptr)
+		{
+			delete item->data;
+			item->data = nullptr;
+		}
 		item = item->next;
 	}
 	data.tilesets.clear();
@@ -180,7 +184,11 @@ bool j1Map::CleanUp()
 
 	while (layer != NULL)
 	{
-		RELEASE(layer->data);
+		if (layer->data != nullptr)
+		{
+			delete layer->data;
+			layer->data = nullptr;
+		}
 		layer = layer->next;
 	}
 	data.layers.clear();

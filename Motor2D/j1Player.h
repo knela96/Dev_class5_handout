@@ -30,7 +30,7 @@ enum CharacterFX {
 class j1Player : public j1Entity
 {
 public:
-	j1Player();
+	j1Player(SDL_Rect* collider_rect);
 	~j1Player();
 
 	bool Awake(pugi::xml_node& config);
@@ -48,6 +48,7 @@ public:
 	void WallCollision(Collider * c1, Collider * c2);
 	void setGround(bool onGround, bool isFalling);
 	void cameraPos();
+	void hitanim();
 	void deathAnim(float dt);
 	void resetPlayer();
 
@@ -58,7 +59,7 @@ public:
 	float walkSpeed;
 	float gravity;
 	float current_gravity;
-	fPoint speed; 
+	fPoint speed;
 
 	bool isFalling = false;
 	bool plane = false;
@@ -75,15 +76,15 @@ public:
 
 	Uint32 start_time;
 	Uint32 aux_time;
-
 	bool dead = false;
 	bool win = false;
 	bool godmode = false;
+	bool blink = false;
 	uint life;
+	uint c_blink = 0;
 	uint current_life;
 	char _godmode[8] = "godmode";
 private:
-
 	uint				heightjump;
 	fPoint				lastPosition;
 	fPoint				respawn;

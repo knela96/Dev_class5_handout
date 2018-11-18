@@ -91,14 +91,14 @@ bool j1Scene2::PreUpdate()
 // Called each loop iteration
 bool j1Scene2::Update(float dt)
 {
-	if (App->entitymanager->player != nullptr) {
-		if (App->entitymanager->player->current_life <= 0)
+	if (App->entitymanager->GetPlayer() != nullptr) {
+		if (App->entitymanager->GetPlayer()->current_life <= 0)
 			App->fade->FadeToBlack(this, App->scene);
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-			App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
+			App->entitymanager->GetPlayer()->godmode = !App->entitymanager->GetPlayer()->godmode;
 
-		if (App->entitymanager->player->win)
+		if (App->entitymanager->GetPlayer()->win)
 			App->fade->FadeToBlack(this, App->scene);
 	}
 
@@ -159,7 +159,7 @@ bool j1Scene2::CleanUp()
 	LOG("Freeing scene");
 	App->audio->StopMusic();
 	App->audio->UnloadFx();
-	//App->entitymanager->Disable();
+	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;

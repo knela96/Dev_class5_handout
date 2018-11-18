@@ -15,33 +15,27 @@ j1EntityManager::j1EntityManager()
 }
 
 j1EntityManager::~j1EntityManager()
-{
-	
-}
+{}
 
-j1Entity* j1EntityManager::CreateEntity(EntityType type)
+j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 {
 	j1Entity* ret = nullptr;
 	switch (type) {
 	case EntityType::PLAYER:
-		ret = new j1Player();
-		player = (j1Player*)ret;
+		ret = new j1Player(col);
 		break;
 	case EntityType::FLYING_ENEMY:		
-		ret = new j1Enemy_Flying();
+		ret = new j1Enemy_Flying(col);
 		break;
 	case EntityType::WALKING_ENEMY:
-		ret = new j1Enemy_Walking();
+		ret = new j1Enemy_Walking(col);
 	}
-	if (ret != nullptr)
+	if (ret != nullptr) {
+		ret->type = type;
 		entities.add(ret);
+	}
 
 	return ret;
-}
-
-void j1EntityManager::DestroyEntity(j1Entity* entity)
-{
-	delete entity;
 }
 
 bool j1EntityManager::Awake(pugi::xml_node& config)
@@ -51,6 +45,18 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	_config = App->LoadConfig(config_file).child("entities");
 	
 	return true;
+}
+
+j1Player* j1EntityManager::GetPlayer()
+{
+	p2List_item<j1Entity*>* item = entities.start;
+	while (item != nullptr)
+	{
+		if (item->data->type == EntityType::PLAYER)
+			return (j1Player*)item->data;
+		item = item->next;
+	}
+	return nullptr;
 }
 
 bool j1EntityManager::AwakeEntities() {
@@ -72,7 +78,7 @@ bool j1EntityManager::Start()
 {
 	bool ret = true;
 
-	App->collisions->setColliders();
+	//App->collisions->setColliders();
 
 	LOG("Added E: %i", entities.count());
 	AwakeEntities();
@@ -171,6 +177,9 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Load(pugi::xml_node & data )
 {
+	//App->collisions->setColliders();
+
+	
 	p2List_item<j1Entity*>* iterator = entities.start;
 	pugi::xml_node object = data.child("player");
 	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
@@ -209,4 +218,11 @@ bool j1EntityManager::Save(pugi::xml_node & data ) const
 			iterator->data->Save(data.append_child(iterator->data->name.GetString()));
 	}
 	return true;
+}
+
+void j1EntityManager::OnCollision(Collider* c1, Collider* c2)
+{
+	for (uint i = 0; i < entities.count(); ++i)
+		if (entities[i] != nullptr && entities[i]->collider == c1)
+			entities[i]->OnCollision(c1,c2);
 }

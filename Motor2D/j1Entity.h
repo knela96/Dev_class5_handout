@@ -25,7 +25,7 @@ class j1Entity
 {
 public:
 	//Constructor
-	j1Entity(EntityType type) : type(type) {}
+	j1Entity(SDL_Rect* collider_rect){}
 
 	virtual ~j1Entity() {}
 

@@ -20,19 +20,24 @@ enum ColliderTypes
 	COLLIDER_MAX,
 };
 
+struct Spawn {
+	SDL_Rect rect; 
+	ColliderTypes type;
+};
 struct Collider {
 	SDL_Rect rect;
 	bool to_delete = false;
 	ColliderTypes type;
-	j1Entity* callback = nullptr;
+	j1Module* callback = nullptr;
 	bool onGround;
 	bool isFalling;
 
-	/*Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
+	Collider();
+	Collider(SDL_Rect rectangle, ColliderTypes type, j1Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
-	{}*/
+	{}
 
 	ColliderTypes gettype() { return type; }
 
@@ -50,8 +55,7 @@ struct Collider {
 
 struct ColliderData {
 	p2List<Collider*> colliders;
-	p2List<Collider*> info_spawns;
-
+	p2List<Spawn*> info_spawns;
 };
 
 
@@ -69,16 +73,18 @@ public:
 	// Called each loop iteration
 	void Draw();
 
+	bool deleteCollider(Collider * collider);
+
 	// Called before quitting
 	bool CleanUp();
 
 	bool PreUpdate();
 
+	Collider * AddCollider(SDL_Rect rect, ColliderTypes type, j1Module * callback = nullptr);
+
 	bool CheckGroundCollision(Collider * hitbox) const;
 
 	bool Update(float dt);
-
-	//bool PostUpdate();
 
 	bool Load(pugi::xml_document& file_name);
 	

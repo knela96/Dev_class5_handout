@@ -20,9 +20,11 @@
 #include "SDL/include/SDL.h"
 
 
-j1Enemy_Flying::j1Enemy_Flying() : j1Entity(EntityType::FLYING_ENEMY)
+j1Enemy_Flying::j1Enemy_Flying(SDL_Rect* collider_rect) : j1Entity(collider_rect)
 {
 	name.create("flying_enemy");
+
+	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_FLYING_ENEMY, (j1Module*)App->entitymanager);
 }
 
 j1Enemy_Flying::~j1Enemy_Flying()
@@ -77,8 +79,8 @@ bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 		position.x + collider->rect.w / 2, 
 		position.y + collider->rect.h / 2	);
 	destination = App->map->WorldToMap(
-		App->entitymanager->player->position.x + App->entitymanager->player->collider->rect.w / 2,
-		App->entitymanager->player->position.y + App->entitymanager->player->collider->rect.h / 2	);
+		App->entitymanager->GetPlayer()->position.x + App->entitymanager->GetPlayer()->collider->rect.w / 2,
+		App->entitymanager->GetPlayer()->position.y + App->entitymanager->GetPlayer()->collider->rect.h / 2	);
 	
 
 	if ((int)sqrt(pow(destination.x - origin.x, 2) + pow(destination.y - origin.y, 2)) <= 20) {
@@ -104,7 +106,7 @@ bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 }
 
 bool j1Enemy_Flying::Update(){
-	if (App->entitymanager->player->position.x >= position.x)
+	if (App->entitymanager->GetPlayer()->position.x >= position.x)
 		flip = false;
 	else
 		flip = true;

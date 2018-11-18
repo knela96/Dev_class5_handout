@@ -142,6 +142,15 @@ bool j1Collisions::PreUpdate()
 	return true;
 }
 
+Collider* j1Collisions::AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback)
+{
+	Collider* ret = nullptr;
+
+	data.colliders.add(new Collider(rect, type, callback));
+
+	return data.colliders.end->data;
+}
+
 bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
 {
 	bool ret = false;
@@ -214,6 +223,22 @@ void j1Collisions::Draw()
 	}
 }
 
+bool j1Collisions::deleteCollider(Collider* collider)
+{
+	if (collider != nullptr)
+	{
+		for (uint i = 0; i < data.colliders.count(); ++i)
+		{
+			if (data.colliders[i] == collider)
+			{
+				collider->to_delete = true;
+				break;
+			}
+		}
+	}
+	return false;
+}
+
 // Called before quitting
 bool j1Collisions::CleanUp()
 {
@@ -234,7 +259,7 @@ bool j1Collisions::CleanUp()
 	{
 		if (data.info_spawns[i] != nullptr)
 		{
-			//delete data.info_spawns[i];
+			delete data.info_spawns[i];
 			data.info_spawns[i] = nullptr;
 		}
 	}
@@ -263,10 +288,11 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
 		{
 			Collider* col = new Collider();
-			col->rect.x = object.attribute("x").as_uint();
-			col->rect.y = object.attribute("y").as_uint();
-			col->rect.w = object.attribute("width").as_uint();
-			col->rect.h = object.attribute("height").as_uint();
+			col->rect = {
+			object.attribute("x").as_int(),
+			object.attribute("y").as_int(),
+			object.attribute("width").as_int(),
+			object.attribute("height").as_int() };
 			col->type = (ColliderTypes)object.attribute("name").as_uint();
 
 			data.colliders.add(col);
@@ -277,7 +303,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 	{
 		for (pugi::xml_node object = collider.child("object"); object && ret; object = object.next_sibling("object"))
 		{
-			Collider* col = new Collider();
+			Spawn* col = new Spawn();
 			col->rect.x = object.attribute("x").as_uint();
 			col->rect.y = object.attribute("y").as_uint();
 			col->rect.w = object.attribute("width").as_uint();
@@ -288,7 +314,7 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 		}
 	}
 
-	//ret = setColliders();
+	ret = setColliders();
 
 	return ret;
 }
@@ -297,36 +323,25 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 bool j1Collisions::setColliders() {
 	for (uint i = 0; i < data.info_spawns.count(); ++i)
 	{
-		j1Entity * entity;
 		switch (data.info_spawns[i]->type) {
 		case COLLIDER_PLAYER:
-			entity = new j1Entity(EntityType::PLAYER);
-			entity = App->entitymanager->CreateEntity(EntityType::PLAYER);
-			data.info_spawns[i]->callback = (j1Player*)entity;
-			data.colliders.add(data.info_spawns[i]);
-			((j1Player*)entity)->collider = data.colliders.end->data;
+			App->entitymanager->CreateEntity(EntityType::PLAYER, &data.info_spawns[i]->rect);
 			LOG("Added Player Entity");
 			break; 
 		case COLLIDER_FLYING_ENEMY:
-			entity = new j1Entity(EntityType::FLYING_ENEMY);
-			entity = App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY);
-			data.info_spawns[i]->callback = (j1Enemy_Flying*)entity;
-			data.colliders.add(data.info_spawns[i]);
-			((j1Enemy_Flying*)entity)->collider = data.colliders.end->data;
+			App->entitymanager->CreateEntity(EntityType::FLYING_ENEMY, &data.info_spawns[i]->rect);
 			LOG("Added Flying Entity");
 			break;
 		case COLLIDER_PLATFORM_ENEMY:
-			entity = new j1Entity(EntityType::WALKING_ENEMY);
-			entity = App->entitymanager->CreateEntity(EntityType::WALKING_ENEMY);
-			data.info_spawns[i]->callback = (j1Enemy_Walking*)entity;
-			data.colliders.add(data.info_spawns[i]);
-			((j1Enemy_Walking*)entity)->collider = data.colliders.end->data;
+			App->entitymanager->CreateEntity(EntityType::WALKING_ENEMY, &data.info_spawns[i]->rect);
 			LOG("Added Walking Entity");
 			break;
 		}
 	}
 	return true;
 }
+
+Collider::Collider(){}
 
 bool Collider::CheckCollision(const SDL_Rect & r) const
 {

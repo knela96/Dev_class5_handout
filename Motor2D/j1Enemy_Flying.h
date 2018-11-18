@@ -12,14 +12,13 @@
 
 struct SDL_Texture;
 
-
 class j1Enemy_Flying : public j1Entity
 {
 public:
 
-	j1Enemy_Flying();
+	j1Enemy_Flying(SDL_Rect* collider_rect);
 
-	virtual ~j1Enemy_Flying();
+	~j1Enemy_Flying();
 
 	bool Awake(pugi::xml_node & config);
 
