@@ -14,6 +14,7 @@
 #include "j1Map.h"
 #include "j1EntityManager.h"
 #include "j1Entity.h"
+#include "Brofiler\Brofiler.h"
 
 #include "SDL/include/SDL.h"
 
@@ -212,6 +213,8 @@ bool j1Player::PostUpdate()
 // Update: draw background
 bool j1Player::Update(float dt, bool do_logic)
 {
+	BROFILER_CATEGORY("PlayerUpdate1", Profiler::Color::MediumSlateBlue);
+
 	if (dt == 0) {
 		position.x = respawn.x;
 		position.y = respawn.y;
@@ -509,6 +512,9 @@ bool j1Player::Update(float dt, bool do_logic)
 }
 
 bool j1Player::Update() {
+
+	BROFILER_CATEGORY("PlayerUpdate2", Profiler::Color::MediumSpringGreen);
+
 	// Draw everything --------------------------------------
 	if (hit)
 		hitanim();

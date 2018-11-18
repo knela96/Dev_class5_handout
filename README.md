@@ -43,6 +43,8 @@ F9 - To view colliders and logic of the game
 
 F10 - God mode
 
+F11 - ​Enable/Disable ​FPS cap to 30
+
 
 # Innovation 
 
@@ -68,3 +70,28 @@ Songs from the Game Ori and the Blind Forest developed by Moon Studios https://w
 All effects were taken from the website https://freesound.org/ with a Creative Commons 0 License
 
 Licensed by <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/deed.es_ES%22%3E"><img alt="Creative Commons License" width="100" src="https://www.fairkom.eu/sites/default/files/styles/middlecolumn_full/public/image/cc0-300x169.png?itok=W3DC-8TA" /></a>
+
+# Tasklist
+
+
+ Game capped to 30 frames (Eric)
+ Show FPS Data (Eric)
+ Movement normalized dt (Eric)
+ Animation normalized dt (Eric)
+ Entities (Eric)
+ Change jump logic (Eric)
+ change Colliders logic (Eric)
+ When falling without jumping the player can double jump (Eric)
+ On release check die Animation and Logic (Eric)
+ Chech CleanUp and delete colliders (Eric)
+
+ Walking Enemy (Eric)(Rafel)
+ Attack (Rafel)(Eric)
+
+ Flying Enemy (Rafel) 
+ Enemies Pathfinding (Rafel)
+ Add Brofiler (Rafel)
+ Animation Offset (Rafel)
+ Load/Save Enemies States (Rafel)
+ Scene2 (Rafel)
+ Create UML File (Rafel)

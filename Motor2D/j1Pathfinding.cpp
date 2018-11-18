@@ -189,7 +189,7 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 bool j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
-	BROFILER_CATEGORY("PathfindingFunction", Profiler::Color::PaleVioletRed);
+	BROFILER_CATEGORY("CreatePath", Profiler::Color::PaleVioletRed);
 	last_path.Clear();
 	
 	if (IsWalkable(origin) == IsWalkable(destination) ){
