@@ -20,9 +20,11 @@
 #include "SDL/include/SDL.h"
 
 
-j1Enemy_Flying::j1Enemy_Flying() : j1Entity(EntityType::FLYING_ENEMY)
+j1Enemy_Flying::j1Enemy_Flying(SDL_Rect* collider_rect) : j1Entity(collider_rect)
 {
 	name.create("flying_enemy");
+
+	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_FLYING_ENEMY, (j1Module*)App->entitymanager);
 }
 
 j1Enemy_Flying::~j1Enemy_Flying()

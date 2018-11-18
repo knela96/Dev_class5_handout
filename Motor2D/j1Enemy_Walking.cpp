@@ -17,13 +17,16 @@
 #include "j1Player.h"
 #include "j1Entity.h"
 #include "Brofiler\Brofiler.h"
+#include "j1Collisions.h"
 
 #include "SDL/include/SDL.h"
 
 
-j1Enemy_Walking::j1Enemy_Walking() : j1Entity(EntityType::WALKING_ENEMY)
+j1Enemy_Walking::j1Enemy_Walking(SDL_Rect* collider_rect) : j1Entity(collider_rect)
 {
 	name.create("walking_enemy");
+
+	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_ENEMY, (j1Module*)App->entitymanager);
 }
 
 j1Enemy_Walking::~j1Enemy_Walking()

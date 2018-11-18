@@ -19,19 +19,18 @@ j1EntityManager::~j1EntityManager()
 	
 }
 
-j1Entity* j1EntityManager::CreateEntity(EntityType type)
+j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 {
 	j1Entity* ret = nullptr;
 	switch (type) {
 	case EntityType::PLAYER:
-		ret = new j1Player();
-		player = (j1Player*)ret;
+		ret = new j1Player(col);
 		break;
 	case EntityType::FLYING_ENEMY:		
-		ret = new j1Enemy_Flying();
+		ret = new j1Enemy_Flying(col);
 		break;
 	case EntityType::WALKING_ENEMY:
-		ret = new j1Enemy_Walking();
+		ret = new j1Enemy_Walking(col);
 	}
 	if (ret != nullptr)
 		entities.add(ret);
@@ -209,4 +208,11 @@ bool j1EntityManager::Save(pugi::xml_node & data ) const
 			iterator->data->Save(data.append_child(iterator->data->name.GetString()));
 	}
 	return true;
+}
+
+void j1EntityManager::OnCollision(Collider* c1, Collider* c2)
+{
+	//for (uint i = 0; i < entities.count(); ++i)
+		//if (entities[i] != nullptr && entities[i]->GetCollider() == c1)
+			//entities[i]->OnCollision(c1,c2);
 }

@@ -17,14 +17,15 @@
 
 #include "SDL/include/SDL.h"
 
-j1Player::j1Player() : j1Entity(EntityType::PLAYER)
+j1Player::j1Player(SDL_Rect* collider_rect) : j1Entity(collider_rect)
 {
 	name.create("player");
+
+	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_PLAYER, (j1Module*)App->entitymanager);
 }
 
 j1Player::~j1Player()
-{
-}
+{}
 
 // Load assets
 bool j1Player::Awake(pugi::xml_node& config)

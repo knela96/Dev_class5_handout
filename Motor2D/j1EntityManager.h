@@ -8,6 +8,7 @@ class j1Entity;
 class j1Player;
 class j1Enemy_Flying;
 enum class EntityType;
+struct SDL_Rect;
 
 class j1EntityManager : public j1Module
 {
@@ -16,7 +17,7 @@ public:
 
 	~j1EntityManager();
 	
-	j1Entity* CreateEntity(EntityType type);
+	j1Entity* CreateEntity(EntityType type, SDL_Rect* col);
 
 	void DestroyEntity(j1Entity * entity);
 	
@@ -32,6 +33,8 @@ public:
 	
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
+
+	void OnCollision(Collider * c1, Collider * c2);
 
 
 public:

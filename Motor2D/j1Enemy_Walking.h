@@ -17,9 +17,9 @@ class j1Enemy_Walking : public j1Entity
 {
 public:
 
-	j1Enemy_Walking();
+	j1Enemy_Walking(SDL_Rect* collider_rect);
 
-	virtual ~j1Enemy_Walking();
+	~j1Enemy_Walking();
 
 	bool Awake(pugi::xml_node & config);
 

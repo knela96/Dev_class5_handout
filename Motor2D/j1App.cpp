@@ -17,7 +17,7 @@
 #include "j1EntityManager.h"
 #include "j1Pathfinding.h"
 #include "Brofiler\Brofiler.h"
-
+#include "j1Player.h"
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -236,11 +236,17 @@ void j1App::FinishUpdate()
 
 	float framerate = 1000.0f / ptimer.ReadMs();
 	dt = 1.0f / framerate;
-
-	static char title[256];
-	sprintf_s(title, 256, "FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Cap: %i VSync %i",
-		prev_last_sec_frame_count, avg_fps, last_frame_ms, cap_frames, App->render->vsync);
-	App->win->SetTitle(title);
+	if (App->entitymanager->player != nullptr) {
+		p2SString title("FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Cap: %i VSync %i - Tails Odyssey Map:%dx%d - GODMODE:%i",
+			prev_last_sec_frame_count, avg_fps, last_frame_ms, cap_frames, App->render->vsync, App->map->data.width, App->map->data.height, App->entitymanager->player->godmode);
+		App->win->SetTitle(title.GetString());
+	}
+	else {
+		p2SString title("FPS: %i Av.FPS: %.2f L.Frame Ms: %02u Cap: %i VSync %i - Tails Odyssey Map:%dx%d - GODMODE:%i",
+			prev_last_sec_frame_count, avg_fps, last_frame_ms, cap_frames, App->render->vsync, App->map->data.width, App->map->data.height, 0);
+		App->win->SetTitle(title.GetString());
+	}
+		
 }
 
 // Call modules before each loop iteration
