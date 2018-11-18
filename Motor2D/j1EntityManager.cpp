@@ -171,9 +171,32 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Load(pugi::xml_node & data )
 {
-	for (p2List_item<j1Entity*>* iterator = entities.start; iterator; iterator = iterator->next)
+	p2List_item<j1Entity*>* iterator = entities.start;
+	pugi::xml_node object = data.child("player");
+	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
 	{
-		iterator->data->Load(data.child(iterator->data->name.GetString()));
+		if (iterator->data->type == EntityType::PLAYER) {
+			iterator->data->Load(object);
+			object = object.next_sibling("player");
+		}
+	}
+
+	object = data.child("flying_enemy");
+	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
+	{
+		if (iterator->data->type == EntityType::FLYING_ENEMY) {
+			iterator->data->Load(object);
+			object = object.next_sibling("flying_enemy");
+		}
+	}
+
+	object = data.child("walking_enemy");
+	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
+	{
+		if (iterator->data->type == EntityType::WALKING_ENEMY) {
+			iterator->data->Load(object);
+			object = object.next_sibling("walking_enemy");
+		}
 	}
 	return true;
 }

@@ -104,11 +104,12 @@ bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 }
 
 bool j1Enemy_Flying::Update(){
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		debug_draw = !debug_draw;
-	}
+	if (App->entitymanager->player->position.x >= position.x)
+		flip = false;
+	else
+		flip = true;
 
-	if (path != NULL && debug_draw) {
+	if (path != NULL && App->collisions->debug) {
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
@@ -132,11 +133,9 @@ void j1Enemy_Flying::Move(const p2DynArray<iPoint>* path, float dt)
 		LOG("%i_%i - %i_%i", pos_path1.x, pos_path1.y, pos_path2.x, pos_path2.y);
 		if (pos_path1.x > pos_path2.x) {
 			position.x -= speed * dt;
-			flip = true;
 		}
 		else if (pos_path1.x < pos_path2.x) {
 			position.x += speed * dt;
-			flip = false;
 		}
 
 		if (pos_path1.y > pos_path2.y) {

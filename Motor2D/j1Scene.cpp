@@ -59,7 +59,6 @@ bool j1Scene::Start()
 		App->entitymanager->Enable();
 
 		App->audio->PlayMusic(music_path.GetString());
-
 		
 		debug_tex = App->tex->Load("Assets/maps/path2.png");
 
@@ -96,38 +95,40 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	if (App->entitymanager->player->current_life <= 0)
-		App->fade->FadeToBlack(this, this);
+	if (App->entitymanager->player != nullptr) {
+		if (App->entitymanager->player->current_life <= 0)
+			App->fade->FadeToBlack(this, this);
+
+		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+			App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
+
+		if (App->entitymanager->player->win)
+			App->fade->FadeToBlack(this, App->scene2);
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
 
-	if(App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		App->fade->FadeToBlack(this, this);
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame();
 
-	if(App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame();
 
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-		App->entitymanager->player->godmode = !App->entitymanager->player->godmode;
-
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y -= 100 * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y += 100 * dt;
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		App->render->camera.x += 100 * dt;
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 100 * dt;
-
-	if (App->entitymanager->player->win)
-		App->fade->FadeToBlack(this, App->scene2);
 
 	App->map->Draw();
 
@@ -171,6 +172,7 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
+	App->audio->UnloadFx();
 	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
@@ -182,7 +184,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 	load_scene = (Levels)data.attribute("value").as_uint();
 
 	if (load_scene == Scene2) {
-		Disable();
+		this->Disable();
 		App->scene2->Enable();
 	}
 

@@ -206,7 +206,7 @@ bool j1Player::Update(float dt, bool do_logic)
 		isFalling = false;
 
 	if (!dead || !win) {
-		if (!death_anim) {
+		if (!death_anim && !godmode) {
 			if (OnGround)
 				lastPosition = position;
 			
@@ -353,9 +353,9 @@ bool j1Player::Update(float dt, bool do_logic)
 
 			position.x += speed.x * dt;
 			position.y += speed.y * dt;
-
-
 		}
+
+		
 		
 		if(death_anim)
 			deathAnim(dt);
@@ -373,6 +373,34 @@ bool j1Player::Update(float dt, bool do_logic)
 		case CharacterState::Stand:
 			current_animation = &anim_idle;
 			break;
+		}
+
+		if (godmode) {
+			if ((App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))) {
+				speed.x = 0;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				flip = true;
+				speed.x = -walkSpeed;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+				flip = false;
+				speed.x = walkSpeed;
+			}
+			if ((App->input->GetKey(SDL_SCANCODE_W) == App->input->GetKey(SDL_SCANCODE_S))) {
+				speed.y = 0;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				speed.y = -walkSpeed;
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+				speed.y = walkSpeed;
+			}
+			position.x += speed.x * dt;
+			position.y += speed.y * dt;
+			current_animation = &anim_plane;
 		}
 
 		//Collider
@@ -416,7 +444,7 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim) {
 		if (SDL_GetTicks() - start_time > 3000)
 			hit = !hit,	start_time = SDL_GetTicks();
-		if (!hit) {
+		if (!hit && !godmode) {
 			start_time = SDL_GetTicks();
 			current_life--;
 			App->audio->StopFx();
