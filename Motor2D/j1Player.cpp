@@ -303,7 +303,8 @@ bool j1Player::Update(float dt, bool do_logic)
 					current_animation = &anim_jumpup;
 				}
 				else if (speed.y > 0) {
-					App->audio->StopFx();
+					if(!plane)
+						App->audio->StopFx();
 					current_animation = &anim_jumpdown;
 				}
 
@@ -312,6 +313,7 @@ bool j1Player::Update(float dt, bool do_logic)
 						start_time = SDL_GetTicks();
 						plane = true;
 						isFalling = true;
+						App->audio->StopFx();
 						App->audio->PlayFx(Plane_fx, 1);
 					}
 				}
