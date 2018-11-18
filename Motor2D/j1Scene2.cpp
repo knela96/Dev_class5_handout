@@ -13,6 +13,7 @@
 #include "j1Scene.h"
 #include "j1Scene2.h"
 #include "j1Window.h"
+#include "j1Pathfinding.h"
 
 j1Scene2::j1Scene2() : j1Module()
 {
@@ -31,7 +32,7 @@ bool j1Scene2::Awake(pugi::xml_node& config)
 
 	map.create(config.child("scene2").child("map").child_value());
 	cam_pos = { config.child("scene2").child("camera").attribute("x").as_int(),
-		config.child("scene2").child("camera").attribute("y").as_int()
+				config.child("scene2").child("camera").attribute("y").as_int()
 	};
 
 	music_path.create(config.child("scene2").child("audio").child_value());
@@ -42,9 +43,20 @@ bool j1Scene2::Awake(pugi::xml_node& config)
 bool j1Scene2::Start()
 {
 	App->map->Enable();
+
+	if (App->map->Load(map.GetString()) == true) {
+
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->path->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
+
 	App->map->Load(map.GetString());
 	App->collisions->Enable();
-	//App->entitymanager->player->Enable();
+	
 
 
 	App->audio->PlayMusic(music_path.GetString());
@@ -55,6 +67,28 @@ bool j1Scene2::Start()
 // Called each loop iteration
 bool j1Scene2::PreUpdate()
 {
+
+	static iPoint origin;
+	static bool origin_selected = false;
+
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (origin_selected == true)
+		{
+			App->path->CreatePath(origin, p);
+			origin_selected = false;
+		}
+		else
+		{
+			origin = p;
+			origin_selected = true;
+		}
+	}
 	return true;
 }
 
@@ -70,10 +104,10 @@ bool j1Scene2::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		App->fade->FadeToBlack(this, this);
 
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		App->LoadGame();
 
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->SaveGame();
 	
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
@@ -95,7 +129,7 @@ bool j1Scene2::Update(float dt)
 		App->fade->FadeToBlack(this, App->scene);
 
 	App->map->Draw();
-
+/*
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
@@ -105,7 +139,7 @@ bool j1Scene2::Update(float dt)
 		App->map->data.tilesets.count(),
 		map_coordinates.x, map_coordinates.y);
 
-	App->win->SetTitle(title.GetString());
+	App->win->SetTitle(title.GetString());*/
 	return true;
 }
 
@@ -125,7 +159,6 @@ bool j1Scene2::CleanUp()
 {
 	LOG("Freeing scene");
 	App->audio->StopMusic();
-	//App->entitymanager->player->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
 	return true;
