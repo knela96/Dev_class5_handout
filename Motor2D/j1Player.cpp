@@ -379,7 +379,8 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 				break;
 			case CharacterState::Attack:
-				if (anim_attack.getFrame() >= 9)//CHANGE FIX
+				LOG("Attack % i", anim_attack.getFrame());
+				if (anim_attack.getFrame() >= 8)//CHANGE FIX
 				{
 					anim_attack.Reset();
 					LOG("Attack");
@@ -410,6 +411,7 @@ bool j1Player::Update(float dt, bool do_logic)
 					attack_col = nullptr;
 				}
 				else {
+					current_animation = &anim_attack;//DELETE
 					if (attack_col == nullptr){
 						if (flip)
 							attack_col = App->collisions->AddCollider({ (int)position.x - 16,(int)position.y, 20, 31 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
