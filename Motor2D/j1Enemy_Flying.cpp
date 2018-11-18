@@ -209,11 +209,27 @@ void j1Enemy_Flying::WallCollision(Collider* c1, Collider* c2)
 	}
 }
 
-bool j1Enemy_Flying::Load(pugi::xml_node&) {
+bool j1Enemy_Flying::Load(pugi::xml_node& data) {
+
+	position.x = data.child("position").attribute("x").as_uint();
+
+	position.y = data.child("position").attribute("y").as_uint();
+
+	speed = data.child("walkSpeed").attribute("value").as_float();
 
 	return true;
 }
-bool j1Enemy_Flying::Save(pugi::xml_node&) const {
+bool j1Enemy_Flying::Save(pugi::xml_node& data) const {
+
+	pugi::xml_node enemy_flying = data;
+	
+	enemy_flying.append_child("position").append_attribute("x") = position.x;
+
+	enemy_flying.child("position").append_attribute("y") = position.y;
+
+	enemy_flying.append_child("walkSpeed").append_attribute("value") = speed;
+
+
 	return true;
 }
 

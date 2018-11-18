@@ -167,14 +167,26 @@ void j1Enemy_Walking::OnCollision(Collider* col_1, Collider* col_2) {
 
 }
 
-bool j1Enemy_Walking::Load(pugi::xml_node&) {
+bool j1Enemy_Walking::Load(pugi::xml_node& data) {
+
+	position.x = data.child("position").attribute("x").as_uint();
+
+	position.y = data.child("position").attribute("y").as_uint();
+
+	speed = data.child("walkSpeed").attribute("value").as_float();
 
 	return true;
-
 }
-bool j1Enemy_Walking::Save(pugi::xml_node&) const {
+bool j1Enemy_Walking::Save(pugi::xml_node& data) const {
 
-	return true; 
+	pugi::xml_node enemy_walking = data;
 
+	enemy_walking.append_child("position").append_attribute("x") = position.x;
+
+	enemy_walking.child("position").append_attribute("y") = position.y;
+
+	enemy_walking.append_child("walkSpeed").append_attribute("value") = speed;
+
+
+	return true;
 }
-

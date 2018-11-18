@@ -6,6 +6,8 @@
 #include "j1Enemy_Flying.h"
 #include "j1Collisions.h"
 #include "j1Enemy_Walking.h"
+#include "j1Entity.h"
+#include "j1Enemy_Walking.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -167,12 +169,28 @@ bool j1EntityManager::CleanUp()
 	return ret;
 }
 
-bool j1EntityManager::Load(pugi::xml_node &)
+bool j1EntityManager::Load(pugi::xml_node & data )
 {
+
+	for (p2List_item<j1Entity*>* iterator = entities.start; iterator; iterator = iterator->next)
+	{
+		iterator->data->Load(data.child(iterator->data->name.GetString()));
+	}
+
 	return true;
 }
 
-bool j1EntityManager::Save(pugi::xml_node &) const
+bool j1EntityManager::Save(pugi::xml_node & data ) const
 {
+
+	/*player->Save(data.append_child("player"));
+
+	pugi::xml_node flying_enemy = data.append_child("flying_enemy");
+	pugi::xml_node walking_enemy = data.append_child("walking_enemy");*/
+
+	for (p2List_item<j1Entity*>* iterator = entities.start; iterator; iterator = iterator->next)
+	{
+			iterator->data->Save(data.append_child(iterator->data->name.GetString()));
+	}
 	return true;
 }
