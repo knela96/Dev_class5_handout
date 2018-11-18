@@ -50,6 +50,7 @@ public:
 	p2SString name;
 
 	bool OnGround;
+	bool Fall;
 
 	EntityType type;
 };

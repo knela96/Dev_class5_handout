@@ -33,6 +33,10 @@ public:
 
 	void OnCollision(Collider* col_1, Collider* col_2);
 
+	void WallCollision(Collider * c1, Collider * c2);
+
+	bool checkPlatform(iPoint Position);
+
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
@@ -41,21 +45,22 @@ public:
 public:
 
 	j1Animation walking;
+	j1Animation idle;
+
 
 	bool path_created = false;
 
-	const p2DynArray<iPoint>* path;
+	const p2DynArray<iPoint>* path = NULL;
 
 	fPoint position;
 	SDL_Texture * graphics;
 	Collider* collider;
-	SDL_Rect collider_aux;
+	Collider* collider_aux;
 
 private:
 	SDL_Texture * debug_tex;
 	iPoint origin;
 	iPoint destination;
-	float speed;
 	p2SString			texture_path;
 	p2SString			folder;
 	j1Animation* current_animation = nullptr;
@@ -63,6 +68,12 @@ private:
 	bool flip;
 	bool target_found;
 	bool debug_draw = false;
+	float jumpSpeed;
+	float maxFallingSpeed;
+	float walkSpeed;
+	float gravity;
+	fPoint speed;
+	int w_list[13][5];
 };
 
 

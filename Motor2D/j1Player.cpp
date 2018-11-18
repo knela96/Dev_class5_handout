@@ -390,7 +390,7 @@ bool j1Player::Update(float dt, bool do_logic)
 bool j1Player::Update() {
 	// Draw everything --------------------------------------
 
-	if (flip && !hit)
+	if (flip)
 		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
 	else if (current_animation == &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
 		App->render->Blit(graphics, position.x - 10, position.y, &animation_Rect, SDL_FLIP_NONE);
@@ -548,6 +548,9 @@ void j1Player::resetPlayer()
 	isFalling = true;
 	OnGround = false;
 	plane = false;
+	hit = false;
+	start_time = 0;
+	aux_time = 0;
 	current_life = life;
 
 }
