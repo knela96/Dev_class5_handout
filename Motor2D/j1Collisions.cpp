@@ -7,6 +7,7 @@
 #include "j1Player.h"
 #include "j1Enemy_Walking.h"
 #include "j1Enemy_Flying.h"
+#include "Brofiler\Brofiler.h"
 
 j1Collisions::j1Collisions() : j1Module()
 {
@@ -92,6 +93,8 @@ j1Collisions::~j1Collisions()
 
 bool j1Collisions::PreUpdate()
 {
+	BROFILER_CATEGORY("CollisionsPreUpdate", Profiler::Color::DarkRed);
+
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < data.colliders.count(); ++i)
 	{
@@ -271,6 +274,7 @@ bool j1Collisions::CleanUp()
 
 bool j1Collisions::Update(float dt)
 {
+	BROFILER_CATEGORY("CollisionsUpdate", Profiler::Color::DarkSlateBlue);
 	Draw();
 	return true;
 }

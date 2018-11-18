@@ -8,6 +8,7 @@
 #include "j1Enemy_Walking.h"
 #include "j1Entity.h"
 #include "j1Enemy_Walking.h"
+#include "Brofiler\Brofiler.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -97,6 +98,8 @@ bool j1EntityManager::Start()
 
 bool j1EntityManager::PreUpdate()
 {
+	BROFILER_CATEGORY("EntityManagerPreUpdate", Profiler::Color::Aquamarine);
+
 	bool ret = true;
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
@@ -110,6 +113,8 @@ bool j1EntityManager::PreUpdate()
 }
 bool j1EntityManager::PostUpdate()
 {
+	BROFILER_CATEGORY("EntityManagerPostUpdate", Profiler::Color::Azure);
+
 	bool ret = true;
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
@@ -124,6 +129,8 @@ bool j1EntityManager::PostUpdate()
 
 bool j1EntityManager::Update(float dt)
 {
+	BROFILER_CATEGORY("EntityManagerUpdate", Profiler::Color::Beige);
+
 	accumulated_time += dt * 1000;
 
 	float delay = 1000 / App->frame_cap;
@@ -144,6 +151,8 @@ bool j1EntityManager::Update(float dt)
 
 bool j1EntityManager::UpdateAll(float dt, bool do_logic)
 {
+	BROFILER_CATEGORY("EntityManagerUpdateAll", Profiler::Color::Chocolate);
+
 	bool ret = true;
 
 	p2List_item<j1Entity*>* item;

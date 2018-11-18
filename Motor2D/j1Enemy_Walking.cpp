@@ -35,6 +35,7 @@ j1Enemy_Walking::~j1Enemy_Walking()
 bool j1Enemy_Walking::Awake(pugi::xml_node& config) {
 
 	LOG("Loading enemy Walking");
+
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
@@ -87,6 +88,8 @@ bool j1Enemy_Walking::Start() {
 }
 
 bool j1Enemy_Walking::Update(float dt, bool do_logic) {
+	
+	BROFILER_CATEGORY("WalkingEnemyUpdate1", Profiler::Color::LightSalmon);
 
 	// pathfinfding process
 	origin = App->map->WorldToMap(
@@ -138,6 +141,8 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 }
 
 bool j1Enemy_Walking::Update() {
+
+	BROFILER_CATEGORY("WalkingEnemyUpdate2", Profiler::Color::PaleTurquoise);
 
 	if (App->entitymanager->GetPlayer()->position.x >= position.x)
 		flip = false;

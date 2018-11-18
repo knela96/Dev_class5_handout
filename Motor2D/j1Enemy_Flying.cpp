@@ -73,7 +73,7 @@ bool j1Enemy_Flying::Start() {
 
 bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 
-	BROFILER_CATEGORY("FlyingEnemyUpdate", Profiler::Color::LightSeaGreen);
+	BROFILER_CATEGORY("FlyingEnemyUpdate1", Profiler::Color::LightSeaGreen);
 	// pathfinfding process
 	origin = App->map->WorldToMap(
 		position.x + collider->rect.w / 2, 
@@ -106,6 +106,9 @@ bool j1Enemy_Flying::Update(float dt,bool do_logic) {
 }
 
 bool j1Enemy_Flying::Update(){
+
+	BROFILER_CATEGORY("FlyingEnemyUpdate2", Profiler::Color::LawnGreen);
+
 	if (App->entitymanager->GetPlayer()->position.x >= position.x)
 		flip = false;
 	else

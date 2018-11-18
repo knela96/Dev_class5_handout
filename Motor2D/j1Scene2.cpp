@@ -14,6 +14,7 @@
 #include "j1Scene2.h"
 #include "j1Window.h"
 #include "j1Pathfinding.h"
+#include "Brofiler\Brofiler.h"
 
 j1Scene2::j1Scene2() : j1Module()
 {
@@ -63,7 +64,7 @@ bool j1Scene2::Start()
 // Called each loop iteration
 bool j1Scene2::PreUpdate()
 {
-
+	BROFILER_CATEGORY("Scene2PreUpdate", Profiler::Color::RosyBrown);
 	static iPoint origin;
 	static bool origin_selected = false;
 
@@ -91,6 +92,7 @@ bool j1Scene2::PreUpdate()
 // Called each loop iteration
 bool j1Scene2::Update(float dt)
 {
+	BROFILER_CATEGORY("Scene2Update", Profiler::Color::RoyalBlue);
 	if (App->entitymanager->GetPlayer() != nullptr) {
 		if (App->entitymanager->GetPlayer()->current_life <= 0)
 			App->fade->FadeToBlack(this, App->scene);
@@ -145,6 +147,7 @@ bool j1Scene2::Update(float dt)
 // Called each loop iteration
 bool j1Scene2::PostUpdate()
 {
+	BROFILER_CATEGORY("Scene1PostUpdate", Profiler::Color::SaddleBrown);
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
