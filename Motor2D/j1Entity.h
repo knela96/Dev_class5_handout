@@ -46,13 +46,13 @@ public:
 	virtual void OnCollision(Collider*, Collider*) {}
 
 public:
+
 	p2SString name;
+
 	bool OnGround;
 	bool Fall;
 
-private:
 	EntityType type;
-
 };
 
 #endif //__Entity__

@@ -146,6 +146,7 @@ bool j1Enemy_Walking::Update() {
 		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
 	else
 		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_NONE);
+
 	/* //BLIT ENEMY SENSOR
 	for (int i = 1; i < 10; ++i) {
 		App->render->Blit(debug_tex, position.x + 2 * 16, position.y + i * 16);
@@ -161,22 +162,22 @@ void j1Enemy_Walking::Move(const p2DynArray<iPoint>* path, float dt)
 		iPoint pos_path1 = *path->At(0);
 		iPoint pos_path2 = *path->At(1);
 		if (pos_path1.x > pos_path2.x) {
-			position.x -= speed.x * dt;
-			LOG("%f", speed.x * dt);
+			speed.x = -walkSpeed;
 		}
 		else if (pos_path1.x < pos_path2.x) {
-			position.x += speed.x * dt;
+			speed.x = walkSpeed;
 		}
 	}
 	else {
 		if (origin.x > destination.x) {
-			position.x -= speed.x * dt;
+			speed.x = -walkSpeed;
 
 		}
 		else if (origin.x < destination.x) {
-			position.x += speed.x * dt;
+			speed.x = walkSpeed;
 		}
 	}
+	position.x += speed.x * dt;
 }
 
 bool j1Enemy_Walking::CleanUp() {
@@ -221,12 +222,13 @@ void j1Enemy_Walking::WallCollision(Collider* c1, Collider* c2)
 			while (c1->CheckCollision(c2->rect) == true) {
 				c1->rect.x--;
 			}
-
+			speed.x = 0.0f;
 		}
 		else if (c1->rect.x <= c2->rect.x + c2->rect.w && c1->rect.x + c1->rect.w > c2->rect.x + c2->rect.w) {	//Left
 			while (c1->CheckCollision(c2->rect) == true) {
 				c1->rect.x++;
 			}
+			speed.x = 0.0f;
 		}
 		position.x = c1->rect.x;
 	}
@@ -245,14 +247,26 @@ bool j1Enemy_Walking::checkPlatform(iPoint position) {
 	return ret;
 }
 
-bool j1Enemy_Walking::Load(pugi::xml_node&) {
+bool j1Enemy_Walking::Load(pugi::xml_node& data) {
+
+	position.x = data.child("position").attribute("x").as_uint();
+
+	position.y = data.child("position").attribute("y").as_uint();
+
+	speed.x = data.child("walkSpeed").attribute("value").as_float();
 
 	return true;
-
 }
-bool j1Enemy_Walking::Save(pugi::xml_node&) const {
+bool j1Enemy_Walking::Save(pugi::xml_node& data) const {
 
-	return true; 
+	pugi::xml_node enemy_walking = data;
 
+	enemy_walking.append_child("position").append_attribute("x") = position.x;
+
+	enemy_walking.child("position").append_attribute("y") = position.y;
+
+	enemy_walking.append_child("walkSpeed").append_attribute("value") = speed.x;
+
+
+	return true;
 }
-
