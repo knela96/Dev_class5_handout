@@ -383,7 +383,7 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 				break;
 			case CharacterState::Attack:
-				if (anim_attack.getFrame() == 9)//CHANGE FIX
+				if (anim_attack.getFrame() >= 9)//CHANGE FIX
 				{
 					anim_attack.Reset();
 					LOG("Attack");
