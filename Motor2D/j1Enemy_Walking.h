@@ -49,20 +49,10 @@ public:
 
 	const p2DynArray<iPoint>* path = NULL;
 
-	//fPoint position;
-	//SDL_Texture * graphics;
-	//Collider* collider;
-	//Collider* collider_aux;
-
 private:
 	SDL_Texture * debug_tex;
 	iPoint origin;
 	iPoint destination;
-	/*p2SString			texture_path;
-	p2SString			folder;
-	j1Animation* current_animation = nullptr;
-	SDL_Rect	animation_Rect;
-	bool flip;*/
 	bool target_found;
 	bool debug_draw = false;
 	float jumpSpeed;
