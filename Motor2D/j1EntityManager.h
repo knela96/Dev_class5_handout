@@ -37,10 +37,11 @@ public:
 public:
 	p2List<j1Entity*> entities;
 	j1Player* player;
-	j1Player* player2;
-	j1Enemy_Flying* enemy_flying;
+	//j1Player* player2;
+	//j1Enemy_Flying* enemy_flying;
 
 private:
+
 	float accumulated_time;
 	bool do_logic;
 

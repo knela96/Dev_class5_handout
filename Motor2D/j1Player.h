@@ -59,7 +59,7 @@ public:
 	float current_gravity;
 	fPoint speed; 
 	fPoint OldSpeed;
-	fPoint position;
+	//fPoint position;
 	fPoint OldPosition;
 
 	//bool onGround = false;
@@ -67,20 +67,20 @@ public:
 	bool plane = false;
 	bool b_respawn = false;
 
-	SDL_Texture * graphics = nullptr;
+	//SDL_Texture * graphics = nullptr;
 	j1Animation anim_idle;
 	j1Animation anim_run;
 	j1Animation anim_plane;
 	j1Animation anim_death;
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
-	j1Animation* current_animation = nullptr;
+	//j1Animation* current_animation = nullptr;
 
 	Uint32 start_time;
 	Uint32 aux_time;
 
-	Collider* collider;
-	SDL_Rect collider_aux;
+	//Collider* collider;
+	//SDL_Rect collider_aux;
 
 	bool dead = false;
 	bool win = false;
@@ -89,15 +89,15 @@ public:
 	uint current_life;
 	char _godmode[8] = "godmode";
 private:
-	p2SString			texture_path;
-	p2SString			folder;
+	//p2SString			texture_path;
+	//p2SString			folder;
 	uint				heightjump;
 	fPoint				lastPosition;
 	fPoint				respawn;
-	bool flip;
+	//bool flip;
 	bool death_anim;
 	bool hit = false;
-	SDL_Rect	animation_Rect;
+	//SDL_Rect	animation_Rect;
 };
 
 #endif

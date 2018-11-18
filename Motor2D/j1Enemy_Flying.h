@@ -44,25 +44,23 @@ public:
 
 	j1Animation flying;
 
-	bool path_created = false;
-
 	const p2DynArray<iPoint>* path;
-
+/*
 	fPoint position;
 	SDL_Texture * graphics;
 	Collider* collider;
-	SDL_Rect collider_aux;
+	SDL_Rect collider_aux;*/
 
 private:
 	SDL_Texture * debug_tex; 
 	iPoint origin;
 	iPoint destination;
 	float speed;
-	p2SString			texture_path;
-	p2SString			folder;
-	j1Animation* current_animation = nullptr;
-	SDL_Rect	animation_Rect;
-	bool flip;
+	//p2SString			texture_path;
+	//p2SString			folder;
+	//j1Animation* current_animation = nullptr;
+	//SDL_Rect	animation_Rect;
+	//bool flip;
 	bool target_found;
 	bool debug_draw = false;
 	bool OnGround = true;
