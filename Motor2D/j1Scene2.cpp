@@ -170,7 +170,7 @@ bool j1Scene2::Load(pugi::xml_node& data)
 	load_scene = (Levels)data.attribute("value").as_uint();
 
 	if (load_scene == Scene) {
-		Disable();
+		this->Disable();
 		App->scene->Enable();
 	}
 

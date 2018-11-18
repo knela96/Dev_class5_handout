@@ -89,12 +89,12 @@ private:
 
 public:
 	ColliderData data;
+	bool				debug;
 
 private:
 
 	bool				matrix[COLLIDER_MAX][COLLIDER_MAX];
 	bool				collisions_loaded;
-	bool				debug;
 };
 
 #endif // __j1Collisions_H__

@@ -136,16 +136,13 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 }
 
 bool j1Enemy_Walking::Update() {
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
-		debug_draw = !debug_draw;
-	}
 
 	if (App->entitymanager->player->position.x >= position.x)
 		flip = false;
 	else
 		flip = true;
 
-	if (path != NULL && debug_draw) {
+	if (path != NULL && App->collisions->debug) {
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);

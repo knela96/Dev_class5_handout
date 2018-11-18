@@ -23,7 +23,7 @@
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="592.836975" y="377" />
+			<position x="604.820129" y="377" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>

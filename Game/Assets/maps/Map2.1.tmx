@@ -63468,7 +63468,7 @@
   <object id="68" name="0" x="1296" y="0" width="49" height="288"/>
  </objectgroup>
  <objectgroup id="16" name="spawn">
-  <object id="67" name="1" x="1010.1" y="44.5" width="19.125" height="31"/>
+  <object id="67" name="1" x="292.767" y="440.5" width="19.125" height="31"/>
   <object id="61" name="4" x="752.955" y="58.0908" width="25" height="27"/>
   <object id="64" name="4" x="1315.17" y="298.833" width="25" height="27"/>
   <object id="65" name="4" x="2159.5" y="70.5" width="25" height="27"/>
@@ -63479,6 +63479,7 @@
  <layer id="15" name="Meta" width="220" height="48">
   <properties>
    <property name="Navigation" type="int" value="1"/>
+   <property name="Nodraw" type="int" value="1"/>
   </properties>
   <data>
    <tile gid="1373"/>
