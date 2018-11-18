@@ -4,8 +4,14 @@
 #include "j1EntityManager.h"
 #include "j1App.h"
 #include <string>
+#include "p2Point.h"
+#include "j1Animation.h"
+#include "p2DynArray.h"
 #include <list>
 
+
+
+struct SDL_Texture;
 
 enum class EntityType
 {
@@ -40,19 +46,22 @@ public:
 	virtual bool Load(pugi::xml_node&) { return true; }
 	virtual bool Save(pugi::xml_node&) const { return true; };
 
-	virtual void Input() {};
-	virtual void Draw() {};
-
 	virtual void OnCollision(Collider*, Collider*) {}
 
 public:
 
 	p2SString name;
-
+	p2SString texture_path;
+	p2SString folder;
+	EntityType type;
+	fPoint position;
+	SDL_Texture * graphics;
+	SDL_Rect animation_Rect;
+	j1Animation* current_animation;
+	Collider* collider;
+	bool flip;
 	bool OnGround;
 	bool Fall;
-
-	EntityType type;
 };
 
 #endif //__Entity__
