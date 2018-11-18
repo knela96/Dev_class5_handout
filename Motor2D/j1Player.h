@@ -80,7 +80,7 @@ public:
 	Uint32 aux_time;
 	bool dead = false;
 	bool win = false;
-	bool godmode = true;
+	bool godmode = false;
 	bool blink = false;
 	uint life;
 	uint c_blink = 0;

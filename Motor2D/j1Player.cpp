@@ -192,7 +192,6 @@ bool j1Player::Start() {
 
 bool j1Player::CleanUp()
 {
-
 	LOG("Unloading Player assets");
 	App->audio->StopFx();
 	App->audio->UnloadFx();
@@ -249,16 +248,14 @@ bool j1Player::Update(float dt, bool do_logic)
 					currentState = CharacterState::Jump;
 					OnGround = false;
 				}
-				else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT) {
-					anim_attack.Reset();
+				else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !attacked) {
 					currentState = CharacterState::Attack;
 				}
 
 				break;
 			case CharacterState::Walk:
 
-				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT) {
-					anim_attack.Reset();
+				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !attacked) {
 					speed = { 0,0 };
 
 					currentState = CharacterState::Attack;
@@ -343,10 +340,9 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 
 
-				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && !attacked) {
+				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !attacked) {
 					Fall = true;
 					speed = { 0,0 };
-					anim_attack.Reset();
 					currentState = CharacterState::Attack;
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
@@ -385,9 +381,10 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 				break;
 			case CharacterState::Attack:
-
-				if (anim_attack.Finished()) 
+				if (anim_attack.getFrame() == 9)//CHANGE FIX
 				{
+					anim_attack.Reset();
+					LOG("Attack");
 					if (!OnGround)
 					{
 						attacked = true;
@@ -407,19 +404,22 @@ bool j1Player::Update(float dt, bool do_logic)
 						currentState = CharacterState::Jump;
 						OnGround = false;
 					}
-					//Destroy Collider					
+					else {
+						currentState = CharacterState::Stand;
+					}
+					//Destroy Collider		
+					App->collisions->deleteCollider(attack_col);
+					attack_col = nullptr;
 				}
 				else {
 					if (attack_col == nullptr){
 						if (flip)
-							attack_col = App->collisions->AddCollider({ (int)position.x,(int)position.y, 8, 16 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
+							attack_col = App->collisions->AddCollider({ (int)position.x - 16,(int)position.y, 15, 24 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
 						else
-							attack_col = App->collisions->AddCollider({ (int)position.x,(int)position.y, 8, 16 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
+							attack_col = App->collisions->AddCollider({ (int)position.x + 16,(int)position.y, 15, 24 }, ColliderTypes::COLLIDER_PLAYER_SHOT, (j1Module*)App->entitymanager);
 					}
 				}
-
 				break;
-
 			}
 			
 			if (speed.y > maxFallingSpeed)
@@ -544,7 +544,6 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	}
 	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY && !godmode || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim && !godmode) {
 
-		LOG("blink %i",c_blink);
 		if (!hit && c_blink == 0) {
 			LOG("HIT"); 
 			start_time = SDL_GetTicks() - start_time;

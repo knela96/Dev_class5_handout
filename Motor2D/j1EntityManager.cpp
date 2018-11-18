@@ -38,6 +38,26 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 	return ret;
 }
 
+bool j1EntityManager::deleteEntity(j1Entity* entity)
+{
+	if (entity != nullptr)
+	{
+		p2List_item<j1Entity*>* item;
+		item = entities.start;
+
+		while (item != NULL)
+		{
+			if (item->data == entity) {
+				entities.del(item);
+				break;
+			}
+			else
+				item = item->next;
+		}
+	}
+	return false;
+}
+
 bool j1EntityManager::Awake(pugi::xml_node& config)
 {
 	bool ret = true;

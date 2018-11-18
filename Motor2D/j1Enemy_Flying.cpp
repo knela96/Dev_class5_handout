@@ -132,7 +132,6 @@ void j1Enemy_Flying::Move(const p2DynArray<iPoint>* path, float dt)
 	if (path->Count() > 1) {
 		iPoint pos_path1 = *path->At(0);
 		iPoint pos_path2 = *path->At(1);
-		LOG("%i_%i - %i_%i", pos_path1.x, pos_path1.y, pos_path2.x, pos_path2.y);
 		if (pos_path1.x > pos_path2.x) {
 			position.x -= speed * dt;
 		}
@@ -171,8 +170,13 @@ bool j1Enemy_Flying::CleanUp() {
 	}
 
 void j1Enemy_Flying::OnCollision(Collider* collider1, Collider* collider2) {
-	if (collider2->gettype() == 0) {
+	if (collider2->gettype() == COLLIDER_WALL) {
 		WallCollision(collider1, collider2);
+	}
+	else if (collider2->gettype() == COLLIDER_PLAYER_SHOT) {
+		App->collisions->deleteCollider(collider);
+		collider = nullptr;
+		App->entitymanager->deleteEntity(this);
 	}
 }
 
