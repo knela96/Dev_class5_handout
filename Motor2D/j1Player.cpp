@@ -546,7 +546,7 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 	}
 	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY && !godmode || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim && !godmode) {
 
-		if (!hit && c_blink == 0) {
+		if (!hit && c_blink == 0 && death_anim == false) {
 			LOG("HIT"); 
 			start_time = SDL_GetTicks() - start_time;
 			hit = true;
