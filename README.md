@@ -75,26 +75,26 @@ Licensed by <a rel="license" href="https://creativecommons.org/publicdomain/zero
 # Tasklist
 
 * Èric Canela
+   * Collision System
+   * Load/Save
+   * Enemies Pathfinding
    * Game capped to 30 frames
    * Show FPS Data
    * Movement normalized dt
    * Animation normalized dt
    * Entities
-   * Change jump logic
-   * Change Colliders logic
-   * When falling without jumping the player can double jump
-   * On release check die Animation and Logic
-   * Chech CleanUp and delete colliders
+   * Movent Player
    * Walking Enemy
+   * Flying Enemy
    * Player Attack
 
 * Rafel Brau
    * Flying Enemy
+   * Load/Save
    * Enemies Pathfinding
    * Add Brofiler
    * Animation Offset
-   * Load/Save Enemies States
-   * Scene2
+   * Maps and Scenes
    * Create UML File
    * Walking Enemy
    * Player Attack
