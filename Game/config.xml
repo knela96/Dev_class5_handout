@@ -99,6 +99,17 @@
           <frame x="487" y="99" w="36" h="31"/>
           <fx>Death.wav</fx>
         </death>
+        <attack loop="false" speed="25.0f">
+          <frame x="0" y="53" w="56" h="29"/>
+          <frame x="56" y="53" w="56" h="29"/>
+          <frame x="112" y="53" w="56" h="29"/>
+          <frame x="168" y="53" w="56" h="29"/>
+          <frame x="224" y="53" w="56" h="29"/>
+          <frame x="280" y="53" w="56" h="29"/>
+          <frame x="336" y="53" w="56" h="29"/>
+          <frame x="392" y="53" w="56" h="29"/>
+          <frame x="448" y="53" w="56" h="29"/>
+        </attack>
         <jump_up loop="false" speed="1.0f">
           <frame x="656" y="59" w="30" h="30"/>
           <fx>Jump.wav</fx>

@@ -128,6 +128,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 	App->audio->LoadFx(config.child("animations").child("jump_up").child("fx").child_value());
 
+	
 	for (pugi::xml_node push_node = config.child("animations").child("jump_down").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
 		anim_jumpdown.PushBack({
@@ -140,8 +141,21 @@ bool j1Player::Awake(pugi::xml_node& config)
 	anim_jumpdown.loop = config.child("animations").child("jump_down").attribute("loop").as_bool();
 	anim_jumpdown.speed = config.child("animations").child("jump_down").attribute("speed").as_float();
 
-
 	App->audio->LoadFx(config.child("animations").child("jump_down").child("fx").child_value());
+
+	// attack pushbacks
+	for (pugi::xml_node push_node = config.child("animations").child("attack").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_attack.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_attack.loop = config.child("animations").child("attack").attribute("loop").as_bool();
+	anim_attack.speed = config.child("animations").child("attack").attribute("speed").as_float();
+
 
 	current_animation = &anim_idle;
 
@@ -233,10 +247,21 @@ bool j1Player::Update(float dt, bool do_logic)
 					currentState = CharacterState::Jump;
 					OnGround = false;
 				}
+				else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT) {
+					anim_attack.Reset();
+					currentState = CharacterState::Attack;
+				}
 
 				break;
 			case CharacterState::Walk:
 
+				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT) {
+					anim_attack.Reset();
+					speed = { 0,0 };
+
+					currentState = CharacterState::Attack;
+					break;
+				}
 				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 				{
 					currentState = CharacterState::Stand;
@@ -254,7 +279,8 @@ bool j1Player::Update(float dt, bool do_logic)
 					flip = true;
 					speed.x = -walkSpeed;
 				}
-
+				
+				
 				if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 				{
 					current_animation = &anim_jumpup;
@@ -287,7 +313,8 @@ bool j1Player::Update(float dt, bool do_logic)
 						isFalling = true;
 						App->audio->PlayFx(Plane_fx, 1);
 					}
-				}else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
 					if (speed.y > -jumpSpeed && !isFalling) {
 						speed.y -= 4000.0f *dt;
 					}
@@ -312,7 +339,13 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 
 
-				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
+				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_REPEAT && !attacked) {
+					Fall = true;
+					speed = { 0,0 };
+					anim_attack.Reset();
+					currentState = CharacterState::Attack;
+				}
+				else if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 				{
 					speed.x = 0.0f;
 				}
@@ -327,8 +360,10 @@ bool j1Player::Update(float dt, bool do_logic)
 					speed.x = -walkSpeed;
 				}
 
+
 				if (OnGround)
 				{
+					attacked = false;
 					if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 					{
 						currentState = CharacterState::Stand;
@@ -345,6 +380,33 @@ bool j1Player::Update(float dt, bool do_logic)
 					}
 				}
 				break;
+			case CharacterState::Attack:
+
+				if (anim_attack.Finished()) 
+				{
+					if (!OnGround)
+					{
+						attacked = true;
+						currentState = CharacterState::Jump;
+					}
+
+					if (App->input->GetKey(SDL_SCANCODE_D) != App->input->GetKey(SDL_SCANCODE_A))
+					{
+						currentState = CharacterState::Walk;
+					}
+					else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+					{
+						App->audio->StopFx();
+						App->audio->PlayFx(Jump_fx, 0);
+						current_animation = &anim_jumpup;
+						speed.y -= 8000.0f *dt;
+						currentState = CharacterState::Jump;
+						OnGround = false;
+					}
+					
+				}
+				break;
+
 			}
 			
 			if (speed.y > maxFallingSpeed)
@@ -372,6 +434,9 @@ bool j1Player::Update(float dt, bool do_logic)
 			break;
 		case CharacterState::Stand:
 			current_animation = &anim_idle;
+			break;
+		case CharacterState::Attack:
+			current_animation = &anim_attack;
 			break;
 		}
 
@@ -419,7 +484,10 @@ bool j1Player::Update() {
 	// Draw everything --------------------------------------
 
 	if (flip)
-		App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
+		if (current_animation == &anim_attack )
+			App->render->Blit(graphics, position.x- 30, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
+		else
+			App->render->Blit(graphics, position.x, position.y, &animation_Rect, SDL_FLIP_HORIZONTAL);
 	else if (current_animation == &anim_plane || current_animation == &anim_jumpup || current_animation == &anim_jumpdown)
 		App->render->Blit(graphics, position.x - 10, position.y, &animation_Rect, SDL_FLIP_NONE);
 	else
