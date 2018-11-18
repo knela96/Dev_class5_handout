@@ -23,7 +23,6 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 	switch (type) {
 	case EntityType::PLAYER:
 		ret = new j1Player(col);
-		App->entitymanager->player = (j1Player*)ret;
 		break;
 	case EntityType::FLYING_ENEMY:		
 		ret = new j1Enemy_Flying(col);
@@ -31,8 +30,10 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 	case EntityType::WALKING_ENEMY:
 		ret = new j1Enemy_Walking(col);
 	}
-	if (ret != nullptr)
+	if (ret != nullptr) {
+		ret->type = type;
 		entities.add(ret);
+	}
 
 	return ret;
 }
@@ -44,6 +45,18 @@ bool j1EntityManager::Awake(pugi::xml_node& config)
 	_config = App->LoadConfig(config_file).child("entities");
 	
 	return true;
+}
+
+j1Player* j1EntityManager::GetPlayer()
+{
+	p2List_item<j1Entity*>* item = entities.start;
+	while (item != nullptr)
+	{
+		if (item->data->type == EntityType::PLAYER)
+			return (j1Player*)item->data;
+		item = item->next;
+	}
+	return nullptr;
 }
 
 bool j1EntityManager::AwakeEntities() {
@@ -164,6 +177,11 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Load(pugi::xml_node & data )
 {
+	//CleanUp();
+	//App->collisions->CleanUp();
+
+	//App->collisions->setColliders();
+	/*
 	p2List_item<j1Entity*>* iterator = entities.start;
 	pugi::xml_node object = data.child("player");
 	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
@@ -190,7 +208,7 @@ bool j1EntityManager::Load(pugi::xml_node & data )
 			iterator->data->Load(object);
 			object = object.next_sibling("walking_enemy");
 		}
-	}
+	}*/
 	return true;
 }
 

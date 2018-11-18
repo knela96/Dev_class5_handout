@@ -236,9 +236,9 @@ void j1App::FinishUpdate()
 
 	float framerate = 1000.0f / ptimer.ReadMs();
 	dt = 1.0f / framerate;
-	if (App->entitymanager->player != nullptr) {
+	if (App->entitymanager->GetPlayer() != nullptr) {
 		p2SString title("FPS: %i Av.FPS: %.2f Last Frame Ms: %02u Cap: %i VSync %i - Tails Odyssey Map:%dx%d - GODMODE:%i",
-			prev_last_sec_frame_count, avg_fps, last_frame_ms, cap_frames, App->render->vsync, App->map->data.width, App->map->data.height, App->entitymanager->player->godmode);
+			prev_last_sec_frame_count, avg_fps, last_frame_ms, cap_frames, App->render->vsync, App->map->data.width, App->map->data.height, App->entitymanager->GetPlayer()->godmode);
 		App->win->SetTitle(title.GetString());
 	}
 	else {

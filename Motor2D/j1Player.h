@@ -57,9 +57,7 @@ public:
 	float walkSpeed;
 	float gravity;
 	float current_gravity;
-	fPoint speed; 
-	fPoint OldSpeed;
-	fPoint OldPosition;
+	fPoint speed;
 
 	bool isFalling = false;
 	bool plane = false;
@@ -74,7 +72,6 @@ public:
 
 	Uint32 start_time;
 	Uint32 aux_time;
-	
 	bool dead = false;
 	bool win = false;
 	bool godmode = false;

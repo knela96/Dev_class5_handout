@@ -19,9 +19,8 @@ public:
 	
 	j1Entity* CreateEntity(EntityType type, SDL_Rect* col);
 
-	void DestroyEntity(j1Entity * entity);
-	
 	bool Awake(pugi::xml_node& config);
+	j1Player * GetPlayer();
 	bool AwakeEntities();
 	bool Start();
 	bool PreUpdate();
@@ -29,7 +28,7 @@ public:
 	bool UpdateAll(float dt,bool do_logic); //render and collisions?
 	bool PostUpdate();
 	bool CleanUp();
-
+	
 	
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
@@ -39,7 +38,6 @@ public:
 
 public:
 	p2List<j1Entity*> entities;
-	j1Player* player;
 	//j1Player* player2;
 	//j1Enemy_Flying* enemy_flying;
 

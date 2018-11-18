@@ -93,8 +93,8 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 		position.x + collider->rect.w / 2,
 		position.y + collider->rect.h / 2);
 	destination = App->map->WorldToMap(
-		App->entitymanager->player->position.x + App->entitymanager->player->collider->rect.w / 2,
-		App->entitymanager->player->position.y + App->entitymanager->player->collider->rect.h / 2);
+		App->entitymanager->GetPlayer()->position.x + App->entitymanager->GetPlayer()->collider->rect.w / 2,
+		App->entitymanager->GetPlayer()->position.y + App->entitymanager->GetPlayer()->collider->rect.h / 2);
 	
 	OnGround = App->collisions->CheckGroundCollision(collider);
 	if(!flip)
@@ -140,7 +140,7 @@ bool j1Enemy_Walking::Update(float dt, bool do_logic) {
 
 bool j1Enemy_Walking::Update() {
 
-	if (App->entitymanager->player->position.x >= position.x)
+	if (App->entitymanager->GetPlayer()->position.x >= position.x)
 		flip = false;
 	else
 		flip = true;

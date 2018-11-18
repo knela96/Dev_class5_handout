@@ -11,7 +11,7 @@
 	<entities>
 		<player>
 			<speed x="0" y="0" />
-			<position x="311.792542" y="369" />
+			<position x="701.783813" y="369" />
 			<life value="3" />
 			<jumpSpeed value="500" />
 			<maxFallingSpeed value="400" />
@@ -19,11 +19,47 @@
 			<gravity value="1800" />
 		</player>
 		<flying_enemy>
-			<position x="931" y="134" />
+			<position x="917.274231" y="139.647339" />
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="473.131134" y="377" />
+			<position x="485.690216" y="377" />
+			<speed x="0" />
+			<speed y="0" />
+		</walking_enemy>
+		<flying_enemy>
+			<position x="1570" y="43" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<walking_enemy>
+			<position x="1135" y="313" />
+			<speed x="0" />
+			<speed y="0" />
+		</walking_enemy>
+		<flying_enemy>
+			<position x="2587" y="193" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<walking_enemy>
+			<position x="1788" y="233" />
+			<speed x="0" />
+			<speed y="0" />
+		</walking_enemy>
+		<player>
+			<speed x="0" y="0" />
+			<position x="701.783813" y="369" />
+			<life value="3" />
+			<jumpSpeed value="500" />
+			<maxFallingSpeed value="400" />
+			<walkSpeed value="250" />
+			<gravity value="1800" />
+		</player>
+		<flying_enemy>
+			<position x="917.274231" y="139.647339" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<walking_enemy>
+			<position x="485.690216" y="377" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
@@ -48,6 +84,6 @@
 	</entities>
 	<fade />
 	<renderer>
-		<camera x="-60" y="0" />
+		<camera x="-120" y="0" />
 	</renderer>
 </game_state>
