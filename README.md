@@ -74,25 +74,27 @@ Licensed by <a rel="license" href="https://creativecommons.org/publicdomain/zero
 
 # Tasklist
 
+* Èric Canela
+   * Game capped to 30 frames
+   * Show FPS Data
+   * Movement normalized dt
+   * Animation normalized dt
+   * Entities
+   * Change jump logic
+   * Change Colliders logic
+   * When falling without jumping the player can double jump
+   * On release check die Animation and Logic
+   * Chech CleanUp and delete colliders
+   * Walking Enemy
+   * Player Attack
 
- Game capped to 30 frames (Eric)
- Show FPS Data (Eric)
- Movement normalized dt (Eric)
- Animation normalized dt (Eric)
- Entities (Eric)
- Change jump logic (Eric)
- change Colliders logic (Eric)
- When falling without jumping the player can double jump (Eric)
- On release check die Animation and Logic (Eric)
- Chech CleanUp and delete colliders (Eric)
-
- Walking Enemy (Eric)(Rafel)
- Attack (Rafel)(Eric)
-
- Flying Enemy (Rafel) 
- Enemies Pathfinding (Rafel)
- Add Brofiler (Rafel)
- Animation Offset (Rafel)
- Load/Save Enemies States (Rafel)
- Scene2 (Rafel)
- Create UML File (Rafel)
+* Rafel Brau
+   * Flying Enemy
+   * Enemies Pathfinding
+   * Add Brofiler
+   * Animation Offset
+   * Load/Save Enemies States
+   * Scene2
+   * Create UML File
+   * Walking Enemy
+   * Player Attack
