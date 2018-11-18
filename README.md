@@ -31,15 +31,15 @@ Spacebar while in the air - Glide for two seconds
 
 ## Debug keys
 
-F1 - To start from the very first level
+F1 - To restart from the very first level
 
-F2 - To start from the beginning of the current level
+F2 - To restart from the beginning of the current level
 
 F5 - Save the current state
 
 F6 - Load the previous state
 
-F9 - To view colliders and logic of the game
+F9 - To view colliders, pathfinding, and logic of the game
 
 F10 - God mode
 
@@ -50,6 +50,7 @@ F11 - ​Enable/Disable ​FPS cap to 30
 
 Pressing the spacebar while in the air lets you glide for two seconds, letting you be more accurate when landing, 
 besides this, when you fall from a platform you don't respawn at the start of the level, but the last position you were on ground.
+The player can attack and kill enemies with a tail move.
 
 # Art
 
