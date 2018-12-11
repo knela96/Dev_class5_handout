@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="208" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="33" nextobjectid="78">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="208" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="33" nextobjectid="80">
  <tileset firstgid="1" name="tileset.ajusted" tilewidth="16" tileheight="16" tilecount="720" columns="36">
   <image source="tileset.ajusted.png" width="576" height="320"/>
  </tileset>
@@ -70000,6 +70000,7 @@
   <object id="74" name="5" x="1135.26" y="308.394" width="25" height="23"/>
   <object id="76" name="4" x="2587.5" y="193.167" width="25" height="27"/>
   <object id="77" name="5" x="1788.41" y="221.227" width="25" height="23"/>
+  <object id="79" name="5" x="567.5" y="243.5" width="25" height="23"/>
  </objectgroup>
  <layer id="31" name="Meta" width="208" height="48">
   <properties>
