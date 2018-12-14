@@ -18,6 +18,9 @@
 #include "j1Pathfinding.h"
 #include "Brofiler\Brofiler.h"
 #include "j1Player.h"
+#include "j1Fonts.h"
+#include "j1Gui.h"
+
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -37,6 +40,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entitymanager = new j1EntityManager();
 	render = new j1Render();
 	fade = new j1FadeToBlack();
+	font = new j1Fonts();
+	gui = new j1Gui();
 
 
 	// Ordered for awake / Start / Update
@@ -49,6 +54,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(path);
 	AddModule(scene);
 	AddModule(scene2);
+	AddModule(font);
+	AddModule(gui);
 	AddModule(collisions);
 	AddModule(entitymanager);
 	AddModule(fade);
@@ -230,7 +237,7 @@ void j1App::FinishUpdate()
 		if (capped_ms > 0 && last_frame_ms < capped_ms) {
 			j1PerfTimer t;
  			SDL_Delay(capped_ms - last_frame_ms);
-			LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
+			//LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
 		}
 	}
 
