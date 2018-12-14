@@ -47,7 +47,7 @@ bool j1Gui::Start()
 	fPoint pos = { 200.0f, 50.0f };
 	button_anim.PushBack({ 7,118,223,57 });//sprites buttons
 	
-	elements.add(AddImage(pos, rect, SETTINGS));
+	//elements.add(AddImage(pos, rect, SETTINGS));
 
 	p2List_item<j1ElementGUI*>* item;
 	for (item = elements.start; item != nullptr && ret == true; item = item->next)

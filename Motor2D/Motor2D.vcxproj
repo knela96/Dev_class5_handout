@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClCompile Include="ButtonFunctions.cpp" />
     <ClCompile Include="j1Button.cpp" />
+    <ClCompile Include="j1PowerUp.cpp" />
     <ClCompile Include="j1Enemy_Flying.cpp" />
     <ClCompile Include="j1Enemy_Walking.cpp" />
     <ClCompile Include="j1Collisions.cpp" />
@@ -111,6 +112,7 @@
   <ItemGroup>
     <ClInclude Include="ButtonFunctions.h" />
     <ClInclude Include="j1Button.h" />
+    <ClInclude Include="j1PowerUp.h" />
     <ClInclude Include="j1ElementGUI.h" />
     <ClInclude Include="j1Enemy_Flying.h" />
     <ClInclude Include="j1Enemy_Walking.h" />

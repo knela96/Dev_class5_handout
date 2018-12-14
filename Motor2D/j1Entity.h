@@ -18,7 +18,9 @@ enum class EntityType
 	NONE = -1,
 	PLAYER,
 	FLYING_ENEMY,
-	WALKING_ENEMY
+	WALKING_ENEMY,
+	COIN,
+	LIVES
 };
 
 class j1Entity

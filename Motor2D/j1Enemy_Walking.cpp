@@ -202,6 +202,9 @@ bool j1Enemy_Walking::CleanUp() {
 	graphics = nullptr;
 	App->tex->UnLoad(debug_tex);
 	debug_tex = nullptr;
+
+	App->collisions->deleteCollider(collider);
+	collider = nullptr;
 	return true;
 }
 
@@ -284,8 +287,9 @@ bool j1Enemy_Walking::Save(pugi::xml_node& data) const {
 	pugi::xml_node enemy_walking = data;
 
 	enemy_walking.append_child("position").append_attribute("x") = position.x;
-
 	enemy_walking.child("position").append_attribute("y") = position.y;
+	enemy_walking.child("position").append_attribute("w") = collider->rect.w;
+	enemy_walking.child("position").append_attribute("h") = collider->rect.h;
 
 	enemy_walking.append_child("speed").append_attribute("x") = 0;
 

@@ -8,11 +8,18 @@
 #include "j1Enemy_Walking.h"
 #include "j1Entity.h"
 #include "j1Enemy_Walking.h"
+#include "j1PowerUp.h"
 #include "Brofiler\Brofiler.h"
 
 j1EntityManager::j1EntityManager()
 {
 	name.create("entities");
+
+	//List of possible powerUpds
+	c_powerup.add("coin");
+	c_powerup.add("lives");
+
+	assert(c_powerup.count() == PowerUpTypes::LAST);
 }
 
 j1EntityManager::~j1EntityManager()
@@ -30,6 +37,13 @@ j1Entity* j1EntityManager::CreateEntity(EntityType type,SDL_Rect* col)
 		break;
 	case EntityType::WALKING_ENEMY:
 		ret = new j1Enemy_Walking(col);
+		break;
+	case EntityType::COIN:
+		ret = new j1PowerUp(col, PowerUpTypes::COIN);
+		break; 
+	case EntityType::LIVES:
+		ret = new j1PowerUp(col, PowerUpTypes::LIVES);
+		break;
 	}
 	if (ret != nullptr) {
 		ret->type = type;
@@ -89,6 +103,21 @@ bool j1EntityManager::AwakeEntities() {
 	while (item != NULL && ret == true)
 	{
 		ret = item->data->Awake(_config.child(item->data->name.GetString()));
+		item = item->next;
+	}
+
+	return true;
+}
+
+bool j1EntityManager::StartEntities() {
+	bool ret = true;
+
+	p2List_item<j1Entity*>* item;
+	item = entities.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Start();
 		item = item->next;
 	}
 
@@ -206,36 +235,74 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Load(pugi::xml_node & data )
 {
-	//App->collisions->setColliders();
+	CleanUp();
 
-	
-	p2List_item<j1Entity*>* iterator = entities.start;
+	j1Entity* entity;
+
 	pugi::xml_node object = data.child("player");
-	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
-	{
-		if (iterator->data->type == EntityType::PLAYER) {
-			iterator->data->Load(object);
-			object = object.next_sibling("player");
-		}
+	while (object) {
+		int x, y, w, h;
+		x = object.child("position").attribute("x").as_uint();
+		y = object.child("position").attribute("y").as_uint();
+		w = object.child("position").attribute("w").as_uint();
+		h = object.child("position").attribute("h").as_uint();
+
+		CreateEntity(EntityType::PLAYER, new SDL_Rect({ x,y,w,h }));
+		object = object.next_sibling("player");
 	}
 
 	object = data.child("flying_enemy");
-	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
-	{
-		if (iterator->data->type == EntityType::FLYING_ENEMY) {
-			iterator->data->Load(object);
-			object = object.next_sibling("flying_enemy");
-		}
+	while (object) {
+		int x, y, w, h;
+		x = object.child("position").attribute("x").as_uint();
+		y = object.child("position").attribute("y").as_uint();
+		w = object.child("position").attribute("w").as_uint();
+		h = object.child("position").attribute("h").as_uint();
+
+		CreateEntity(EntityType::FLYING_ENEMY, new SDL_Rect({ x,y,w,h }));
+		object = object.next_sibling("flying_enemy");
 	}
 
 	object = data.child("walking_enemy");
-	for (p2List_item<j1Entity*>* iterator = entities.start; iterator && object; iterator = iterator->next)
-	{
-		if (iterator->data->type == EntityType::WALKING_ENEMY) {
-			iterator->data->Load(object);
-			object = object.next_sibling("walking_enemy");
-		}
+	while (object) {
+		int x, y, w, h;
+		x = object.child("position").attribute("x").as_uint();
+		y = object.child("position").attribute("y").as_uint();
+		w = object.child("position").attribute("w").as_uint();
+		h = object.child("position").attribute("h").as_uint();
+
+		CreateEntity(EntityType::WALKING_ENEMY, new SDL_Rect({ x,y,w,h }));
+		object = object.next_sibling("walking_enemy");
 	}
+
+	object = data.child("coin");
+	while (object) {
+		int x, y, w, h;
+		x = object.child("position").attribute("x").as_uint();
+		y = object.child("position").attribute("y").as_uint();
+		w = object.child("position").attribute("w").as_uint();
+		h = object.child("position").attribute("h").as_uint();
+
+		CreateEntity(EntityType::COIN, new SDL_Rect({ x,y,w,h }));
+		object = object.next_sibling("coin");
+	}
+
+	object = data.child("lives");
+	while (object) {
+		int x, y, w, h;
+		x = object.child("position").attribute("x").as_uint();
+		y = object.child("position").attribute("y").as_uint();
+		w = object.child("position").attribute("w").as_uint();
+		h = object.child("position").attribute("h").as_uint();
+
+		CreateEntity(EntityType::LIVES, new SDL_Rect({ x,y,w,h }));
+		object = object.next_sibling("lives");
+	}
+
+
+	AwakeEntities();
+	StartEntities();
+	
 	return true;
 }
 

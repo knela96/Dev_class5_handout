@@ -163,14 +163,7 @@ bool j1Collisions::PreUpdate()
 	return true;
 }
 
-Collider* j1Collisions::AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback)
-{
-	Collider* ret = nullptr;
 
-	data.colliders.add(new Collider(rect, type, callback));
-
-	return data.colliders.end->data;
-}
 
 bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
 {
@@ -235,12 +228,12 @@ void j1Collisions::Draw()
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		case COLLIDER_WIN: // yellow
+		case COLLIDER_POWERUP:
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 255, 0, alpha);
 			break;
 		case COLLIDER_ENEMY_SHOT: // magenta
 			App->render->DrawQuad(data.colliders[i]->rect, 0, 255, 255, alpha);
 			break;
-		case COLLIDER_POWERUP:
 		case COLLIDER_PLAYER_SHOT:
 			App->render->DrawQuad(data.colliders[i]->rect, 255, 0, 255, alpha);
 			break;
@@ -294,6 +287,37 @@ bool j1Collisions::CleanUp()
 	return true;
 }
 
+Collider* j1Collisions::AddCollider(SDL_Rect rect, ColliderTypes type, j1Module* callback)
+{
+	for (uint i = 0; i < data.colliders.count(); ++i)
+	{
+		if (data.colliders[i] == nullptr)
+		{
+			data.colliders[i] = new Collider(rect, type, callback);
+			return data.colliders[i];
+		}
+	}
+	Collider* ret = nullptr;
+	data.colliders.add(new Collider(rect, type, callback));
+	return data.colliders.end->data;
+}
+
+void j1Collisions::CleanEntityCol() {
+	for (uint i = 0; i < data.colliders.count(); ++i)
+	{
+		if (data.colliders[i] != nullptr && (
+			data.colliders[i]->type == COLLIDER_FLYING_ENEMY || 
+			data.colliders[i]->type == COLLIDER_PLATFORM_ENEMY ||
+			data.colliders[i]->type == COLLIDER_PLAYER ||
+			data.colliders[i]->type == COLLIDER_POWERUP
+			))
+		{
+			delete data.colliders[i];
+			data.colliders[i] = nullptr;
+		}
+	}
+}
+
 bool j1Collisions::Update(float dt)
 {
 	BROFILER_CATEGORY("CollisionsUpdate", Profiler::Color::DarkSlateBlue);
@@ -336,6 +360,9 @@ bool j1Collisions::Load(pugi::xml_document& map_file)
 			col->rect.h = object.attribute("height").as_uint();
 			col->type = (ColliderTypes)object.attribute("name").as_uint();
 
+			if(col->type == COLLIDER_POWERUP)
+				col->p_type = (PowerUpTypes)object.attribute("type").as_uint();
+
 			data.info_spawns.add(col);
 		}
 	}
@@ -361,6 +388,17 @@ bool j1Collisions::setColliders() {
 		case COLLIDER_PLATFORM_ENEMY:
 			App->entitymanager->CreateEntity(EntityType::WALKING_ENEMY, &data.info_spawns[i]->rect);
 			LOG("Added Walking Entity");
+			break;
+		case COLLIDER_POWERUP:
+			switch (data.info_spawns[i]->p_type) {
+			case (COIN):
+				App->entitymanager->CreateEntity(EntityType::COIN, &data.info_spawns[i]->rect);
+				break;
+			case (LIVES):
+				App->entitymanager->CreateEntity(EntityType::LIVES, &data.info_spawns[i]->rect);
+				break;
+			}
+			LOG("Added Coin");
 			break;
 		}
 	}
