@@ -24,7 +24,8 @@ enum CharacterFX {
 	Plane_fx,
 	Death_fx,
 	Jump_fx,
-	Win_fx
+	Win_fx,
+	coin_fx
 };
 
 class j1Player : public j1Entity

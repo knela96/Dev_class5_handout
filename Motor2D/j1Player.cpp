@@ -557,7 +557,7 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 				currentState = CharacterState::Jump;
 				death_anim = true;
 				App->audio->StopFx();
-				App->audio->PlayFx(Death_fx, 1);
+				App->audio->PlayFx(Death_fx, 0);
 			}
 			else {
 				App->audio->StopFx();
@@ -565,11 +565,14 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 			}
 		}
 	}
-	else if (collider2->gettype() == 3) {
+	else if (collider2->gettype() == COLLIDER_WIN) {
 		if (!win) 
-			App->audio->PlayFx(Win_fx, 1);
+			App->audio->PlayFx(Win_fx, 0);
 		win = true;
 		
+	}
+	else if (collider2->gettype() == COLLIDER_POWERUP) {
+		App->audio->PlayFx(coin_fx, 0);
 	}
 }
 
@@ -713,9 +716,6 @@ bool j1Player::Load(pugi::xml_node& data)
 	speed.x = data.child("speed").attribute("x").as_uint();
 	speed.y = data.child("speed").attribute("y").as_uint();
 
-	position.x = data.child("position").attribute("x").as_uint();
-	position.y = data.child("position").attribute("y").as_uint();
-
 	life = data.child("life").attribute("value").as_uint();
 
 	jumpSpeed = data.child("jumpSpeed").attribute("value").as_float();
@@ -736,6 +736,8 @@ bool j1Player::Save(pugi::xml_node& data) const
 
 	player.append_child("position").append_attribute("x") = position.x;
 	player.child("position").append_attribute("y") = position.y;
+	player.child("position").append_attribute("w") = collider->rect.w;
+	player.child("position").append_attribute("h") = collider->rect.h;
 
 	player.append_child("life").append_attribute("value") = life;
 

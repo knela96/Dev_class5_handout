@@ -4,6 +4,7 @@
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "j1Entity.h"
+#include "j1PowerUp.h"
 
 
 enum ColliderTypes
@@ -24,6 +25,7 @@ enum ColliderTypes
 struct Spawn {
 	SDL_Rect rect; 
 	ColliderTypes type;
+	PowerUpTypes p_type;
 };
 struct Collider {
 	SDL_Rect rect;
@@ -78,6 +80,8 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	void CleanEntityCol();
 
 	bool PreUpdate();
 

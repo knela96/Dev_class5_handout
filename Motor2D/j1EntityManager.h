@@ -24,6 +24,7 @@ public:
 
 	bool Awake(pugi::xml_node& config);
 	bool AwakeEntities();
+	bool StartEntities();
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt); //pathfinding
@@ -40,6 +41,7 @@ public:
 
 public:
 	p2List<j1Entity*> entities;
+	p2List<p2SString> c_powerup;
 
 private:
 
@@ -48,6 +50,7 @@ private:
 
 	pugi::xml_document	config_file;
 	pugi::xml_node _config;
+
 };
 
 #endif //__j1ENTITYMANAGER__

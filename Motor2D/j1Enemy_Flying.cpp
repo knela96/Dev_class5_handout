@@ -170,6 +170,8 @@ bool j1Enemy_Flying::CleanUp() {
 
 	App->tex->UnLoad(debug_tex);
 	debug_tex = nullptr;
+
+	App->collisions->deleteCollider(collider);
 	collider = nullptr;
 
 	return true;
@@ -235,8 +237,9 @@ bool j1Enemy_Flying::Save(pugi::xml_node& data) const {
 	pugi::xml_node enemy_flying = data;
 	
 	enemy_flying.append_child("position").append_attribute("x") = position.x;
-
 	enemy_flying.child("position").append_attribute("y") = position.y;
+	enemy_flying.child("position").append_attribute("w") = collider->rect.w;
+	enemy_flying.child("position").append_attribute("h") = collider->rect.h;
 
 	enemy_flying.append_child("walkSpeed").append_attribute("value") = speed;
 
