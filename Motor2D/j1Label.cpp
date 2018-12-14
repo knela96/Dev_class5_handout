@@ -3,6 +3,7 @@
 #include "j1Label.h"
 #include "j1Fonts.h"
 #include "p2Log.h"
+#include "j1Textures.h"
 
 
 j1Label::j1Label(fPoint position, p2SString text, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
@@ -22,6 +23,7 @@ j1Label::~j1Label()
 
 void j1Label::Draw()
 {
+	App->tex->UnLoad(graphics);
 	this->graphics = App->font->Print(text.GetString());
 
 	global_pos = getParentPos(this);
@@ -30,9 +32,3 @@ void j1Label::Draw()
 	rect->y = global_pos.y;
 	App->render->Blit(graphics, global_pos.x, global_pos.y, nullptr, SDL_FLIP_NONE, 1, 0.0f);
 }
-
-/*void j1Label::DebugDraw()
-{
-	App->render->DrawQuad(*rect, 255, 0, 0, alpha, false, false);
-}*/
-
