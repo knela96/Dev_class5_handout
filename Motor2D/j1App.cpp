@@ -59,8 +59,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(sceneintro);
 	AddModule(collisions);
 	AddModule(entitymanager);
-	AddModule(font);
 	AddModule(gui);
+	AddModule(font);
 	AddModule(fade);
 
 
@@ -301,8 +301,6 @@ bool j1App::DoUpdate()
 		if(pModule->active == false) {
 			continue;
 		}
-		if (gui->b_settings)
-			dt = 0;
 		ret = item->data->Update(dt);
 	}
 

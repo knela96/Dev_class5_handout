@@ -121,6 +121,7 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 	App->tex->UnLoad(atlas);
+	App->audio->UnloadFx();
 	atlas = nullptr;
 
 	for (uint i = 0; i < elements.count(); ++i)
@@ -223,6 +224,12 @@ void j1Gui::stateElements(j1ElementGUI* element,bool state) {
 		if (elements[i] != element)
 			elements[i]->state = state;
 	}
+}
+
+bool j1Gui::Load(pugi::xml_node & data)
+{
+
+	return true;
 }
 
 

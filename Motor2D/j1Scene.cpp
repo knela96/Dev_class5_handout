@@ -205,4 +205,9 @@ void j1Scene::CreateHUD()
 {
 	if(settings == nullptr)
 		settings = App->gui->AddImage({ (float)(App->render->camera.w/2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene, windowType::SETTINGS);
+	if (!hud) {
+
+
+		hud = true;
+	}
 }
