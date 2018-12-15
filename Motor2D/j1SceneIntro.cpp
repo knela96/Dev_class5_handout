@@ -69,7 +69,6 @@ bool j1SceneIntro::Start()
 	graphics = App->tex->Load("Assets/Sprites/Character/Player1.1.png");
 
 	current_anim = &anim_plane;
-
 	App->gui->Enable();
 	App->map->Enable();
 	if (App->map->Load(map.GetString()) == true) {
@@ -85,7 +84,9 @@ bool j1SceneIntro::Start()
 	App->entitymanager->Enable();
 
 	App->audio->PlayMusic(music_path.GetString());
-	
+
+	App->gui->b_settings = true;
+
 	CreateHUD();
 
 	return true;
