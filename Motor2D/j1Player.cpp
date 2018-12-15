@@ -647,12 +647,10 @@ void j1Player::hitanim()
 {
 	if (SDL_GetTicks() - start_time > 100 && c_blink < 10) {
 		start_time = SDL_GetTicks();
-		if(c_blink % 2 == 0)
-			blink = true,
-			LOG("1");
+		if (c_blink % 2 == 0)
+			blink = true;
 		else
-			blink = false,
-			LOG("0");
+			blink = false;
 		c_blink++;
 	}
 	if(c_blink == 10) {

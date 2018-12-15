@@ -3,10 +3,16 @@
 #include "j1App.h"
 #include "j1Textures.h"
 #include "j1Fonts.h"
+#include "j1Render.h"
+#include <string.h>
 
 #include "SDL\include\SDL.h"
 #include "SDL_TTF\include\SDL_ttf.h"
 #pragma comment( lib, "SDL_ttf/libx86/SDL2_ttf.lib" )
+
+#ifdef _WIN32
+#define strncpy strncpy_s
+#endif
 
 j1Fonts::j1Fonts() : j1Module()
 {
@@ -108,4 +114,95 @@ bool j1Fonts::CalcSize(const char* text, int& width, int& height, _TTF_Font* fon
 		ret = true;
 
 	return ret;
+}
+
+int j1Fonts::LoadBMP(const char* texture_path, const char* characters, uint rows)
+{
+	int id = -1;
+
+	if (texture_path == nullptr || characters == nullptr || rows == 0)
+	{
+		LOG("Could not load font");
+		return id;
+	}
+
+	SDL_Texture* tex = App->tex->Load(texture_path);
+
+	if (tex == nullptr || strlen(characters) >= MAX_FONT_CHARS)
+	{
+		LOG("Could not load font at %s with characters '%s'", texture_path, characters);
+		return id;
+	}
+
+	id = 0;
+	for (; id < MAX_FONTS; ++id)
+		if (i_fonts[id].graphic == nullptr)
+			break;
+
+	if (id == MAX_FONTS)
+	{
+		LOG("Cannot load font %s. Array is full (max %d).", texture_path, MAX_FONTS);
+		return id;
+	}
+
+	// if we reach this point we can safely create a new bmp font
+	Font* f = &i_fonts[id];
+	f->graphic = tex;
+	strncpy(i_fonts[id].table, characters, MAX_FONT_CHARS);
+	f->rows = rows;
+	f->len = strlen(characters);
+	f->row_chars = i_fonts[id].len / rows;
+
+	uint w, h;
+	App->tex->GetSize(tex, w, h);
+	f->row_chars = i_fonts[id].len / rows;
+	f->char_w = w / i_fonts[id].row_chars;
+	f->char_h = h / rows;
+
+	LOG("Successfully loaded BMP font from %s", texture_path);
+
+	return id;
+}
+
+void j1Fonts::UnLoad(int font_id)
+{
+	if (font_id >= 0 && font_id < MAX_FONTS && i_fonts[font_id].graphic != nullptr)
+	{
+		App->tex->UnLoad(i_fonts[font_id].graphic);
+		i_fonts[font_id].graphic = nullptr;
+		LOG("Successfully Unloaded BMP font_id %d", font_id);
+	}
+}
+
+// Render text using a bmp font
+void j1Fonts::BlitText(int x, int y, int font_id, const char* text) const
+{
+	if (text == nullptr || font_id < 0 || font_id >= MAX_FONTS || i_fonts[font_id].graphic == nullptr)
+	{
+		LOG("Unable to render text with bmp font id %d", font_id);
+		return;
+	}
+
+	const Font* font = &i_fonts[font_id];
+	SDL_Rect rect;
+	uint len = strlen(text);
+
+	rect.w = font->char_w;
+	rect.h = font->char_h;
+
+	for (uint i = 0; i < len; ++i)
+	{
+		// we could use strchr instead ?
+		for (uint j = 0; j < font->len; ++j)
+		{
+			if (font->table[j] == text[i])
+			{
+				rect.x = rect.w * (j % font->row_chars);
+				rect.y = rect.h * (j / font->row_chars);
+				App->render->Blit(font->graphic, x, y, &rect,SDL_FLIP_NONE, 1, 0.0f);
+				x += rect.w;
+				break;
+			}
+		}
+	}
 }

@@ -20,7 +20,7 @@
   </renderer>
 
    <gui>
-    <atlas file="Assets/gui/atlas.png"/>
+    <atlas file="Assets/gui/UI.png"/>
   </gui>
 
   <fonts>

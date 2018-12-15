@@ -10,6 +10,16 @@
 struct SDL_Texture;
 struct _TTF_Font;
 
+#define MAX_FONTS 10
+#define MAX_FONT_CHARS 256
+
+struct Font
+{
+	char table[MAX_FONT_CHARS];
+	SDL_Texture* graphic = nullptr;
+	uint rows, len, char_w, char_h, row_chars;
+};
+
 class j1Fonts : public j1Module
 {
 public:
@@ -33,10 +43,17 @@ public:
 
 	bool CalcSize(const char* text, int& width, int& height, _TTF_Font* font = NULL) const;
 
+	int LoadBMP(const char * texture_path, const char * characters, uint rows);
+
+	void UnLoad(int font_id);
+
+	void BlitText(int x, int y, int font_id, const char * text) const;
+
 public:
 
 	p2List<_TTF_Font*>	fonts;
 	_TTF_Font*			default;
+	Font	 i_fonts[MAX_FONTS];
 };
 
 

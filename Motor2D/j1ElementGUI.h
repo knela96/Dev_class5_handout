@@ -20,7 +20,7 @@ class j1ElementGUI
 {
 public:
 
-	j1ElementGUI(fPoint position, SDL_Rect* rect, ElementUIType type, SDL_Texture* graphics, j1ElementGUI* parent) : position(position), rect(rect), type(type), graphics(graphics), parent(parent){}
+	j1ElementGUI(fPoint position, SDL_Rect* rect, ElementUIType type, SDL_Texture* graphics, j1ElementGUI* parent) : position(position), scale(scale), rect(rect), type(type), graphics(graphics), parent(parent){}
 
 	// Destructor
 	virtual ~j1ElementGUI() {}
@@ -65,6 +65,21 @@ public:
 		}
 	}
 
+	void CleanChilds() {
+		for (uint i = 0; i < childs.count(); ++i)
+		{
+			if (childs[i] != nullptr)
+			{
+				childs[i]->CleanChilds();
+				delete childs[i];
+				childs[i] = nullptr;
+			}
+		}
+		childs.clear();
+
+		CleanUp();
+	}
+
 	void DebugDraw()
 	{
 		if(rect != nullptr)
@@ -82,14 +97,15 @@ public:
 public:
 	p2SString name;//delete?
 	p2SString folder;//delete?
-	SDL_Rect* rect;
 	fPoint position;
 	ElementUIType type;
 	SDL_Texture* graphics;
 	j1ElementGUI* parent;
+	SDL_Rect* rect;
 	p2List<j1ElementGUI*> childs;
 	uint8_t alpha = 80;
 	fPoint global_pos;
+	int scale = 1;
 
 private:
 };

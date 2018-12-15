@@ -15,6 +15,8 @@ public:
 	j1Slider(fPoint position, OrientationType orientation, SDL_Texture* graphics = nullptr, j1ElementGUI* parent = nullptr, ElementUIType type = ElementUIType::SLIDER);
 	~j1Slider();
 
+	bool CleanUp();
+
 	bool Update(float dt);
 
 	void Draw();

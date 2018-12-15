@@ -5,6 +5,7 @@
 #include "j1Input.h"
 #include "j1Gui.h"
 #include "p2Log.h"
+#include "j1Textures.h"
 
 
 
@@ -20,7 +21,7 @@ bool j1Button::Start() {
 
 	global_pos = getParentPos(this);
 	
-	rect = new SDL_Rect({ (int)global_pos.x, (int)global_pos.y,anim->GetFrameRect(0).w,anim->GetFrameRect(0).h });
+	rect = new SDL_Rect({ (int)global_pos.x, (int)global_pos.y,anim->GetFrameRect(0).w,anim->GetFrameRect(0).h  });
 
 	label->position = { (float)rect->w / 2 - label->width / 2,(float)rect->h / 2 - label->height / 2 };
 
@@ -32,11 +33,17 @@ bool j1Button::Start() {
 }
 
 j1Button::~j1Button()
-{
+{}
+
+bool j1Button::CleanUp() {
+	LOG("Cleaning Button");
+	graphics = nullptr;
 	delete rect;
 	rect = nullptr;
-	delete anim;
-	rect = nullptr;
+	anim = nullptr;
+	parent = nullptr;
+	current_animation = nullptr;
+	return true;
 }
 
 bool j1Button::Update(float dt) {

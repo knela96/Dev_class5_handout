@@ -13,7 +13,7 @@
 // Deletes a buffer
 #define RELEASE( x ) \
     {                        \
-    if( x != NULL )        \
+    if( x != nullptr )        \
 	    {                      \
       delete x;            \
 	  x = NULL;              \

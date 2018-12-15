@@ -6,6 +6,7 @@
 #include "p2Log.h"
 #include "j1Slider.h"
 #include "ButtonFunctions.h"
+#include "j1Textures.h"
 
 j1Image::j1Image(fPoint position, SDL_Rect* anim, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	anim(anim),
@@ -14,18 +15,28 @@ j1Image::j1Image(fPoint position, SDL_Rect* anim, windowType window_type, SDL_Te
 
 	global_pos = getParentPos(this);
 	
-	rect = new SDL_Rect({ (int)global_pos.x , (int)global_pos.y, anim->w, anim->h });
+	rect = new SDL_Rect({ (int)global_pos.x , (int)global_pos.y, anim->w , anim->h });
 	
 }
 
 
 j1Image::~j1Image(){}
 
+bool j1Image::CleanUp() {
+	LOG("Cleaning Image");
+	parent = nullptr;
+	delete rect;
+	rect = nullptr;
+	delete anim;
+	anim = nullptr;
+	return true;
+}
+
 bool j1Image::Start() {
 	bool ret = true;
 
 	switch (window_type) {
-	case SETTINGS:
+	case windowType::SETTINGS:
 		createSettings();
 		break;
 	}

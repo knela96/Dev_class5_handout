@@ -42,17 +42,11 @@ bool j1Gui::Start()
 {
 	bool ret = true;
 	atlas = App->tex->Load(atlas_file_name.GetString());
-	
-	SDL_Rect* rect = new SDL_Rect({ 33, 546,424,452 });
-	fPoint pos = { 200.0f, 50.0f };
-	button_anim.PushBack({ 7,118,223,57 });//sprites buttons
-	
-	//elements.add(AddImage(pos, rect, SETTINGS));
 
-	p2List_item<j1ElementGUI*>* item;
-	for (item = elements.start; item != nullptr && ret == true; item = item->next)
+	for (int i = 0; i < elements.count(); ++i)
 	{
-		item->data->Start();
+		if (elements[i] != nullptr)
+			elements[i]->Start();
 	}
 	return true;
 }
@@ -66,10 +60,10 @@ bool j1Gui::PreUpdate()
 bool j1Gui::Update(float dt) {
 
 	bool ret = true;
-	p2List_item<j1ElementGUI*>* item;
-	for (item = elements.start; item != nullptr && ret == true; item = item->next)
+	for (int i = 0; i < elements.count(); ++i)
 	{
-		item->data->Update(dt);
+		if(elements[i] != nullptr)
+			elements[i]->Update(dt);
 	}
 	return ret;
 }
@@ -82,16 +76,15 @@ bool j1Gui::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		debug = !debug;
 	
-	p2List_item<j1ElementGUI*>* item;
-	for (item = elements.start; item != nullptr && ret == true; item = item->next)
+	for (int i = 0; i < elements.count(); ++i)
 	{
-		item->data->Draw();
-		if (debug) {
-			item->data->DebugDraw();
+		if (elements[i] != nullptr){
+			elements[i]->Draw();
+			if (debug) {
+				elements[i]->DebugDraw();
+			}
 		}
 	}
-
-
 	return ret;
 }
 
@@ -103,6 +96,35 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
+bool j1Gui::deleteElement(j1ElementGUI* element)
+{
+	if (element != nullptr)
+	{
+		for (uint i = 0; i < elements.count(); ++i)
+		{
+			if (elements[i] == element)
+			{
+				elements[i]->CleanChilds();
+				delete elements[i];
+				elements[i] = nullptr;
+				clearList();
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+void j1Gui::clearList() {
+	p2List_item<j1ElementGUI*>* item = elements.start;
+	for (uint i = 0; i < elements.count(); ++i)
+	{
+		if (elements[i] == nullptr)
+			elements.del(item);
+		item = item->next;
+	}
+}
+
 // const getter for atlas
 const SDL_Texture* j1Gui::GetAtlas() const
 {
@@ -111,18 +133,22 @@ const SDL_Texture* j1Gui::GetAtlas() const
 
 j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, windowType windowType)
 {
-	j1Image* image = new j1Image(pos,rect, windowType, atlas);
-
+	j1Image* image = new j1Image(pos, rect, windowType, atlas);
+	
 	j1ElementGUI* element = image;
+	element->Start();
+	elements.add(element);
 	return element;
 	
 }
 
 j1ElementGUI* j1Gui::AddLabel(fPoint pos, p2SString text)
 {
-	j1Label* label = new j1Label(pos,text);//add position and text
+	j1Label* label = new j1Label(pos, text);//add position and text
 
 	j1ElementGUI* element = (j1ElementGUI*)label;
+	element->Start();
+	elements.add(element);
 	return element;
 }
 
@@ -130,6 +156,8 @@ j1ElementGUI* j1Gui::AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Ani
 	j1Button* button = new j1Button(pos, text, anim, action, atlas);
 
 	j1ElementGUI* element = button;
+	element->Start();
+	elements.add(element);
 	return element;
 }
 
@@ -137,6 +165,8 @@ j1ElementGUI* j1Gui::AddSlider(fPoint pos, OrientationType orientation) {
 	j1Slider* slider = new j1Slider(pos, HORIZONTAL, atlas);
 
 	j1ElementGUI* element = slider;
+	element->Start();
+	elements.add(element);
 	return element;
 }
 

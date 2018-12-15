@@ -4,14 +4,15 @@
 #include "j1Input.h"
 #include "p2Log.h"
 #include "j1ElementGUI.h"
+#include "j1Textures.h"
 
 
 j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	orientation(orientation),
 	j1ElementGUI(position, nullptr, type, graphics, parent)
 {
-	slide = new j1Image({ position.x, position.y }, new SDL_Rect({ 557,64,332,5 }), NONE, graphics,this);
-	thumb = new j1Image({ position.x, position.y - 5 }, new SDL_Rect({ 803,518,10,15 }), NONE, graphics,this);
+	slide = new j1Image({ position.x, position.y }, new SDL_Rect({ 557,64,332,5 }), windowType::NONE, graphics,this);
+	thumb = new j1Image({ position.x, position.y - 5 }, new SDL_Rect({ 803,518,10,15 }), windowType::NONE, graphics,this);
 	label = new j1Label({ position.x + 160, position.y - 25 }, "100", nullptr, this);
 
 	childs.add(slide);
@@ -24,6 +25,17 @@ j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* gr
 
 j1Slider::~j1Slider()
 {}
+
+bool j1Slider::CleanUp()
+{
+	LOG("Cleaning Slider");
+	graphics = nullptr;
+	slide = nullptr;
+	thumb = nullptr;
+	label = nullptr;
+	parent = nullptr;
+	return true;
+}
 
 bool j1Slider::Update(float dt)
 {
@@ -51,7 +63,10 @@ bool j1Slider::Update(float dt)
 	}
 	
 	p2SString temp = p2SString("%i", sliderValue());
-	label->text = temp;
+	if (temp != label->text) {
+		label->text = temp;
+		label->UpdateText();
+	}
 
 	return true;
 }

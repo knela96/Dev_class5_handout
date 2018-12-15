@@ -4,6 +4,7 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
+struct j1ElementGUI;
 
 class j1Scene : public j1Module
 {
@@ -36,6 +37,8 @@ public:
 
 	bool Save(pugi::xml_node & data) const;
 
+	void CreateHUD();
+
 private:
 	p2SString map;
 	p2SString music_path;
@@ -44,6 +47,9 @@ private:
 	Levels load_scene;
 
 	SDL_Texture* debug_tex;
+
+	j1ElementGUI* settings;
+	bool b_settings = false;
 };
 
 #endif // __j1SCENE_H__

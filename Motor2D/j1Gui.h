@@ -6,14 +6,21 @@
 
 #define CURSOR_WIDTH 2
 
+
 // TODO 1: Create your structure of classes
 class j1ElementGUI;
 
 struct SDL_Texture;
 struct SDL_Rect;
 
-enum windowType;
 enum OrientationType;
+
+
+enum class windowType {
+	NONE = -1,
+	SETTINGS
+};
+
 // ---------------------------------------------------
 class j1Gui : public j1Module
 {
@@ -41,13 +48,17 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool deleteElement(j1ElementGUI * element);
+
+	void clearList();
+
 	// TODO 2: Create the factory methods
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
 
 	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, windowType windowType);
 
-	j1ElementGUI* AddLabel(fPoint pos,p2SString text);
+	j1ElementGUI* AddLabel(fPoint pos, p2SString text);
 
 	j1ElementGUI* AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, void(*action)(void));
 

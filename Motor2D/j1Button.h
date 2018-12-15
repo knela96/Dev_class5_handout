@@ -13,6 +13,8 @@ public:
 	j1Button(fPoint pos, p2SString text, j1Animation* anim, void(*action)(void), SDL_Texture* graphics = nullptr, j1ElementGUI* parent = nullptr, ElementUIType type = ElementUIType::BUTTON);
 	~j1Button();
 
+	bool CleanUp();
+
 	bool Start();
 
 	bool Update(float dt);

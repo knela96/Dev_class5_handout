@@ -14,6 +14,7 @@
 #include "j1Scene2.h"
 #include "j1Window.h"
 #include "j1Pathfinding.h"
+#include "j1ElementGUI.h"
 #include "Brofiler\Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -45,7 +46,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	
 		App->map->Enable();
 		if (App->map->Load(map.GetString()) == true) {
 
@@ -58,6 +58,7 @@ bool j1Scene::Start()
 		}
 		App->collisions->Enable();
 		App->entitymanager->Enable();
+		App->gui->Enable();
 
 		App->audio->PlayMusic(music_path.GetString());
 		
@@ -92,6 +93,16 @@ bool j1Scene::PreUpdate()
 			origin_selected = true;
 		}
 	}
+
+	if (b_settings)
+		CreateHUD();
+	else {
+		App->gui->deleteElement(settings);
+		if (settings != nullptr) {
+			settings = nullptr;
+		}
+	}
+
 	return true;
 }
 
@@ -109,6 +120,9 @@ bool j1Scene::Update(float dt)
 		if (App->entitymanager->GetPlayer()->win)
 			App->fade->FadeToBlack(this, App->scene2);
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		b_settings = !b_settings;
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
@@ -137,26 +151,6 @@ bool j1Scene::Update(float dt)
 	App->map->Draw();
 
 
-	/*iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Tails Odyssey Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-		App->map->data.width, App->map->data.height,
-		App->map->data.tile_width, App->map->data.tile_height,
-		App->map->data.tilesets.count(),
-		map_coordinates.x, map_coordinates.y);
-
-	App->win->SetTitle(title.GetString());*/
-
-	// Debug pathfinding ------------------------------
-
-	/*int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
-
-	App->render->Blit(debug_tex, p.x, p.y);
-	*/
-
 	return true;
 }
 
@@ -166,8 +160,6 @@ bool j1Scene::PostUpdate()
 	BROFILER_CATEGORY("ScenePostUpdate", Profiler::Color::DarkOliveGreen);
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
 
 	return ret;
 }
@@ -181,6 +173,7 @@ bool j1Scene::CleanUp()
 	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
+	App->gui->Disable();
 	return true;
 }
 
@@ -203,4 +196,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	player.append_attribute("value") = Scene;
 
 	return true;
+}
+
+void j1Scene::CreateHUD() {
+	if(settings == nullptr)
+		settings = App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), windowType::SETTINGS);
 }
