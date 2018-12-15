@@ -37,6 +37,14 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	button_anim.PushBack({ 483,60,114,58 });
 	button_anim.PushBack({ 483,121,114,58 });
 
+	button2_anim.PushBack({ 699,60,76,58 });
+	button2_anim.PushBack({ 699,120,76,58 });
+	button2_anim.PushBack({ 699,181,76,58 });
+
+	button3_anim.PushBack({ 619,60,76,58 });
+	button3_anim.PushBack({ 619,120,76,58 });
+	button3_anim.PushBack({ 619,181,76,58 });
+
 	return ret;
 }
 
