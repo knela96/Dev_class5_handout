@@ -167,6 +167,7 @@ bool j1Collisions::PreUpdate()
 
 bool j1Collisions::CheckGroundCollision(Collider* hitbox) const
 {
+
 	bool ret = false;
 	if (hitbox != nullptr) {
 		Collider* c1 = hitbox;

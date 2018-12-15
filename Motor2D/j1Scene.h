@@ -49,7 +49,6 @@ private:
 	SDL_Texture* debug_tex;
 
 	j1ElementGUI* settings;
-	bool b_settings = false;
 };
 
 #endif // __j1SCENE_H__

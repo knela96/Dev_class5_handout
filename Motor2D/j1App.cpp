@@ -39,9 +39,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collisions = new j1Collisions();
 	entitymanager = new j1EntityManager();
 	render = new j1Render();
-	fade = new j1FadeToBlack();
-	font = new j1Fonts();
 	gui = new j1Gui();
+	font = new j1Fonts();
+	fade = new j1FadeToBlack();
 
 
 	// Ordered for awake / Start / Update
@@ -54,10 +54,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(path);
 	AddModule(scene);
 	AddModule(scene2);
-	AddModule(font);
-	AddModule(gui);
 	AddModule(collisions);
 	AddModule(entitymanager);
+	AddModule(font);
+	AddModule(gui);
 	AddModule(fade);
 
 
@@ -259,7 +259,10 @@ void j1App::FinishUpdate()
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {
-	BROFILER_CATEGORY("Preupdate", Profiler::Color::Orchid)
+	BROFILER_CATEGORY("Preupdate", Profiler::Color::Orchid);
+
+	if (gui->b_settings)
+		dt = 0;
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -273,7 +276,7 @@ bool j1App::PreUpdate()
 			continue;
 		}
 
-		ret = item->data->PreUpdate();
+			ret = item->data->PreUpdate();
 	}
 
 	return ret;
@@ -294,7 +297,8 @@ bool j1App::DoUpdate()
 		if(pModule->active == false) {
 			continue;
 		}
-
+		if (gui->b_settings)
+			dt = 0;
 		ret = item->data->Update(dt);
 	}
 

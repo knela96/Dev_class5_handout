@@ -187,7 +187,7 @@ bool j1EntityManager::Update(float dt)
 	if (accumulated_time >= delay)
 		do_logic = true;
 
-	if(dt > 0)
+	//if(dt > 0)
 		UpdateAll(dt, do_logic);
 
 	if (do_logic == true) {
@@ -207,10 +207,10 @@ bool j1EntityManager::UpdateAll(float dt, bool do_logic)
 	p2List_item<j1Entity*>* item;
 	for (item = entities.start; item != nullptr && ret == true; item = item->next)
 	{
-		ret = item->data->Update(dt, do_logic);
+		if(dt != 0)
+			item->data->Update(dt, do_logic);
 
-		if (ret)
-			ret = item->data->Update();
+		ret = item->data->Update();
 	}
 	
 	return ret;

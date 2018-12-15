@@ -69,6 +69,7 @@ public:
 public:
 	p2List<j1ElementGUI*> elements;
 	j1Animation button_anim;
+	bool b_settings = false;
 	
 private:
 	bool debug = false;

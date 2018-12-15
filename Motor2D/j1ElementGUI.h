@@ -20,7 +20,7 @@ class j1ElementGUI
 {
 public:
 
-	j1ElementGUI(fPoint position, SDL_Rect* rect, ElementUIType type, SDL_Texture* graphics, j1ElementGUI* parent) : position(position), scale(scale), rect(rect), type(type), graphics(graphics), parent(parent){}
+	j1ElementGUI(fPoint position, SDL_Rect* rect, ElementUIType type, SDL_Texture* graphics, j1ElementGUI* parent) : position(position), rect(rect), type(type), graphics(graphics), parent(parent){}
 
 	// Destructor
 	virtual ~j1ElementGUI() {}
@@ -107,7 +107,6 @@ public:
 	fPoint global_pos;
 	int scale = 1;
 
-private:
 };
 
 #endif

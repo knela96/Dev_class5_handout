@@ -25,6 +25,7 @@ j1Image::~j1Image(){}
 bool j1Image::CleanUp() {
 	LOG("Cleaning Image");
 	parent = nullptr;
+	graphics = nullptr;
 	delete rect;
 	rect = nullptr;
 	delete anim;
@@ -66,14 +67,14 @@ void j1Image::Draw()
 {
 	rect->x = global_pos.x;
 	rect->y = global_pos.y;
-	App->render->Blit(graphics, global_pos.x,global_pos.y, anim, SDL_FLIP_NONE, 1, 0.0f);
+	App->render->Blit(graphics, global_pos.x,global_pos.y, rect, SDL_FLIP_NONE, 1, 0.0f);
 
 	drawChilds();
 }
 
 void j1Image::createSettings() {
 	childs.add((j1ElementGUI*)new j1Button({ 0,100 }, "hola", &App->gui->button_anim, action, graphics, this));
-	childs.add((j1ElementGUI*)new j1Slider({ 0, 150 }, HORIZONTAL, graphics, this));
+	//childs.add((j1ElementGUI*)new j1Slider({ 0, 150 }, HORIZONTAL, graphics, this));
 }
 
 fPoint j1Image::GetLocalPos(int width) {

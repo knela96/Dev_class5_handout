@@ -30,9 +30,10 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	LOG("Loading GUI atlas");
 	bool ret = true;
 
-	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+	atlas_file_name = conf.child("atlas").attribute("file").as_string();
 
 	//LOAD PUSHBACKS
+	button_anim.PushBack({ 100,100,150,50 });
 
 	return ret;
 }
@@ -60,10 +61,20 @@ bool j1Gui::PreUpdate()
 bool j1Gui::Update(float dt) {
 
 	bool ret = true;
+
 	for (int i = 0; i < elements.count(); ++i)
 	{
 		if(elements[i] != nullptr)
 			elements[i]->Update(dt);
+	}
+	for (int i = 0; i < elements.count(); ++i)
+	{
+		if (elements[i] != nullptr) {
+			elements[i]->Draw();
+			if (debug) {
+				elements[i]->DebugDraw();
+			}
+		}
 	}
 	return ret;
 }
@@ -75,16 +86,11 @@ bool j1Gui::PostUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		debug = !debug;
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		b_settings = !b_settings;
+
 	
-	for (int i = 0; i < elements.count(); ++i)
-	{
-		if (elements[i] != nullptr){
-			elements[i]->Draw();
-			if (debug) {
-				elements[i]->DebugDraw();
-			}
-		}
-	}
 	return ret;
 }
 

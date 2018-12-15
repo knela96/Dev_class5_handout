@@ -29,7 +29,7 @@ j1Slider::~j1Slider()
 bool j1Slider::CleanUp()
 {
 	LOG("Cleaning Slider");
-	graphics = nullptr;
+	//graphics = nullptr;
 	slide = nullptr;
 	thumb = nullptr;
 	label = nullptr;

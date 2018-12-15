@@ -106,12 +106,12 @@ public:
 	float current_time;
 	uint				frame_cap;
 	float accumulated = 0;
+	float				dt;
 
 private:
 
 	p2List<j1Module*>	modules;
 	uint				frames;
-	float				dt;
 	uint				started_at;
 	int					argc;
 	char**				args;

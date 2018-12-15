@@ -208,10 +208,6 @@ bool j1Player::Update(float dt, bool do_logic)
 {
 	BROFILER_CATEGORY("PlayerUpdate1", Profiler::Color::MediumSlateBlue);
 
-	if (dt == 0) {
-		position.x = respawn.x;
-		position.y = respawn.y;
-	}
 	OnGround = App->collisions->CheckGroundCollision(collider);
 	if (OnGround)
 		isFalling = false;
@@ -259,18 +255,21 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 				if (App->input->GetKey(SDL_SCANCODE_A) == App->input->GetKey(SDL_SCANCODE_D))
 				{
+					App->audio->StopFx();
 					currentState = CharacterState::Stand;
 					speed = { 0,0 };
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 				{
-					App->audio->PlayFx(Run_fx, 1);
+					if(!Mix_Playing(-1))
+						App->audio->PlayFx(Run_fx, 0);
 					flip = false;
 					speed.x = walkSpeed;
 				}
 				else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 				{
-					App->audio->PlayFx(Run_fx, 1);
+					if (!Mix_Playing(-1))
+						App->audio->PlayFx(Run_fx, 0);
 					flip = true;
 					speed.x = -walkSpeed;
 				}
@@ -529,50 +528,51 @@ bool j1Player::Update() {
 }
 
 void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
-
-	if(collider2->gettype() == 0) {
-		WallCollision(collider1, collider2);
-	}
-	else if (collider2->gettype() == COLLIDER_ENEMY) {
-		if (death_anim == false && collider2->gettype() == COLLIDER_ENEMY) {
-			if (godmode == false)
-				current_life--;
-			death_anim = true;
-			App->audio->StopFx();
-			App->audio->PlayFx(Death_fx, 1);
+	if (App->dt != 0) {
+		if (collider2->gettype() == 0) {
+			WallCollision(collider1, collider2);
 		}
-		else {
-			current_life--;
-		}
-	}
-	else if (collider2->gettype() == COLLIDER_FLYING_ENEMY && !godmode || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim && !godmode) {
-
-		if (!hit && c_blink == 0 && death_anim == false) {
-			LOG("HIT"); 
-			start_time = SDL_GetTicks() - start_time;
-			hit = true;
-			current_life--;
-			if (current_life == 0) {
-				hit = false;
-				currentState = CharacterState::Jump;
+		else if (collider2->gettype() == COLLIDER_ENEMY) {
+			if (death_anim == false && collider2->gettype() == COLLIDER_ENEMY) {
+				if (godmode == false)
+					current_life--;
 				death_anim = true;
 				App->audio->StopFx();
-				App->audio->PlayFx(Death_fx, 0);
+				App->audio->PlayFx(Death_fx, 1);
 			}
 			else {
-				App->audio->StopFx();
-				App->audio->PlayFx(Jump_fx, 0);
+				current_life--;
 			}
 		}
-	}
-	else if (collider2->gettype() == COLLIDER_WIN) {
-		if (!win) 
-			App->audio->PlayFx(Win_fx, 0);
-		win = true;
-		
-	}
-	else if (collider2->gettype() == COLLIDER_POWERUP) {
-		App->audio->PlayFx(coin_fx, 0);
+		else if (collider2->gettype() == COLLIDER_FLYING_ENEMY && !godmode || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim && !godmode) {
+
+			if (!hit && c_blink == 0 && death_anim == false) {
+				LOG("HIT");
+				start_time = SDL_GetTicks() - start_time;
+				hit = true;
+				current_life--;
+				if (current_life == 0) {
+					hit = false;
+					currentState = CharacterState::Jump;
+					death_anim = true;
+					App->audio->StopFx();
+					App->audio->PlayFx(Death_fx, 0);
+				}
+				else {
+					App->audio->StopFx();
+					App->audio->PlayFx(Jump_fx, 0);
+				}
+			}
+		}
+		else if (collider2->gettype() == COLLIDER_WIN) {
+			if (!win)
+				App->audio->PlayFx(Win_fx, 0);
+			win = true;
+
+		}
+		else if (collider2->gettype() == COLLIDER_POWERUP) {
+			App->audio->PlayFx(coin_fx, 0);
+		}
 	}
 }
 

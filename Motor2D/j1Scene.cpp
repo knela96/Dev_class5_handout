@@ -46,6 +46,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->gui->Enable();
 		App->map->Enable();
 		if (App->map->Load(map.GetString()) == true) {
 
@@ -58,7 +59,6 @@ bool j1Scene::Start()
 		}
 		App->collisions->Enable();
 		App->entitymanager->Enable();
-		App->gui->Enable();
 
 		App->audio->PlayMusic(music_path.GetString());
 		
@@ -94,7 +94,7 @@ bool j1Scene::PreUpdate()
 		}
 	}
 
-	if (b_settings)
+	if (App->gui->b_settings)
 		CreateHUD();
 	else {
 		App->gui->deleteElement(settings);
@@ -120,9 +120,6 @@ bool j1Scene::Update(float dt)
 		if (App->entitymanager->GetPlayer()->win)
 			App->fade->FadeToBlack(this, App->scene2);
 	}
-
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		b_settings = !b_settings;
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
