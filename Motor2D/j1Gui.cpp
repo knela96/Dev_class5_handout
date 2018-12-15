@@ -11,6 +11,7 @@
 #include "j1Label.h"
 #include "j1Button.h"
 #include "j1Slider.h"
+#include "j1Audio.h"
 #include "ButtonFunctions.h"
 
 
@@ -46,6 +47,9 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	button3_anim.PushBack({ 619,120,76,58 });
 	button3_anim.PushBack({ 619,181,76,58 });
 
+	btn_file_name = conf.child("btn_fx").child_value();
+
+
 	return ret;
 }
 
@@ -55,6 +59,10 @@ bool j1Gui::Start()
 	bool ret = true;
 	atlas = App->tex->Load(atlas_file_name.GetString());
 	logo = App->tex->Load(logo_file_name.GetString());
+
+	App->audio->LoadFx(btn_file_name.GetString());
+
+
 	b_settings = false;
 
 	for (int i = 0; i < elements.count(); ++i)
@@ -105,9 +113,6 @@ bool j1Gui::PostUpdate()
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		debug = !debug;
-
-
-	
 	return ret;
 }
 

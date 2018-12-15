@@ -84,6 +84,7 @@ private:
 	SDL_Texture* logo;
 	p2SString atlas_file_name;
 	p2SString logo_file_name;
+	p2SString btn_file_name;
 };
 
 #endif // __j1GUI_H__

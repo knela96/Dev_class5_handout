@@ -8,6 +8,7 @@
 #include "j1Textures.h"
 #include "j1EntityManager.h"
 #include "ButtonFunctions.h"
+#include "j1Audio.h"
 
 
 
@@ -109,6 +110,7 @@ void j1Button::onClick()
 
 bool j1Button::onAction()
 {
+	App->audio->PlayFx(1, 0);
 	int ret = action();
 	if (ret == 3)
 		ret = enableLoad();

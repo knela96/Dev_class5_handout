@@ -48,6 +48,7 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1SceneIntro::Start()
 {
+	App->gui->Enable();
 	main_menu = false;
 
 	App->gui->Enable();

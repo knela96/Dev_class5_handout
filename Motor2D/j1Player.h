@@ -20,7 +20,7 @@ enum CharacterState
 };
 
 enum CharacterFX {
-	Run_fx = 1,
+	Run_fx = 2,
 	Plane_fx,
 	Death_fx,
 	Jump_fx,
