@@ -41,6 +41,11 @@
   </map>
 
   <scenes>
+    <sceneintro>
+      <map>Map1.3.tmx</map>Map1.3.tmx
+      <camera x="0" y ="0" />
+      <audio>Main_Menu_Music.ogg</audio>
+    </sceneintro>
     <scene1>
       <map>Map1.3.tmx</map>Map1.3.tmx
       <camera x="0" y ="0" />
