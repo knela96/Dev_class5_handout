@@ -69,6 +69,8 @@ public:
 public:
 	p2List<j1ElementGUI*> elements;
 	j1Animation button_anim;
+	j1Animation button2_anim;
+	j1Animation button3_anim;
 	bool b_settings = false;
 	
 private:

@@ -5,6 +5,7 @@
 #include "p2Log.h"
 #include "j1ElementGUI.h"
 #include "j1Textures.h"
+#include "j1Audio.h"
 
 
 j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
@@ -13,7 +14,8 @@ j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* gr
 {
 	slide = new j1Image({ position.x, position.y }, new SDL_Rect({ 598,0,177,32 }),Levels::NONE, windowType::NONE, graphics,this);
 	thumb = new j1Image({ position.x, position.y }, new SDL_Rect({ 604,34,18,26 }), Levels::NONE, windowType::NONE, graphics,this);
-	label = new j1Label({ position.x + 79, position.y - 15 }, "100", nullptr, this);
+	label = new j1Label({ position.x - 25, position.y + 12}, "100", nullptr, this);
+	childs.add((j1ElementGUI*)new j1Image({ position.x + 20, position.y - 65 }, new SDL_Rect({ 481,181,138,55 }), Levels::NONE, windowType::NONE, graphics, this));
 
 	offset = 28;
 
@@ -24,7 +26,8 @@ j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* gr
 	childs.add(thumb);
 	childs.add(label);
 
-	setSliderValue(50);
+	setSliderValue(App->audio->v_music * 100);
+	App->audio->ChangeMusicVolume();
 }
 
 
@@ -75,6 +78,12 @@ bool j1Slider::Update(float dt)
 	if (temp != label->text) {
 		label->text = temp;
 		label->UpdateText();
+
+		float volume = (float)sliderValue() / 100;
+		LOG("%f", volume);
+		App->audio->v_music = volume;
+		App->audio->v_fx = volume;
+		App->audio->ChangeMusicVolume();
 	}
 
 	return true;

@@ -7,7 +7,7 @@
   </app>
 
   <audio>
-    <music volume="0.5">
+    <music volume="1">
       <folder>Assets/audio/music/</folder>
     </music>
     <fx volume="1">
@@ -20,12 +20,12 @@
   </renderer>
 
    <gui>
-    <atlas file="Assets/gui/Atlas1.0.png"/>
+    <atlas file="Assets/gui/Atlas1.2.png"/>
   </gui>
 
   <fonts>
     <folder>Assets/fonts/</folder>    
-    <default_font file="open_sans/OpenSans-Regular.ttf" size="12"/>
+    <default_font file="Pix Riddim.ttf" size="12"/>
   </fonts>
     
   <window>

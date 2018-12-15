@@ -49,6 +49,7 @@ private:
 	p2List<Mix_Chunk*>	fx;
 	p2SString			music_path;
 	p2SString			fx_path;
+public:
 	float v_music;
 	float v_fx;
 };
