@@ -46,6 +46,13 @@ private:
 
 	SDL_Texture* debug_tex;
 
+
+	int cameraoffset;
+	SDL_Texture * graphics;
+	j1Animation* current_anim;
+	SDL_Rect animation_Rect;
+	j1Animation anim_plane;
+
 	j1ElementGUI* settings;
 	bool main_menu = false;
 };

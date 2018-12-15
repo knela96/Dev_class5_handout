@@ -45,6 +45,18 @@
       <map>Map1.3.tmx</map>Map1.3.tmx
       <camera x="0" y ="0" />
       <audio>Main_Menu_Music.ogg</audio>
+      <animations>
+        <plane loop ="true" speed="15.0f">
+          <frame x="6" y="97" w="38" h="33"/>
+          <frame x="39" y="97" w="34" h="33"/>
+          <frame x="74" y="97" w="38" h="33"/>
+          <frame x="114" y="97" w="34" h="33"/>
+          <frame x="148" y="97" w="34" h="33"/>
+          <frame x="179" y="97" w="34" h="33"/>
+          <frame x="212" y="97" w="44" h="33"/>
+          <frame x="256" y="97" w="36" h="33"/>
+        </plane>
+      </animations>
     </sceneintro>
     <scene1>
       <map>Map1.3.tmx</map>Map1.3.tmx

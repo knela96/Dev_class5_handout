@@ -10,6 +10,7 @@
 #include "j1Player.h"
 #include "j1FadeToBlack.h"
 #include "j1Collisions.h"
+#include "j1Animation.h"
 #include "j1SceneIntro.h"
 #include "j1Scene.h"
 #include "j1Scene2.h"
@@ -34,6 +35,19 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
+	for (pugi::xml_node push_node = config.child("animations").child("plane").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim_plane.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim_plane.loop = config.child("animations").child("plane").attribute("loop").as_bool();
+	anim_plane.speed = config.child("animations").child("plane").attribute("speed").as_float();
+
+
 	map.create(config.child("sceneintro").child("map").child_value());
 	cam_pos = { config.child("sceneintro").child("camera").attribute("x").as_int(),
 				config.child("sceneintro").child("camera").attribute("y").as_int()
@@ -49,6 +63,10 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 bool j1SceneIntro::Start()
 {
 	main_menu = false;
+	cameraoffset = 0;
+	graphics = App->tex->Load("Assets/Sprites/Character/Player1.1.png");
+
+	current_anim = &anim_plane;
 
 	App->gui->Enable();
 	App->map->Enable();
@@ -83,7 +101,12 @@ bool j1SceneIntro::Update(float dt)
 	BROFILER_CATEGORY("SceneIntroUpdate", Profiler::Color::DarkMagenta);
 	
 	App->map->Draw();
-	
+	App->render->camera.x = cameraoffset;
+	cameraoffset -= 2;
+	animation_Rect = current_anim->GetCurrentFrame(dt);
+
+	App->render->Blit(graphics, 100, 60, &animation_Rect, SDL_FLIP_NONE);
+
 	return true;
 }
 
@@ -105,6 +128,7 @@ bool j1SceneIntro::CleanUp()
 	App->audio->UnloadFx();
 	App->map->Disable();
 	App->gui->Disable();
+	App->tex->UnLoad(graphics);
 	return true;
 }
 
@@ -127,10 +151,10 @@ void j1SceneIntro::CreateHUD()
 {
 	if (!main_menu) {
 		App->gui->AddButton({ 500,200 }, "START", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Start, true);
-		App->gui->AddButton({ 500,250 }, "CONTINUE", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Continue, false);
-		App->gui->AddButton({ 500,300 }, "SETTINGS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Settings, true);
-		App->gui->AddButton({ 500,350 }, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
-		App->gui->AddButton({ 500,400 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
+		App->gui->AddButton({ 500,260 }, "CONTINUE", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Continue, false);
+		App->gui->AddButton({ 500,320 }, "SETTINGS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Settings, true);
+		App->gui->AddButton({ 500,380 }, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
+		App->gui->AddButton({ 500,440 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
 		main_menu = true;
 	}
 }
