@@ -42,7 +42,7 @@
 
   <scenes>
     <scene1>
-      <map>Map1.2.tmx</map>Map1.2.tmx
+      <map>Map1.3.tmx</map>Map1.3.tmx
       <camera x="0" y ="0" />
       <audio>The_Waters_Cleansed.ogg</audio>
     </scene1>
