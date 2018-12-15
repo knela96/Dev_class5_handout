@@ -33,6 +33,7 @@ public:
 	j1Animation* anim;
 	SDL_Rect* current_animation;
 	int(*action)(void);
+	bool activate;
 	bool active;
 };
 

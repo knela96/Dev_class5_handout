@@ -180,7 +180,7 @@ bool j1Scene::Load(pugi::xml_node& data)
 {
 	load_scene = (Levels)data.attribute("value").as_uint();
 
-	if (load_scene == Scene2) {
+	if (load_scene == Levels::Scene2) {
 		this->Disable();
 		App->scene2->Enable();
 	}
@@ -192,7 +192,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node player = data;
 
-	player.append_attribute("value") = Scene;
+	player.append_attribute("value") = (int)Levels::Scene;
 
 	return true;
 }
@@ -200,5 +200,5 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::CreateHUD()
 {
 	if(settings == nullptr)
-		settings = App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), windowType::SETTINGS);
+		settings = App->gui->AddImage({ 0,0 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene, windowType::SETTINGS);
 }

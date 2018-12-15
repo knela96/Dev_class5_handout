@@ -22,7 +22,7 @@ int f_Continue() {
 }
 
 int f_Settings() {
-	App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), windowType::SETTINGS);
+	App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), Levels::NONE, windowType::SETTINGS);
 	return true;
 }
 
@@ -47,5 +47,15 @@ int f_Scene1toMainMenu() {
 
 int f_Scene2toMainMenu() {
 	App->fade->FadeToBlack(App->scene2, App->sceneintro);
+	return true;
+}
+
+int f_Save() {
+	App->SaveGame();
+	return true;
+}
+
+int f_Load() {
+	App->LoadGame();
 	return true;
 }

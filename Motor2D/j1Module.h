@@ -13,7 +13,8 @@ class j1App;
 
 struct Collider;
 
-enum Levels {
+enum class Levels {
+	NONE = -1,
 	Scene,
 	Scene2
 };

@@ -56,7 +56,7 @@ public:
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
 
-	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, windowType windowType);
+	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, Levels Scene, windowType windowType);
 
 	j1ElementGUI* AddLabel(fPoint pos, p2SString text);
 

@@ -33,7 +33,9 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	atlas_file_name = conf.child("atlas").attribute("file").as_string();
 
 	//LOAD PUSHBACKS
-	button_anim.PushBack({ 100,100,150,50 });
+	button_anim.PushBack({ 483,0,114,58 });
+	button_anim.PushBack({ 483,60,114,58 });
+	button_anim.PushBack({ 483,121,114,58 });
 
 	return ret;
 }
@@ -155,9 +157,9 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
-j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, windowType windowType)
+j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, Levels scene, windowType windowType)
 {
-	j1Image* image = new j1Image(pos, rect, windowType, atlas);
+	j1Image* image = new j1Image(pos, rect, scene, windowType, atlas);
 	
 	j1ElementGUI* element = image;
 	element->Start();

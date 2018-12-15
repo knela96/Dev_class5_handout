@@ -12,7 +12,7 @@
 
 j1Button::j1Button(fPoint position, p2SString text, j1Animation* anim, int(*action)(void),bool active, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	anim(anim),
-	active(active),
+	activate(active),
 	action(action),
 	j1ElementGUI(position, nullptr, type, graphics, parent)
 {
@@ -31,8 +31,13 @@ bool j1Button::Start() {
 
 	current_animation = &anim->GetFrameRect(0);
 
-	if (App->entitymanager->_config.first_child() == nullptr)
-		active = false;
+	if (!activate) {
+		if (App->GetSaveData().child("entities").child("player") == nullptr)
+			active = false;
+		else
+			active = true;
+	}else
+		active = true;
 
 	return true;
 }
@@ -60,7 +65,7 @@ bool j1Button::Update(float dt) {
 	current_animation = &anim->GetFrameRect(0);
 	
 	if (!active) {
-		current_animation = &anim->GetFrameRect(3);
+		current_animation = &anim->GetFrameRect(2);
 	}
 	else {
 		if (mouse.x >= global_pos.x && mouse.x < rect->w + global_pos.x && mouse.y >= global_pos.y && mouse.y < rect->h + global_pos.y) {
@@ -79,9 +84,9 @@ bool j1Button::Update(float dt) {
 
 void j1Button::Draw()
 {
-		rect->x = global_pos.x;
-		rect->y = global_pos.y;
-		App->render->Blit(graphics, global_pos.x, global_pos.y , current_animation, SDL_FLIP_NONE, 1, 0.0f);
+	rect->x = global_pos.x;
+	rect->y = global_pos.y;
+	App->render->Blit(graphics, global_pos.x, global_pos.y , current_animation, SDL_FLIP_NONE, 1, 0.0f);
 	
 
 	p2List_item<j1ElementGUI*>* item;

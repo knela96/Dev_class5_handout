@@ -11,9 +11,14 @@ j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* gr
 	orientation(orientation),
 	j1ElementGUI(position, nullptr, type, graphics, parent)
 {
-	slide = new j1Image({ position.x, position.y }, new SDL_Rect({ 557,64,332,5 }), windowType::NONE, graphics,this);
-	thumb = new j1Image({ position.x, position.y - 5 }, new SDL_Rect({ 803,518,10,15 }), windowType::NONE, graphics,this);
-	label = new j1Label({ position.x + 160, position.y - 25 }, "100", nullptr, this);
+	slide = new j1Image({ position.x, position.y }, new SDL_Rect({ 598,0,177,32 }),Levels::NONE, windowType::NONE, graphics,this);
+	thumb = new j1Image({ position.x, position.y }, new SDL_Rect({ 604,34,18,26 }), Levels::NONE, windowType::NONE, graphics,this);
+	label = new j1Label({ position.x + 79, position.y - 15 }, "100", nullptr, this);
+
+	offset = 28;
+
+	slide->rect->x += offset;
+	slide->rect->w -= offset*2;
 
 	childs.add(slide);
 	childs.add(thumb);
@@ -56,11 +61,15 @@ bool j1Slider::Update(float dt)
 
 		thumb->global_pos += { o_mouse.x - (float)thumb->global_pos.x - thumb->rect->w / 2, 0 };
 
-		if (thumb->global_pos.x <= slide->global_pos.x)
-			thumb->global_pos.x = slide->global_pos.x;
-		else if(thumb->global_pos.x + thumb->rect->w >= slide->global_pos.x + slide->rect->w)
-			thumb->global_pos.x = slide->global_pos.x + slide->rect->w - thumb->rect->w;
+		if (thumb->global_pos.x <= slide->rect->x)
+			thumb->global_pos.x = slide->rect->x;
+		else if(thumb->global_pos.x + thumb->rect->w >= slide->rect->x + slide->rect->w)
+			thumb->global_pos.x = slide->rect->x + slide->rect->w - thumb->rect->w;
+
 	}
+
+	thumb->rect->x = thumb->global_pos.x;
+	thumb->rect->y = thumb->global_pos.y;
 	
 	p2SString temp = p2SString("%i", sliderValue());
 	if (temp != label->text) {
@@ -78,10 +87,10 @@ void j1Slider::Draw()
 
 int j1Slider::sliderValue() {
 	fPoint p = (thumb->global_pos - thumb->position) - thumb->getParentPos(this);
-	return (int)((p.x / (float)(slide->rect->w - thumb->rect->w)) * 100);
+	return (int)((p.x / (float)(slide->rect->w - thumb->rect->w)) * 100) - (offset -1);
 }
 
 void j1Slider::setSliderValue(int value) {
-	thumb->global_pos.x = slide->global_pos.x + (float)((slide->rect->w - thumb->rect->w) * ((value + 0.1) / 100));
+	thumb->global_pos.x = slide->rect->x + (float)((slide->rect->w - thumb->rect->w) * ((value + 0.1) / 100));
 }
 

@@ -8,8 +8,9 @@
 #include "ButtonFunctions.h"
 #include "j1Textures.h"
 
-j1Image::j1Image(fPoint position, SDL_Rect* anim, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
+j1Image::j1Image(fPoint position, SDL_Rect* anim, Levels Scene, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	anim(anim),
+	scene(Scene),
 	window_type(window_type),
 	j1ElementGUI(position, nullptr, type, graphics, parent) {
 
@@ -71,16 +72,21 @@ bool j1Image::Update(float dt) {
 
 void j1Image::Draw()
 {
-	rect->x = global_pos.x;
-	rect->y = global_pos.y;
-	App->render->Blit(graphics, global_pos.x,global_pos.y, rect, SDL_FLIP_NONE, 1, 0.0f);
+	App->render->Blit(graphics, global_pos.x,global_pos.y, anim, SDL_FLIP_NONE, 1, 0.0f);
 
 	drawChilds();
 }
 
 void j1Image::createSettings() {
-	childs.add((j1ElementGUI*)new j1Button({ 0,100 }, "hola", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
-	//childs.add((j1ElementGUI*)new j1Slider({ 0, 150 }, HORIZONTAL, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 0,100 }, "RESUME", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 100,100 },HORIZONTAL,graphics,this));
+	childs.add((j1ElementGUI*)new j1Button({ 200,100 }, "LOAD", &App->gui->button_anim, f_Load, false, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 300,100 }, "SAVE", &App->gui->button_anim, f_Save, true, graphics, this));
+	if(scene == Levels::Scene)
+		childs.add((j1ElementGUI*)new j1Button({ 400,100 }, "MENU", &App->gui->button_anim, f_Scene1toMainMenu, true, graphics, this));
+	else if (scene == Levels::Scene2)
+		childs.add((j1ElementGUI*)new j1Button({ 400,100 }, "MENU", &App->gui->button_anim, f_Scene2toMainMenu, true, graphics, this));
+
 }
 
 fPoint j1Image::GetLocalPos(int width) {

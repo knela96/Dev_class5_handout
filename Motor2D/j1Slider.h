@@ -33,6 +33,7 @@ public:
 	j1Image* thumb;
 	uint slide_value;
 	j1Label* label;
+	int offset;
 	//j1Button* thumb;
 	//SDL_Rect* text_rect;
 	//p2SString text;

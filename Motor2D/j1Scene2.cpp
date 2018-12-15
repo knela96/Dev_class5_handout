@@ -169,7 +169,7 @@ bool j1Scene2::Load(pugi::xml_node& data)
 {
 	load_scene = (Levels)data.attribute("value").as_uint();
 
-	if (load_scene == Scene) {
+	if (load_scene == Levels::Scene) {
 		this->Disable();
 		App->scene->Enable();
 	}
@@ -181,7 +181,7 @@ bool j1Scene2::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node player = data;
 
-	player.append_attribute("value") = Scene2;
+	player.append_attribute("value") = (int)Levels::Scene2;
 
 	return true;
 }
