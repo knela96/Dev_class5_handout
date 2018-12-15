@@ -61,6 +61,8 @@ bool j1SceneIntro::Start()
 
 		RELEASE_ARRAY(data);
 	}
+	App->collisions->Enable();
+	App->entitymanager->Enable();
 
 	App->audio->PlayMusic(music_path.GetString());
 	
@@ -103,6 +105,8 @@ bool j1SceneIntro::CleanUp()
 	LOG("Freeing scene");
 	App->audio->StopMusic();
 	App->audio->UnloadFx();
+	App->entitymanager->Disable();
+	App->collisions->Disable();
 	App->map->Disable();
 	App->gui->Disable();
 	settings = nullptr;
@@ -127,11 +131,13 @@ bool j1SceneIntro::Load(pugi::xml_node& data)
 void j1SceneIntro::CreateHUD()
 {
 	if (!main_menu) {
-		App->gui->AddButton({ 500,200 }, "START", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Start, true);
-		App->gui->AddButton({ 500,250 }, "CONTINUE", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Continue, false);
-		App->gui->AddButton({ 500,300 }, "SETTINGS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Settings, true);
-		App->gui->AddButton({ 500,350 }, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
-		App->gui->AddButton({ 500,400 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,300 }, "START", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Start, true);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,350 }, "CONTINUE", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Continue, false);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,400 }, "SETTINGS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Settings, true);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,450 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
+		App->gui->AddButton({ (float)App->render->camera.w - 118,(float)App->render->camera.h - 62}, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
+
+		App->gui->AddImage({ (float)App->render->camera.w/2 - 91,50 }, new SDL_Rect({ 0,0,182,201 }),Levels::NONE,windowType::NONE,App->gui->GetLogo());
 		main_menu = true;
 	}
 }

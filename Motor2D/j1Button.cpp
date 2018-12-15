@@ -7,6 +7,7 @@
 #include "p2Log.h"
 #include "j1Textures.h"
 #include "j1EntityManager.h"
+#include "ButtonFunctions.h"
 
 
 
@@ -109,9 +110,27 @@ void j1Button::onClick()
 bool j1Button::onAction()
 {
 	int ret = action();
+	if (ret == 3)
+		ret = enableLoad();
 	if (ret == -1) {
 		parent->to_delete = true;
 		return true;
 	}
+
 	return (bool)ret;
+}
+
+bool j1Button::enableLoad() {
+	p2List_item<j1ElementGUI*>* item;
+	for (item = parent->childs.start; item != nullptr; item = item->next)
+	{
+		if (item->data->type == ElementUIType::BUTTON) {
+			j1Button* btn = (j1Button*)item->data;
+			if (btn->action == f_Load) {
+				btn->active = true;
+				break;
+			}
+		}
+	}
+	return true;
 }

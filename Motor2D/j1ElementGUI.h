@@ -56,7 +56,7 @@ public:
 		global_pos += element->position;
 		return global_pos;
 	}
-
+	
 	void drawChilds() {
 		p2List_item<j1ElementGUI*>* item = childs.start;
 		while (item != nullptr) {
@@ -92,6 +92,8 @@ public:
 		}
 	}
 
+	
+
 
 
 public:
@@ -105,6 +107,7 @@ public:
 	fPoint global_pos;
 	int scale = 1;
 	bool to_delete = false;
+	bool state = true;
 
 };
 

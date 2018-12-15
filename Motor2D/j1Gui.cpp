@@ -30,7 +30,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	LOG("Loading GUI atlas");
 	bool ret = true;
 
-	atlas_file_name = conf.child("atlas").attribute("file").as_string();
+	atlas_file_name = conf.child("atlas").attribute("file").as_string(); 
+	logo_file_name = conf.child("logo").attribute("file").as_string();
 
 	//LOAD PUSHBACKS
 	button_anim.PushBack({ 483,0,114,58 });
@@ -53,11 +54,12 @@ bool j1Gui::Start()
 {
 	bool ret = true;
 	atlas = App->tex->Load(atlas_file_name.GetString());
+	logo = App->tex->Load(logo_file_name.GetString());
 	b_settings = false;
 
 	for (int i = 0; i < elements.count(); ++i)
 	{
-		if (elements[i] != nullptr)
+		if (elements[i] != nullptr && elements[i]->state)
 			elements[i]->Start();
 	}
 	return true;
@@ -69,7 +71,7 @@ bool j1Gui::PreUpdate()
 	bool ret = true;
 	for (int i = 0; i < elements.count(); ++i)
 	{
-		if (elements[i] != nullptr)
+		if (elements[i] != nullptr && elements[i]->state)
 			ret = elements[i]->PreUpdate();
 	}
 	return ret;
@@ -79,14 +81,14 @@ bool j1Gui::Update(float dt) {
 
 	bool ret = true;
 
-	for (int i = 0; i < elements.count(); ++i)
+	for (int i = 0; i < elements.count() && ret != false; ++i)
 	{
-		if(elements[i] != nullptr)
+		if(elements[i] != nullptr && elements[i]->state)
 			ret = elements[i]->Update(dt);
 	}
-	for (int i = 0; i < elements.count(); ++i)
+	for (int i = 0; i < elements.count() && ret != false; ++i)
 	{
-		if (elements[i] != nullptr) {
+		if (elements[i] != nullptr && elements[i]->state) {
 			elements[i]->Draw();
 			if (debug) {
 				elements[i]->DebugDraw();
@@ -165,9 +167,18 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
-j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, Levels scene, windowType windowType)
+SDL_Texture * j1Gui::GetLogo() const
 {
-	j1Image* image = new j1Image(pos, rect, scene, windowType, atlas);
+	return logo;
+}
+
+j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, Levels scene, windowType windowType, SDL_Texture* graphics)
+{
+	j1Image* image;
+	if(graphics == nullptr)
+		image = new j1Image(pos, rect, scene, windowType, atlas);
+	else
+		image = new j1Image(pos, rect, scene, windowType, graphics);
 	
 	j1ElementGUI* element = image;
 	element->Start();
@@ -203,6 +214,15 @@ j1ElementGUI* j1Gui::AddSlider(fPoint pos, OrientationType orientation) {
 	elements.add(element);
 	return element;
 }
+
+void j1Gui::stateElements(j1ElementGUI* element,bool state) {
+	for (int i = 0; i < elements.count(); ++i)
+	{
+		if (elements[i] != element)
+			elements[i]->state = state;
+	}
+}
+
 
 
 

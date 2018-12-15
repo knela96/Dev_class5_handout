@@ -21,6 +21,8 @@ public:
 
 	fPoint GetLocalPos(int i);
 
+	void enableLoad();
+
 	void createSettings();
 
 	void createSettingsIntro();
