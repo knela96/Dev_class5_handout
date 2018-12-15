@@ -3,15 +3,18 @@
 	<input />
 	<window />
 	<textures />
-	<audio />
+	<audio>
+		<v_music volume="0.569999993" />
+		<v_fx volume="0.430000007" />
+	</audio>
 	<map />
 	<pathfinding />
-	<scenes value="0" />
+	<scenes value="1" />
 	<collisions />
 	<entities>
 		<player>
 			<speed x="0" y="0" />
-			<position x="351.395325" y="369" w="19" h="31" />
+			<position x="580.775696" y="194.1091" w="19" h="31" />
 			<life value="3" />
 			<jumpSpeed value="500" />
 			<maxFallingSpeed value="400" />
@@ -19,29 +22,29 @@
 			<gravity value="1800" />
 		</player>
 		<flying_enemy>
-			<position x="607.5047" y="355.479187" w="25" h="27" />
+			<position x="677.270264" y="146.305679" w="25" h="27" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<flying_enemy>
+			<position x="1315" y="298" w="25" h="27" />
+			<walkSpeed value="100" />
+		</flying_enemy>
+		<flying_enemy>
+			<position x="2159" y="70" w="25" h="27" />
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="466.644836" y="377" w="25" h="23" />
+			<position x="575.285889" y="329" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
-		<flying_enemy>
-			<position x="1570" y="43" w="25" h="27" />
-			<walkSpeed value="100" />
-		</flying_enemy>
 		<walking_enemy>
-			<position x="1135" y="313" w="25" h="23" />
+			<position x="1363" y="73" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
-		<flying_enemy>
-			<position x="2587" y="193" w="25" h="27" />
-			<walkSpeed value="100" />
-		</flying_enemy>
 		<walking_enemy>
-			<position x="1788" y="233" w="25" h="23" />
+			<position x="2596" y="441" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
@@ -50,6 +53,6 @@
 	<gui />
 	<fade />
 	<renderer>
-		<camera x="-127" y="0" />
+		<camera x="-60" y="0" />
 	</renderer>
 </game_state>

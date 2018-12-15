@@ -22,7 +22,7 @@ int f_Continue() {
 }
 
 int f_Settings() {
-	App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), Levels::NONE, windowType::SETTINGS);
+	App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::NONE, windowType::SETTINGS_INTRO);
 	return true;
 }
 

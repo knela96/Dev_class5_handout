@@ -173,6 +173,7 @@ bool j1Scene::CleanUp()
 	App->collisions->Disable();
 	App->map->Disable();
 	App->gui->Disable();
+	settings = nullptr;
 	return true;
 }
 

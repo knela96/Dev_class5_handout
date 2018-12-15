@@ -47,6 +47,8 @@ bool j1Image::Start() {
 	case windowType::SETTINGS:
 		createSettings();
 		break;
+	case windowType::SETTINGS_INTRO:
+		createSettingsIntro();
 	}
 
 	p2List_item<j1ElementGUI*>* item;
@@ -85,8 +87,14 @@ void j1Image::createSettings() {
 		childs.add((j1ElementGUI*)new j1Button({ 83,186}, "MENU", &App->gui->button_anim, f_Scene1toMainMenu, true, graphics, this));
 	else if (scene == Levels::Scene2)
 		childs.add((j1ElementGUI*)new j1Button({ 83,186 }, "MENU", &App->gui->button_anim, f_Scene2toMainMenu, true, graphics, this));
-	childs.add((j1ElementGUI*)new j1Slider({ 140, 80 }, HORIZONTAL, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 140, 50 }, MUSIC, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 140, 100 }, FX, graphics, this));
+}
 
+void j1Image::createSettingsIntro() {
+	childs.add((j1ElementGUI*)new j1Slider({ 30, 75 }, MUSIC, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 140, 75 }, FX, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 180, 200 }, "BACK", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
 }
 
 fPoint j1Image::GetLocalPos(int width) {

@@ -105,6 +105,7 @@ bool j1SceneIntro::CleanUp()
 	App->audio->UnloadFx();
 	App->map->Disable();
 	App->gui->Disable();
+	settings = nullptr;
 	return true;
 }
 

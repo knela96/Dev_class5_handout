@@ -18,7 +18,8 @@ enum OrientationType;
 
 enum class windowType {
 	NONE = -1,
-	SETTINGS
+	SETTINGS, 
+	SETTINGS_INTRO
 };
 
 // ---------------------------------------------------

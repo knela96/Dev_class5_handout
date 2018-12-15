@@ -6,8 +6,8 @@
 #include "j1Image.h"
 
 enum OrientationType {
-	HORIZONTAL,
-	VERTICAL
+	MUSIC,
+	FX
 };
 class j1Slider : public j1ElementGUI
 {

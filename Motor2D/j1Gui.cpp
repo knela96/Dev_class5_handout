@@ -196,7 +196,7 @@ j1ElementGUI* j1Gui::AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Ani
 }
 
 j1ElementGUI* j1Gui::AddSlider(fPoint pos, OrientationType orientation) {
-	j1Slider* slider = new j1Slider(pos, HORIZONTAL, atlas);
+	j1Slider* slider = new j1Slider(pos, MUSIC, atlas);
 
 	j1ElementGUI* element = slider;
 	element->Start();

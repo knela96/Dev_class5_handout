@@ -23,6 +23,8 @@ public:
 
 	void createSettings();
 
+	void createSettingsIntro();
+
 public:
 	windowType window_type;
 	SDL_Rect* anim;

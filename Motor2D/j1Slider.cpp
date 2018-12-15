@@ -26,7 +26,11 @@ j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* gr
 	childs.add(thumb);
 	childs.add(label);
 
-	setSliderValue(App->audio->v_music * 100);
+	if(OrientationType::MUSIC == orientation)
+		setSliderValue(App->audio->v_music * 100);
+	else if(OrientationType::FX == orientation)
+		setSliderValue(App->audio->v_fx * 100);
+
 	App->audio->ChangeMusicVolume();
 }
 
@@ -47,6 +51,11 @@ bool j1Slider::CleanUp()
 
 bool j1Slider::Update(float dt)
 {
+	if (OrientationType::MUSIC == orientation)
+		setSliderValue(App->audio->v_music * 100);
+	else if (OrientationType::FX == orientation)
+		setSliderValue(App->audio->v_fx * 100);
+
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
@@ -81,8 +90,10 @@ bool j1Slider::Update(float dt)
 
 		float volume = (float)sliderValue() / 100;
 		LOG("%f", volume);
-		App->audio->v_music = volume;
-		App->audio->v_fx = volume;
+		if (OrientationType::MUSIC == orientation)
+			App->audio->v_music = volume;
+		else if (OrientationType::FX == orientation)
+			App->audio->v_fx = volume;
 		App->audio->ChangeMusicVolume();
 	}
 
