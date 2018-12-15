@@ -8,6 +8,7 @@
 #include "j1Enemy_Walking.h"
 #include "j1Entity.h"
 #include "j1Enemy_Walking.h"
+#include "j1Gui.h"
 #include "j1PowerUp.h"
 #include "Brofiler\Brofiler.h"
 
@@ -236,6 +237,7 @@ bool j1EntityManager::CleanUp()
 bool j1EntityManager::Load(pugi::xml_node & data )
 {
 	CleanUp();
+	App->gui->Start();
 
 	j1Entity* entity;
 

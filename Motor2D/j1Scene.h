@@ -47,7 +47,7 @@ private:
 	Levels load_scene;
 
 	SDL_Texture* debug_tex;
-
+	bool hud = false;
 	j1ElementGUI* settings;
 };
 

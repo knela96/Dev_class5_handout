@@ -36,7 +36,7 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
-	for (pugi::xml_node push_node = config.child("animations").child("plane").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	for (pugi::xml_node push_node = config.child("sceneintro").child("animations").child("plane").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
 		anim_plane.PushBack({
 			push_node.attribute("x").as_int(),

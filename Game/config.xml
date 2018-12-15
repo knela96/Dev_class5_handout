@@ -77,7 +77,7 @@
       <life value="3"/>
       <dead value="false"/>
       <folder>Assets/Sprites/Character/</folder>
-      <texture source="Player.png" />
+      <texture source="Player1.1.png" />
       <collider w="50" h="50" />
       <gravity value="1800"/>
       <jumpSpeed value="500"/>
