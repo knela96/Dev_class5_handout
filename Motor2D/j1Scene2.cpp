@@ -150,9 +150,6 @@ bool j1Scene2::PostUpdate()
 	BROFILER_CATEGORY("Scene1PostUpdate", Profiler::Color::SaddleBrown);
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
 	return ret;
 }
 

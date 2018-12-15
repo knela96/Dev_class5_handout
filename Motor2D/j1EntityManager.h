@@ -42,6 +42,7 @@ public:
 public:
 	p2List<j1Entity*> entities;
 	p2List<p2SString> c_powerup;
+	pugi::xml_node _config;
 
 private:
 
@@ -49,7 +50,6 @@ private:
 	bool do_logic;
 
 	pugi::xml_document	config_file;
-	pugi::xml_node _config;
 
 };
 

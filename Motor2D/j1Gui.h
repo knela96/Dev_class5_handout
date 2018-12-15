@@ -60,7 +60,7 @@ public:
 
 	j1ElementGUI* AddLabel(fPoint pos, p2SString text);
 
-	j1ElementGUI* AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, void(*action)(void));
+	j1ElementGUI* AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, int(*action)(void), bool active);
 
 	j1ElementGUI* AddSlider(fPoint pos, OrientationType orientation);
 

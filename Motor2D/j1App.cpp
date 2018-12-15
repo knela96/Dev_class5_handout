@@ -20,6 +20,7 @@
 #include "j1Player.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
+#include "j1SceneIntro.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -36,6 +37,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	map = new j1Map();
 	scene = new j1Scene();
 	scene2 = new j1Scene2();
+	sceneintro = new j1SceneIntro();
 	collisions = new j1Collisions();
 	entitymanager = new j1EntityManager();
 	render = new j1Render();
@@ -54,6 +56,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(path);
 	AddModule(scene);
 	AddModule(scene2);
+	AddModule(sceneintro);
 	AddModule(collisions);
 	AddModule(entitymanager);
 	AddModule(font);
@@ -138,6 +141,7 @@ bool j1App::Awake()
 bool j1App::Start()
 {
 	//DISABLE MODULES YOU DON'T WANT
+	scene->Disable();
 	scene2->Disable();
 
 	PERF_START(ptimer);
@@ -398,16 +402,15 @@ bool j1App::LoadGameNow()
 	BROFILER_CATEGORY("LoadGame", Profiler::Color::Orange)
 	bool ret = false;
 
-	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
+	pugi::xml_parse_result result = save_gamedata.load_file(load_game.GetString());
 
 	if(result != NULL)
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
 
-		root = data.child("game_state");
+		root = save_gamedata.child("game_state");
 
 		p2List_item<j1Module*>* item = modules.start;
 		ret = true;
@@ -419,7 +422,7 @@ bool j1App::LoadGameNow()
 			item = item->next;
 		}
 
-		data.reset();
+		save_gamedata.reset();
 		if(ret == true)
 			LOG("...finished loading");
 		else

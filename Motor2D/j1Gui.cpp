@@ -43,6 +43,7 @@ bool j1Gui::Start()
 {
 	bool ret = true;
 	atlas = App->tex->Load(atlas_file_name.GetString());
+	b_settings = false;
 
 	for (int i = 0; i < elements.count(); ++i)
 	{
@@ -55,7 +56,13 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	return true;
+	bool ret = true;
+	for (int i = 0; i < elements.count(); ++i)
+	{
+		if (elements[i] != nullptr)
+			ret = elements[i]->PreUpdate();
+	}
+	return ret;
 }
 
 bool j1Gui::Update(float dt) {
@@ -65,7 +72,7 @@ bool j1Gui::Update(float dt) {
 	for (int i = 0; i < elements.count(); ++i)
 	{
 		if(elements[i] != nullptr)
-			elements[i]->Update(dt);
+			ret = elements[i]->Update(dt);
 	}
 	for (int i = 0; i < elements.count(); ++i)
 	{
@@ -87,8 +94,9 @@ bool j1Gui::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		debug = !debug;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		b_settings = !b_settings;
+	}
 
 	
 	return ret;
@@ -98,7 +106,18 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
+	App->tex->UnLoad(atlas);
+	atlas = nullptr;
 
+	for (uint i = 0; i < elements.count(); ++i)
+	{
+		if (elements[i] != nullptr) {
+			elements[i]->CleanChilds();
+			delete elements[i];
+			elements[i] = nullptr;
+		}
+	}
+	elements.clear();
 	return true;
 }
 
@@ -115,7 +134,6 @@ bool j1Gui::deleteElement(j1ElementGUI* element)
 				elements[i] = nullptr;
 				clearList();
 			}
-			return true;
 		}
 	}
 	return false;
@@ -158,8 +176,8 @@ j1ElementGUI* j1Gui::AddLabel(fPoint pos, p2SString text)
 	return element;
 }
 
-j1ElementGUI* j1Gui::AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, void(*action)(void)) {
-	j1Button* button = new j1Button(pos, text, anim, action, atlas);
+j1ElementGUI* j1Gui::AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, int(*action)(void), bool active) {
+	j1Button* button = new j1Button(pos, text, anim, action, active, atlas);
 
 	j1ElementGUI* element = button;
 	element->Start();
@@ -175,6 +193,7 @@ j1ElementGUI* j1Gui::AddSlider(fPoint pos, OrientationType orientation) {
 	elements.add(element);
 	return element;
 }
+
 
 
 // class Gui ---------------------------------------------------

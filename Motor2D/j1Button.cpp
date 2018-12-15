@@ -6,11 +6,13 @@
 #include "j1Gui.h"
 #include "p2Log.h"
 #include "j1Textures.h"
+#include "j1EntityManager.h"
 
 
 
-j1Button::j1Button(fPoint position, p2SString text, j1Animation* anim, void(*action)(void), SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
+j1Button::j1Button(fPoint position, p2SString text, j1Animation* anim, int(*action)(void),bool active, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	anim(anim),
+	active(active),
 	action(action),
 	j1ElementGUI(position, nullptr, type, graphics, parent)
 {
@@ -29,6 +31,9 @@ bool j1Button::Start() {
 
 	current_animation = &anim->GetFrameRect(0);
 
+	if (App->entitymanager->_config.first_child() == nullptr)
+		active = false;
+
 	return true;
 }
 
@@ -36,7 +41,7 @@ j1Button::~j1Button()
 {}
 
 bool j1Button::CleanUp() {
-	LOG("Cleaning Button");
+	//LOG("Cleaning Button");
 	graphics = nullptr;
 	delete rect;
 	rect = nullptr;
@@ -47,22 +52,29 @@ bool j1Button::CleanUp() {
 }
 
 bool j1Button::Update(float dt) {
+	bool ret = true;
 	global_pos = getParentPos(this);
 	
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y); 
 	current_animation = &anim->GetFrameRect(0);
-
-	if (mouse.x >= global_pos.x && mouse.x < rect->w + global_pos.x && mouse.y >= global_pos.y && mouse.y < rect->h + global_pos.y) {
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
-			onClick();
-		else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
-			onAction();
-		else
-			onHover();
+	
+	if (!active) {
+		current_animation = &anim->GetFrameRect(3);
+	}
+	else {
+		if (mouse.x >= global_pos.x && mouse.x < rect->w + global_pos.x && mouse.y >= global_pos.y && mouse.y < rect->h + global_pos.y) {
+			if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+				onClick();
+			else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+				ret = onAction();
+			else
+				onHover();
+		}
 	}
 
-	return true;
+
+	return ret;
 }
 
 void j1Button::Draw()
@@ -81,18 +93,20 @@ void j1Button::Draw()
 
 void j1Button::onHover()
 {
-	LOG("HOVER");//CHANGE TEXTURE TO PRESSED TEXTURE
 	current_animation = &anim->GetFrameRect(1);
 }
 
 void j1Button::onClick()
 {
-	LOG("CLICK");//CHANGE TEXTURE TO PRESSED TEXTURE
 	current_animation = &anim->GetFrameRect(2);
 }
 
-void j1Button::onAction()
+bool j1Button::onAction()
 {
-	LOG("ACTION");//CHANGE TEXTURE TO PRESSED TEXTURE
-	action();
+	int ret = action();
+	if (ret == -1) {
+		parent->to_delete = true;
+		return true;
+	}
+	return (bool)ret;
 }

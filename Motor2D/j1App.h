@@ -16,6 +16,7 @@ class j1Textures;
 class j1Audio;
 class j1Scene;
 class j1Scene2;
+class j1SceneIntro;
 class j1Map;
 class j1EntityManager;
 class j1Player;
@@ -86,7 +87,7 @@ private:
 	bool SavegameNow() const;
 
 public:
-
+	pugi::xml_document save_gamedata;
 	// Modules
 	j1Window*			win;
 	j1Input*			input;
@@ -96,6 +97,7 @@ public:
 	j1PathFinding*		path;
 	j1Scene*			scene;
 	j1Scene2*			scene2;
+	j1SceneIntro*			sceneintro;
 	j1Map*				map;
 	j1Collisions*		collisions;
 	j1FadeToBlack*		fade;

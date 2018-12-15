@@ -13,6 +13,8 @@ j1Label::j1Label(fPoint position, p2SString text, SDL_Texture* graphics, j1Eleme
 {
 	App->font->CalcSize(text.GetString(), width, height);
 
+	this->graphics = App->font->Print(text.GetString());
+
 	global_pos = getParentPos(this);
 	
 	rect = new SDL_Rect({ (int)global_pos.x, (int)global_pos.y,width,height });
@@ -23,7 +25,7 @@ j1Label::~j1Label()
 {}
 
 bool j1Label::CleanUp() {
-	LOG("Cleaning Label");
+	//LOG("Cleaning Label");
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
 	delete rect;
@@ -34,8 +36,6 @@ bool j1Label::CleanUp() {
 
 void j1Label::Draw()
 {
-	App->tex->UnLoad(graphics);
-	this->graphics = App->font->Print(text.GetString());
 
 	global_pos = getParentPos(this);
 

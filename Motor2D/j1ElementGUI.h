@@ -71,7 +71,7 @@ public:
 			if (childs[i] != nullptr)
 			{
 				childs[i]->CleanChilds();
-				delete childs[i];
+				//delete childs[i]; // CHECK
 				childs[i] = nullptr;
 			}
 		}
@@ -95,8 +95,6 @@ public:
 
 
 public:
-	p2SString name;//delete?
-	p2SString folder;//delete?
 	fPoint position;
 	ElementUIType type;
 	SDL_Texture* graphics;
@@ -106,6 +104,7 @@ public:
 	uint8_t alpha = 80;
 	fPoint global_pos;
 	int scale = 1;
+	bool to_delete = false;
 
 };
 

@@ -22,8 +22,14 @@ j1Image::j1Image(fPoint position, SDL_Rect* anim, windowType window_type, SDL_Te
 
 j1Image::~j1Image(){}
 
+bool j1Image::PreUpdate() {
+	if (to_delete)
+		App->gui->deleteElement(this);
+	return true;
+}
+
 bool j1Image::CleanUp() {
-	LOG("Cleaning Image");
+	//LOG("Cleaning Image");
 	parent = nullptr;
 	graphics = nullptr;
 	delete rect;
@@ -73,7 +79,7 @@ void j1Image::Draw()
 }
 
 void j1Image::createSettings() {
-	childs.add((j1ElementGUI*)new j1Button({ 0,100 }, "hola", &App->gui->button_anim, action, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 0,100 }, "hola", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
 	//childs.add((j1ElementGUI*)new j1Slider({ 0, 150 }, HORIZONTAL, graphics, this));
 }
 

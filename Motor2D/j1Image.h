@@ -9,6 +9,8 @@ public:
 	j1Image(fPoint position, SDL_Rect* anim, windowType windowType = windowType::NONE, SDL_Texture* graphics = nullptr, j1ElementGUI* parent = nullptr, ElementUIType type = ElementUIType::IMAGE);
 	~j1Image();
 
+	bool PreUpdate();
+
 	bool CleanUp();
 	
 	bool Start();

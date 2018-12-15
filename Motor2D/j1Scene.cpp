@@ -12,9 +12,11 @@
 #include "j1Collisions.h"
 #include "j1Scene.h"
 #include "j1Scene2.h"
+#include "j1SceneIntro.h"
 #include "j1Window.h"
 #include "j1Pathfinding.h"
 #include "j1ElementGUI.h"
+#include "ButtonFunctions.h"
 #include "Brofiler\Brofiler.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -47,22 +49,22 @@ bool j1Scene::Awake(pugi::xml_node& config)
 bool j1Scene::Start()
 {
 	App->gui->Enable();
-		App->map->Enable();
-		if (App->map->Load(map.GetString()) == true) {
+	App->map->Enable();
+	if (App->map->Load(map.GetString()) == true) {
 
-			int w, h;
-			uchar* data = NULL;
-			if (App->map->CreateWalkabilityMap(w, h, &data))
-				App->path->SetMap(w, h, data);
+		int w, h;
+		uchar* data = NULL;
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->path->SetMap(w, h, data);
 
-			RELEASE_ARRAY(data);
-		}
-		App->collisions->Enable();
-		App->entitymanager->Enable();
+		RELEASE_ARRAY(data);
+	}
+	App->collisions->Enable();
+	App->entitymanager->Enable();
 
-		App->audio->PlayMusic(music_path.GetString());
+	App->audio->PlayMusic(music_path.GetString());
 		
-		debug_tex = App->tex->Load("Assets/maps/path2.png");
+	debug_tex = App->tex->Load("Assets/maps/path2.png");
 
 	return true;
 }
@@ -97,8 +99,8 @@ bool j1Scene::PreUpdate()
 	if (App->gui->b_settings)
 		CreateHUD();
 	else {
-		App->gui->deleteElement(settings);
 		if (settings != nullptr) {
+			App->gui->deleteElement(settings);
 			settings = nullptr;
 		}
 	}
@@ -112,7 +114,7 @@ bool j1Scene::Update(float dt)
 	BROFILER_CATEGORY("Scene1Update", Profiler::Color::DarkMagenta);
 	if (App->entitymanager->GetPlayer() != nullptr) {
 		if (App->entitymanager->GetPlayer()->current_life <= 0)
-			App->fade->FadeToBlack(this, this);
+			App->fade->FadeToBlack(this, App->sceneintro);
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 			App->entitymanager->GetPlayer()->godmode = !App->entitymanager->GetPlayer()->godmode;
@@ -195,7 +197,8 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	return true;
 }
 
-void j1Scene::CreateHUD() {
+void j1Scene::CreateHUD()
+{
 	if(settings == nullptr)
 		settings = App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), windowType::SETTINGS);
 }
