@@ -20,7 +20,9 @@
   </renderer>
 
    <gui>
-    <atlas file="Assets/gui/Atlas1.2.png"/>
+     <atlas file="Assets/gui/Atlas1.3.png"/>
+     <logo file="Assets/gui/Tails_Odyssey_mini.png"/>
+     <btn_fx>Click.wav</btn_fx>
   </gui>
 
   <fonts>
@@ -42,7 +44,7 @@
 
   <scenes>
     <sceneintro>
-      <map>Map1.3.tmx</map>Map1.3.tmx
+      <map>Map0.4.tmx</map>Map0.4.tmx
       <camera x="0" y ="0" />
       <audio>Main_Menu_Music.ogg</audio>
       <animations>

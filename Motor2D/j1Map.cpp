@@ -55,9 +55,9 @@ void j1Map::Draw()
 
 					SDL_Rect r = tileset->GetTileRect(tile_id);
 					iPoint pos = MapToWorld(x, y);
-					/*if (pos.x >= App->render->camera.x * layer->speed - 50 && pos.x <= App->render->camera.x * layer->speed + App->render->camera.w + 50 &&
-						pos.y > App->render->camera.y * layer->speed - 50 && pos.y < App->render->camera.y * layer->speed + App->render->camera.h + 50) {
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 1, layer->speed);
+					/*if (-pos.x >= App->render->camera.x * layer->speed - 50 && -pos.x <= App->render->camera.x * layer->speed + App->render->camera.w + 50 &&
+						-pos.y > App->render->camera.y * layer->speed - 50 && -pos.y < App->render->camera.y * layer->speed + App->render->camera.h + 50) {
+						App->render->Blit(tileset->texture, -pos.x, -pos.y, &r, SDL_FLIP_NONE, 1, layer->speed);
 					}*/
 					App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, 1, layer->speed);
 				}

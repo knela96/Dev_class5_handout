@@ -2,6 +2,7 @@
 #define __j1SCENEINTRO_H__
 
 #include "j1Module.h"
+#include "j1Animation.h"
 
 struct SDL_Texture;
 struct j1ElementGUI;
@@ -49,7 +50,7 @@ private:
 
 	int cameraoffset;
 	SDL_Texture * graphics;
-	j1Animation* current_anim;
+	j1Animation * current_anim;
 	SDL_Rect animation_Rect;
 	j1Animation anim_plane;
 

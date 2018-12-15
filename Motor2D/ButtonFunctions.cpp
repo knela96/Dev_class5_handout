@@ -22,7 +22,7 @@ int f_Continue() {
 }
 
 int f_Settings() {
-	App->gui->AddImage({ 0,0 }, new SDL_Rect({ 120,0,196,196 }), Levels::NONE, windowType::SETTINGS);
+	App->gui->stateElements(App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::NONE, windowType::SETTINGS_INTRO),false);
 	return true;
 }
 
@@ -37,6 +37,7 @@ int f_Credits() {
 
 int f_CloseWindow() {
 	App->gui->b_settings = false;
+	App->gui->stateElements(nullptr, true);
 	return -1;
 }
 
@@ -52,7 +53,7 @@ int f_Scene2toMainMenu() {
 
 int f_Save() {
 	App->SaveGame();
-	return true;
+	return 3;
 }
 
 int f_Load() {

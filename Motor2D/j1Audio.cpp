@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1Audio.h"
 #include "p2List.h"
+#include "j1App.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -23,8 +24,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 	music_path.create(config.child("music").child("folder").child_value());
 	fx_path.create(config.child("fx").child("folder").child_value());
 
-	v_music =config.child("music").attribute("volume").as_float();
-	v_fx = config.child("fx").attribute("volume").as_float();
+	Load(App->GetSaveData().child("audio"));
 
 	LOG("Loading Audio Mixer");
 	bool ret = true;
@@ -209,4 +209,24 @@ void j1Audio::UnloadFx() {
 	for (item = fx.start; item != NULL; item = item->next)
 		Mix_FreeChunk(item->data);
 	fx.clear();
+}
+
+// Load Game State
+bool j1Audio::Load(pugi::xml_node& data)
+{
+	v_music = data.child("v_music").attribute("volume").as_float();
+	v_fx = data.child("v_fx").attribute("volume").as_float();
+
+	return true;
+}
+
+// Save Game State
+bool j1Audio::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node audio = data;
+
+	audio.append_child("v_music").append_attribute("volume") = v_music;
+	audio.append_child("v_fx").append_attribute("volume") = v_fx;
+
+	return true;
 }

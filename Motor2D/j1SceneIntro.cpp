@@ -14,6 +14,7 @@
 #include "j1SceneIntro.h"
 #include "j1Scene.h"
 #include "j1Scene2.h"
+#include "j1Gui.h"
 #include "j1Window.h"
 #include "j1Pathfinding.h"
 #include "j1ElementGUI.h"
@@ -62,6 +63,7 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1SceneIntro::Start()
 {
+	App->gui->Enable();
 	main_menu = false;
 	cameraoffset = 0;
 	graphics = App->tex->Load("Assets/Sprites/Character/Player1.1.png");
@@ -79,6 +81,8 @@ bool j1SceneIntro::Start()
 
 		RELEASE_ARRAY(data);
 	}
+	App->collisions->Enable();
+	App->entitymanager->Enable();
 
 	App->audio->PlayMusic(music_path.GetString());
 	
@@ -126,9 +130,12 @@ bool j1SceneIntro::CleanUp()
 	LOG("Freeing scene");
 	App->audio->StopMusic();
 	App->audio->UnloadFx();
+	App->entitymanager->Disable();
+	App->collisions->Disable();
 	App->map->Disable();
 	App->gui->Disable();
 	App->tex->UnLoad(graphics);
+	settings = nullptr;
 	return true;
 }
 
@@ -150,11 +157,13 @@ bool j1SceneIntro::Load(pugi::xml_node& data)
 void j1SceneIntro::CreateHUD()
 {
 	if (!main_menu) {
-		App->gui->AddButton({ 500,200 }, "START", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Start, true);
-		App->gui->AddButton({ 500,260 }, "CONTINUE", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Continue, false);
-		App->gui->AddButton({ 500,320 }, "SETTINGS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Settings, true);
-		App->gui->AddButton({ 500,380 }, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
-		App->gui->AddButton({ 500,440 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,300 }, "START", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Start, true);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,360 }, "CONTINUE", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Continue, false);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,420 }, "SETTINGS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Settings, true);
+		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,480 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
+		App->gui->AddButton({ (float)App->render->camera.w - 118,(float)App->render->camera.h - 62}, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
+
+		App->gui->AddImage({ (float)App->render->camera.w/2 - 91,50 }, new SDL_Rect({ 0,0,182,201 }),Levels::NONE,windowType::NONE, App->gui->GetLogo());
 		main_menu = true;
 	}
 }

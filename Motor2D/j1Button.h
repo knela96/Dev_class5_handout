@@ -27,6 +27,8 @@ public:
 	void onClick();
 	bool onAction();
 
+	bool enableLoad();
+
 public:
 	bool clicked = false;
 	j1Label* label;

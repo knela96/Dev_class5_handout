@@ -14,7 +14,10 @@
 #include "j1Scene2.h"
 #include "j1Window.h"
 #include "j1Pathfinding.h"
+#include "j1SceneIntro.h"
 #include "Brofiler\Brofiler.h"
+#include "j1ElementGUI.h"
+#include "ButtonFunctions.h"
 
 j1Scene2::j1Scene2() : j1Module()
 {
@@ -43,6 +46,7 @@ bool j1Scene2::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene2::Start()
 {
+	App->gui->Enable();
 	App->map->Enable();
 	if (App->map->Load(map.GetString()) == true) {
 
@@ -86,6 +90,16 @@ bool j1Scene2::PreUpdate()
 			origin_selected = true;
 		}
 	}
+
+	if (App->gui->b_settings)
+		CreateHUD();
+	else {
+		if (settings != nullptr) {
+			App->gui->deleteElement(settings);
+			settings = nullptr;
+		}
+	}
+
 	return true;
 }
 
@@ -95,7 +109,10 @@ bool j1Scene2::Update(float dt)
 	BROFILER_CATEGORY("Scene2Update", Profiler::Color::RoyalBlue);
 	if (App->entitymanager->GetPlayer() != nullptr) {
 		if (App->entitymanager->GetPlayer()->current_life <= 0)
-			App->fade->FadeToBlack(this, App->scene);
+			App->fade->FadeToBlack(this, App->sceneintro);
+
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			App->gui->b_settings = !App->gui->b_settings;
 
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 			App->entitymanager->GetPlayer()->godmode = !App->entitymanager->GetPlayer()->godmode;
@@ -130,17 +147,7 @@ bool j1Scene2::Update(float dt)
 		App->render->camera.x -= 100 * dt;
 
 	App->map->Draw();
-/*
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
-	p2SString title("Tails Odyssey Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
-		App->map->data.width, App->map->data.height,
-		App->map->data.tile_width, App->map->data.tile_height,
-		App->map->data.tilesets.count(),
-		map_coordinates.x, map_coordinates.y);
 
-	App->win->SetTitle(title.GetString());*/
 	return true;
 }
 
@@ -162,6 +169,8 @@ bool j1Scene2::CleanUp()
 	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
+	App->gui->Disable();
+	settings = nullptr;
 	return true;
 }
 
@@ -184,4 +193,11 @@ bool j1Scene2::Save(pugi::xml_node& data) const
 	player.append_attribute("value") = (int)Levels::Scene2;
 
 	return true;
+}
+
+
+void j1Scene2::CreateHUD()
+{
+	if (settings == nullptr)
+		settings = App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene2, windowType::SETTINGS);
 }

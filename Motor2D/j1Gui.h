@@ -18,7 +18,8 @@ enum OrientationType;
 
 enum class windowType {
 	NONE = -1,
-	SETTINGS
+	SETTINGS, 
+	SETTINGS_INTRO
 };
 
 // ---------------------------------------------------
@@ -56,13 +57,17 @@ public:
 	// Gui creation functions
 	const SDL_Texture* GetAtlas() const;
 
-	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, Levels Scene, windowType windowType);
+	SDL_Texture* GetLogo() const;
+
+	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, Levels Scene, windowType windowType, SDL_Texture* graphics = nullptr);
 
 	j1ElementGUI* AddLabel(fPoint pos, p2SString text);
 
 	j1ElementGUI* AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, int(*action)(void), bool active);
 
 	j1ElementGUI* AddSlider(fPoint pos, OrientationType orientation);
+
+	void stateElements(j1ElementGUI * element, bool state);
 
 	//Change to Animation
 
@@ -76,7 +81,10 @@ public:
 private:
 	bool debug = false;
 	SDL_Texture* atlas;
+	SDL_Texture* logo;
 	p2SString atlas_file_name;
+	p2SString logo_file_name;
+	p2SString btn_file_name;
 };
 
 #endif // __j1GUI_H__

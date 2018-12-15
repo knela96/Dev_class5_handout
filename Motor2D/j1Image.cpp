@@ -5,6 +5,7 @@
 #include "j1Gui.h"
 #include "p2Log.h"
 #include "j1Slider.h"
+#include "j1Fonts.h"
 #include "ButtonFunctions.h"
 #include "j1Textures.h"
 
@@ -47,6 +48,8 @@ bool j1Image::Start() {
 	case windowType::SETTINGS:
 		createSettings();
 		break;
+	case windowType::SETTINGS_INTRO:
+		createSettingsIntro();
 	}
 
 	p2List_item<j1ElementGUI*>* item;
@@ -78,15 +81,29 @@ void j1Image::Draw()
 }
 
 void j1Image::createSettings() {
-	childs.add((j1ElementGUI*)new j1Button({ 83, 43 }, "RESUME", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
-	childs.add((j1ElementGUI*)new j1Button({ 60, 115 }, "", &App->gui->button3_anim, f_Load, false, graphics, this));
-	childs.add((j1ElementGUI*)new j1Button({ 145,115 }, "", &App->gui->button2_anim, f_Save, true, graphics, this));
-	if(scene == Levels::Scene)
-		childs.add((j1ElementGUI*)new j1Button({ 83,186}, "MENU", &App->gui->button_anim, f_Scene1toMainMenu, true, graphics, this));
-	else if (scene == Levels::Scene2)
-		childs.add((j1ElementGUI*)new j1Button({ 83,186 }, "MENU", &App->gui->button_anim, f_Scene2toMainMenu, true, graphics, this));
-	childs.add((j1ElementGUI*)new j1Slider({ 140, 80 }, HORIZONTAL, graphics, this));
+	int w, h;
+	App->font->CalcSize("PAUSE", w, h);
 
+	childs.add((j1ElementGUI*)new j1Label({ (float)rect->w / 2 - w / 2,  30 }, "PAUSE", nullptr, this));
+	childs.add((j1ElementGUI*)new j1Button({ 83, 58 }, "RESUME", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 60, 120 }, "", &App->gui->button3_anim, f_Load, false, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 145,120 }, "", &App->gui->button2_anim, f_Save, true, graphics, this));
+	if(scene == Levels::Scene)
+		childs.add((j1ElementGUI*)new j1Button({ 83,201}, "MENU", &App->gui->button_anim, f_Scene1toMainMenu, true, graphics, this));
+	else if (scene == Levels::Scene2)
+		childs.add((j1ElementGUI*)new j1Button({ 83,201 }, "MENU", &App->gui->button_anim, f_Scene2toMainMenu, true, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 140, 65 }, MUSIC, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 140, 115 }, FX, graphics, this));
+}
+
+void j1Image::createSettingsIntro() {
+	int w, h; 
+	App->font->CalcSize("SETTINGS", w, h);
+
+	childs.add((j1ElementGUI*)new j1Label({ (float)rect->w/2 - w/2,  50 },"SETTINGS",nullptr,this));
+	childs.add((j1ElementGUI*)new j1Slider({ 30, 75 }, MUSIC, graphics, this));
+	childs.add((j1ElementGUI*)new j1Slider({ 140, 75 }, FX, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 180, 200 }, "BACK", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
 }
 
 fPoint j1Image::GetLocalPos(int width) {
