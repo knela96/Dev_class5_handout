@@ -116,6 +116,9 @@ bool j1Scene::Update(float dt)
 		if (App->entitymanager->GetPlayer()->current_life <= 0)
 			App->fade->FadeToBlack(this, App->sceneintro);
 
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			App->gui->b_settings = !App->gui->b_settings;
+
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 			App->entitymanager->GetPlayer()->godmode = !App->entitymanager->GetPlayer()->godmode;
 

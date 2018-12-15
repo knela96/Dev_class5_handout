@@ -106,9 +106,6 @@ bool j1Gui::PostUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		debug = !debug;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-		b_settings = !b_settings;
-	}
 
 	
 	return ret;
