@@ -480,12 +480,17 @@ bool j1App::SavegameNow() const
 }
 
 void j1App::calcTime(uint& timer) {
-	int i = (int)p_timer.ReadMs() % 1000;
+	int i = (int)p_timer.ReadMs() / 1000;
 	if (i == 1) {
+		p_timer.Start();
 		timer += 1;
 	}
 }
 
 void j1App::setTime(uint& timer) {
-	timer = p_timer.ReadMs() / 1000;
+	b_timer = timer;
+}
+
+void j1App::getTime(uint& timer) {
+	timer = b_timer;
 }

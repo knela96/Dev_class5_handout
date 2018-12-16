@@ -170,6 +170,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 bool j1Player::Start() {
 	
 	App->p_timer.Start();
+	App->getTime(timer);
 
 	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
@@ -196,15 +197,13 @@ bool j1Player::Start() {
 bool j1Player::CleanUp()
 {
 	LOG("Unloading Player assets");
+	App->setTime(timer);
 	//App->audio->StopFx();
 	App->audio->UnloadFx();
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
 	App->collisions->deleteCollider(collider);
 	collider = nullptr;
-
-	App->GetSaveData().child("player").child("timer").remove_attribute("value");
-	App->GetSaveData().child("player").child("timer").append_attribute("value") = timer;
 	return true;
 }
 

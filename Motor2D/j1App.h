@@ -63,6 +63,8 @@ public:
 	void j1App::calcTime(uint& timer);
 	void j1App::setTime(uint& timer);
 
+	void getTime(uint & timer);
+
 	pugi::xml_node GetSaveData();
 
 	// Load config file
@@ -145,6 +147,7 @@ private:
 	uint32				frames_on_last_update;
 	bool				cap_frames = true;
 	int					capped_ms;
+	uint64				b_timer = 0;
 
 };
 
