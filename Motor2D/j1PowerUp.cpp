@@ -20,7 +20,7 @@
 
 j1PowerUp::j1PowerUp(SDL_Rect* collider_rect, PowerUpTypes type) : type(type), j1Entity(collider_rect)
 {
-	name.create(App->entitymanager->c_powerup[(int)type].GetString());
+	name.create(App->entitymanager->c_powerup[type].GetString());
 
 	collider = App->collisions->AddCollider(*collider_rect, ColliderTypes::COLLIDER_POWERUP, (j1Module*)App->entitymanager);
 }
@@ -29,13 +29,15 @@ j1PowerUp::~j1PowerUp()
 {}
 
 bool j1PowerUp::Awake(pugi::xml_node& config) {
+
 	LOG("Loading PowerUp");
+
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
 	texture_path.create("%s%s", folder.GetString(), config.child("texture").attribute("source").as_string());
 	
-	p2SString temp = App->entitymanager->c_powerup[(int)type];
+	p2SString temp = App->entitymanager->c_powerup[type];
 
 	for (pugi::xml_node push_node = config.child("animations").child(temp.GetString()).child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
@@ -102,6 +104,7 @@ bool j1PowerUp::CleanUp() {
 void j1PowerUp::OnCollision(Collider* collider1, Collider* collider2) {
 	if (collider2->gettype() == COLLIDER_PLAYER) {
 		PU_Effect();
+		if (type == COIN)
 
 		App->collisions->deleteCollider(collider);
 		collider = nullptr;
@@ -109,21 +112,11 @@ void j1PowerUp::OnCollision(Collider* collider1, Collider* collider2) {
 	}
 }
 
-bool j1PowerUp::Load(pugi::xml_node& data) {
-
-	type = (PowerUpTypes)data.attribute("type").as_int();
-
-	position.x = data.child("position").attribute("x").as_uint();
-	position.y = data.child("position").attribute("y").as_uint();
-
-	return true;
-}
-
 bool j1PowerUp::Save(pugi::xml_node& data) const {
 
 	pugi::xml_node coin = data;
 
-	coin.append_attribute("type") = (int)type;
+	coin.append_attribute("type") = type;
 
 	coin.append_child("position").append_attribute("x") = position.x;
 	coin.child("position").append_attribute("y") = position.y;
@@ -136,7 +129,8 @@ bool j1PowerUp::Save(pugi::xml_node& data) const {
 void j1PowerUp::PU_Effect() {
 	switch (type) {
 	case COIN:
-		LOG("COIN");
+		App->entitymanager->GetPlayer()->score += 1;
+		App->entitymanager->GetPlayer()->PlayFX(coin_fx);
 		break;
 	case LIVES:
 		LOG("LIVE");

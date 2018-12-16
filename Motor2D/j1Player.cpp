@@ -158,6 +158,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 	anim_attack.loop = config.child("animations").child("attack").attribute("loop").as_bool();
 	anim_attack.speed = config.child("animations").child("attack").attribute("speed").as_float();
 
+	App->audio->LoadFx(config.child("animations").child("coin").child("fx").child_value());
+	//App->audio->LoadFx(config.child("animations").child("life").child("fx").child_value());
 
 	current_animation = &anim_idle;
 
@@ -167,6 +169,8 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start() {
 	
+	ptimer.Start();
+
 	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
 		position.y = respawn.y = collider->rect.y;
@@ -194,7 +198,7 @@ bool j1Player::Start() {
 bool j1Player::CleanUp()
 {
 	LOG("Unloading Player assets");
-	App->audio->StopFx();
+	//App->audio->StopFx();
 	App->audio->UnloadFx();
 	App->tex->UnLoad(graphics);
 	graphics = nullptr;
@@ -298,8 +302,8 @@ bool j1Player::Update(float dt, bool do_logic)
 					current_animation = &anim_jumpup;
 				}
 				else if (speed.y > 0) {
-					if(!plane)
-						App->audio->StopFx();
+					//if(!plane)
+						//App->audio->StopFx();
 					current_animation = &anim_jumpdown;
 				}
 
@@ -509,6 +513,8 @@ bool j1Player::Update() {
 
 	BROFILER_CATEGORY("PlayerUpdate2", Profiler::Color::MediumSpringGreen);
 
+	App->calcTime(timer, ptimer);
+
 	// Draw everything --------------------------------------
 	if (hit)
 		hitanim();
@@ -569,9 +575,6 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 				App->audio->PlayFx(Win_fx, 0);
 			win = true;
 
-		}
-		else if (collider2->gettype() == COLLIDER_POWERUP) {
-			App->audio->PlayFx(coin_fx, 0);
 		}
 	}
 }
@@ -721,6 +724,9 @@ bool j1Player::Load(pugi::xml_node& data)
 	walkSpeed = data.child("walkSpeed").attribute("value").as_float();
 	gravity = data.child("gravity").attribute("value").as_float();
 
+	timer = data.child("timer").attribute("value").as_uint();
+	score = data.child("score").attribute("value").as_uint();
+
 	return true;
 }
 
@@ -745,5 +751,13 @@ bool j1Player::Save(pugi::xml_node& data) const
 	player.append_child("gravity").append_attribute("value") = gravity;
 
 
+	player.append_child("timer").append_attribute("value") = timer;
+	player.append_child("score").append_attribute("value") = score;
+
+
 	return true;
+}
+
+void j1Player::PlayFX(CharacterFX fx) {
+	App->audio->PlayFx(fx, 0);
 }

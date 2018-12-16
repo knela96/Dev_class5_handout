@@ -60,6 +60,7 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void j1App::calcTime(uint& timer, j1PerfTimer& ptimer);
 
 	pugi::xml_node GetSaveData();
 

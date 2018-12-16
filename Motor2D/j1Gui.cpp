@@ -12,6 +12,7 @@
 #include "j1Button.h"
 #include "j1Slider.h"
 #include "j1Audio.h"
+#include "j1Player.h"
 #include "ButtonFunctions.h"
 
 
@@ -242,11 +243,17 @@ void j1Gui::stateElements(j1ElementGUI* element,bool state) {
 	}
 }
 
-bool j1Gui::Load(pugi::xml_node & data)
+bool j1Gui::Save(pugi::xml_node& data) const
 {
-
 	return true;
 }
+
+
+bool j1Gui::Load(pugi::xml_node & data)
+{
+	return true;
+}
+
 
 
 

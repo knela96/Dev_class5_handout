@@ -5,6 +5,7 @@
 
 struct SDL_Texture;
 struct j1ElementGUI;
+struct j1Label;
 
 class j1Scene : public j1Module
 {
@@ -49,6 +50,8 @@ private:
 	SDL_Texture* debug_tex;
 	bool hud = false;
 	j1ElementGUI* settings;
+	j1Label* score;
+	j1Label* timer;
 };
 
 #endif // __j1SCENE_H__

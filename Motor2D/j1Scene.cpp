@@ -18,6 +18,7 @@
 #include "j1ElementGUI.h"
 #include "ButtonFunctions.h"
 #include "Brofiler\Brofiler.h"
+#include "j1Label.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -66,6 +67,18 @@ bool j1Scene::Start()
 		
 	debug_tex = App->tex->Load("Assets/maps/path2.png");
 
+	
+	if (!hud) {
+		p2SString string;
+		string.create("%i", App->entitymanager->GetPlayer()->score);
+		score = (j1Label*)App->gui->AddLabel({ 0,0 }, string);
+
+		string.create("%i", App->entitymanager->GetPlayer()->timer);
+		timer = (j1Label*)App->gui->AddLabel({ 100,50 }, string);
+
+		hud = true;
+	}
+	
 	return true;
 }
 
@@ -116,15 +129,15 @@ bool j1Scene::Update(float dt)
 		if (App->entitymanager->GetPlayer()->current_life <= 0)
 			App->fade->FadeToBlack(this, App->sceneintro);
 
-		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-			App->gui->b_settings = !App->gui->b_settings;
-
 		if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 			App->entitymanager->GetPlayer()->godmode = !App->entitymanager->GetPlayer()->godmode;
 
 		if (App->entitymanager->GetPlayer()->win)
 			App->fade->FadeToBlack(this, App->scene2);
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		App->gui->b_settings = !App->gui->b_settings;
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		App->fade->FadeToBlack(this, App->scene);
@@ -152,6 +165,26 @@ bool j1Scene::Update(float dt)
 
 	App->map->Draw();
 
+	
+	p2SString string;
+
+	if (timer != nullptr) {
+		string.create("%i", App->entitymanager->GetPlayer()->timer);
+		if (timer->text != string) {
+			timer->text = string;
+			timer->UpdateText();
+			LOG("UPDATING TIMER");
+		}
+	}
+
+	if (score != nullptr) {
+		string.create("%i", App->entitymanager->GetPlayer()->score);
+		if (score->text != string) {
+			score->text = string;
+			score->UpdateText();
+			LOG("UPDATING COINS");
+		}
+	}
 
 	return true;
 }
@@ -205,9 +238,5 @@ void j1Scene::CreateHUD()
 {
 	if(settings == nullptr)
 		settings = App->gui->AddImage({ (float)(App->render->camera.w/2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene, windowType::SETTINGS);
-	if (!hud) {
-
-
-		hud = true;
-	}
+	
 }

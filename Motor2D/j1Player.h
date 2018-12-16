@@ -25,7 +25,9 @@ enum CharacterFX {
 	Death_fx,
 	Jump_fx,
 	Win_fx,
-	coin_fx
+	coin_fx,
+	life_fx
+
 };
 
 class j1Player : public j1Entity
@@ -51,6 +53,7 @@ public:
 	void hitanim();
 	void deathAnim(float dt);
 	void resetPlayer();
+	void j1Player::PlayFX(CharacterFX fx);
 
 public:
 	CharacterState currentState = Stand;
@@ -74,6 +77,8 @@ public:
 	j1Animation anim_jumpdown;
 	j1Animation anim_attack;
 
+	j1PerfTimer	ptimer;
+
 	Collider* attack_col;//Particle
 
 	Uint32 start_time;
@@ -85,6 +90,8 @@ public:
 	uint life;
 	uint c_blink = 0;
 	uint current_life;
+	uint score;
+	uint timer;
 	char _godmode[8] = "godmode";
 private:
 	uint				heightjump;

@@ -4,8 +4,8 @@
 	<window />
 	<textures />
 	<audio>
-		<v_music volume="0" />
-		<v_fx volume="1" />
+		<v_music volume="0.0199999996" />
+		<v_fx volume="0.200000003" />
 	</audio>
 	<map />
 	<pathfinding />
@@ -14,19 +14,21 @@
 	<entities>
 		<player>
 			<speed x="0" y="0" />
-			<position x="671.832092" y="369" w="19" h="31" />
+			<position x="455" y="369" w="19" h="31" />
 			<life value="3" />
 			<jumpSpeed value="500" />
 			<maxFallingSpeed value="400" />
 			<walkSpeed value="250" />
 			<gravity value="1800" />
+			<timer value="8" />
+			<score value="0" />
 		</player>
 		<flying_enemy>
 			<position x="3856" y="272" w="25" h="27" />
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="625" y="140722.141" w="25" h="23" />
+			<position x="610.60553" y="5209.50293" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
@@ -35,7 +37,7 @@
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="4553" y="400" w="25" h="23" />
+			<position x="4553" y="313" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
@@ -44,23 +46,29 @@
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="5209" y="169177.797" w="25" h="23" />
+			<position x="5209" y="11845.5908" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
+		<lives type="1">
+			<position x="688" y="352" w="16" h="16" />
+		</lives>
 		<coin type="0">
 			<position x="272" y="352" w="16" h="16" />
 		</coin>
 		<walking_enemy>
-			<position x="2428" y="146544.781" w="25" h="23" />
+			<position x="2428" y="470" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
 		<walking_enemy>
-			<position x="2976" y="145754.406" w="25" h="23" />
+			<position x="2976" y="470" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
+		<coin type="0">
+			<position x="1008" y="320" w="16" h="16" />
+		</coin>
 		<coin type="0">
 			<position x="1296" y="240" w="16" h="16" />
 		</coin>
@@ -131,16 +139,22 @@
 			<position x="6288" y="272" w="16" h="16" />
 		</coin>
 		<coin type="0">
+			<position x="928" y="320" w="16" h="16" />
+		</coin>
+		<coin type="0">
+			<position x="1200" y="240" w="16" h="16" />
+		</coin>
+		<coin type="0">
 			<position x="1504" y="336" w="16" h="16" />
 		</coin>
 		<coin type="0">
 			<position x="3984" y="400" w="16" h="16" />
 		</coin>
 	</entities>
-	<fonts />
 	<gui />
+	<fonts />
 	<fade />
 	<renderer>
-		<camera x="-445" y="0" />
+		<camera x="-60" y="0" />
 	</renderer>
 </game_state>

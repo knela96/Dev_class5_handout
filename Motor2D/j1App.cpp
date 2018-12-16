@@ -478,3 +478,12 @@ bool j1App::SavegameNow() const
 	want_to_save = false;
 	return ret;
 }
+
+void j1App::calcTime(uint& timer, j1PerfTimer& ptimer) {
+	int i = ptimer.ReadMs() / 1000;
+	if (i == 1) {
+		ptimer.Start();
+		timer += 1;
+	}
+
+}
