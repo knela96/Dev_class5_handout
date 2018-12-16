@@ -2,7 +2,7 @@
 
 This two level plataformer was created by Éric Canela, and Rafel Brau, 
 both students in UPC's degree in Design and Development of Videogames.
-We made this game during the subject of Development. The task was to make a simple 2Dplataformer, but we added the gliding so the movement was more fluid.
+We made this game during the subject of Development. The task was to make a simple 2D plataformer, with our own sub-systems: Collisions, Pathfinding, Entity System and GUI.
 
 ![](Tails_Odyssey.jpeg)
 
@@ -20,9 +20,9 @@ _Tails Odyssey Logo_
 - Èric Canela
     - [Github](https://github.com/knela96)
     
-While both members worked hard on this project, each member had different approaches on the game. Rafel focused more on the aesthetic part, he did animations, level design, got all the assets and coded alongside Eric, who focused more on the logical part of the game. He prepared the movement for the player, the general logic for the gui, entities, collisions and pathfinding, and focused on the readability and cleanliness of the code.
+While both members worked hard on this project, each member had different approaches on the game. Rafel focused more on the aesthetic part, he did animations, level design, got all the assets  and coded alongside Èric the pathfinding, who focused more on the logical part of the game. He prepared the movement for the player, the general logic for the gui, entities, collisions, enemies pathfinding, and focused on the readability and cleanliness of the code.
 
-This game icludes pathfinding enemies which are distributed by an entity manager, a gui system with buttons, labels, sliders and images, and when it comes to innovation, pressing the spacebar while in the air lets you glide for two seconds, letting you be more accurate when landing, besides this, when you fall from a platform you don't respawn at the start of the level, but the last position you were on ground.The player can attack and kill enemies with a tail move. 
+This game includes pathfinding enemies which are distributed by an entity manager, a gui system with buttons, labels, sliders and images, and when it comes to innovation, pressing the spacebar while in the air lets you glide for two seconds, letting you be more accurate when landing, besides this, when you fall from a platform you don't respawn at the start of the level, but the last position you were on ground.The player can attack and kill enemies with a tail move. 
 
 ## Gameplay
 
