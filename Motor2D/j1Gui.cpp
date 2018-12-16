@@ -166,9 +166,11 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
+	App->tex->UnLoad(logo);
 	App->tex->UnLoad(atlas);
 	App->audio->UnloadFx();
 	atlas = nullptr;
+	logo = nullptr;
 
 	for (uint i = 0; i < elements.count(); ++i)
 	{

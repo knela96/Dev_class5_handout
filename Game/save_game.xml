@@ -4,7 +4,7 @@
 	<window />
 	<textures />
 	<audio>
-		<v_music volume="1" />
+		<v_music volume="0.0399999991" />
 		<v_fx volume="0.680000007" />
 	</audio>
 	<map />
@@ -14,14 +14,14 @@
 	<entities>
 		<player>
 			<speed x="0" y="0" />
-			<position x="1640.69189" y="337" w="19" h="31" />
+			<position x="464" y="369" w="19" h="31" />
 			<life value="3" />
 			<jumpSpeed value="500" />
 			<maxFallingSpeed value="400" />
 			<walkSpeed value="250" />
 			<gravity value="1800" />
-			<timer value="9" />
-			<score value="7" />
+			<timer value="1" />
+			<score value="0" />
 		</player>
 		<flying_enemy>
 			<position x="3824" y="176" w="25" h="27" />
@@ -45,6 +45,9 @@
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
+		<coin type="0">
+			<position x="272" y="352" w="16" h="16" />
+		</coin>
 		<walking_enemy>
 			<position x="2672" y="470" w="25" h="23" />
 			<speed x="0" />
@@ -55,6 +58,15 @@
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
+		<coin type="0">
+			<position x="1008" y="320" w="16" h="16" />
+		</coin>
+		<coin type="0">
+			<position x="1296" y="240" w="16" h="16" />
+		</coin>
+		<coin type="0">
+			<position x="1616" y="336" w="16" h="16" />
+		</coin>
 		<coin type="0">
 			<position x="1952" y="400" w="16" h="16" />
 		</coin>
@@ -119,6 +131,15 @@
 			<position x="6288" y="272" w="16" h="16" />
 		</coin>
 		<coin type="0">
+			<position x="928" y="320" w="16" h="16" />
+		</coin>
+		<coin type="0">
+			<position x="1200" y="240" w="16" h="16" />
+		</coin>
+		<coin type="0">
+			<position x="1504" y="336" w="16" h="16" />
+		</coin>
+		<coin type="0">
 			<position x="3984" y="400" w="16" h="16" />
 		</coin>
 	</entities>
@@ -126,6 +147,6 @@
 	<fonts />
 	<fade />
 	<renderer>
-		<camera x="-1059" y="0" />
+		<camera x="-60" y="0" />
 	</renderer>
 </game_state>
