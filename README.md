@@ -26,6 +26,6 @@ _Tails Odyssey Logo_
 ## Link to download the latest version of the game  
   [CLICK HERE](https://github.com/knela96/Tails-Odyssey/releases/tag/)
 
-## Link to our github reporitory
+## Link to our github repository
   [CLICK HERE](https://github.com/knela96/Tails-Odyssey)
 
