@@ -34,19 +34,35 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	atlas_file_name = conf.child("atlas").attribute("file").as_string(); 
 	logo_file_name = conf.child("logo").attribute("file").as_string();
 
-	//LOAD PUSHBACKS
-	button_anim.PushBack({ 483,0,114,58 });
-	button_anim.PushBack({ 483,60,114,58 });
-	button_anim.PushBack({ 483,121,114,58 });
+	////LOAD PUSHBACKS
 
-	button2_anim.PushBack({ 699,60,76,58 });
-	button2_anim.PushBack({ 699,120,76,58 });
-	button2_anim.PushBack({ 699,181,76,58 });
-
-	button3_anim.PushBack({ 619,60,76,58 });
-	button3_anim.PushBack({ 619,120,76,58 });
-	button3_anim.PushBack({ 619,181,76,58 });
-
+	for (pugi::xml_node push_node = conf.child("animations").child("button").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		button_anim.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	for (pugi::xml_node push_node = conf.child("animations").child("button2").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		button2_anim.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	for (pugi::xml_node push_node = conf.child("animations").child("button3").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		button3_anim.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
 	btn_file_name = conf.child("btn_fx").child_value();
 
 

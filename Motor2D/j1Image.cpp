@@ -99,8 +99,7 @@ void j1Image::createSettings() {
 void j1Image::createSettingsIntro() {
 	int w, h; 
 	App->font->CalcSize("SETTINGS", w, h);
-
-	childs.add((j1ElementGUI*)new j1Label({ (float)rect->w/2 - w/2,  50 },"SETTINGS",nullptr,this));
+	childs.add((j1ElementGUI*)new j1Image({ 110, -80 }, new SDL_Rect({ 391, 376,262,80 }), Levels::NONE, windowType::NONE, graphics, this));
 	childs.add((j1ElementGUI*)new j1Slider({ 30, 75 }, MUSIC, graphics, this));
 	childs.add((j1ElementGUI*)new j1Slider({ 140, 75 }, FX, graphics, this));
 	childs.add((j1ElementGUI*)new j1Button({ 180, 200 }, "BACK", &App->gui->button_anim, f_CloseWindow, true, graphics, this));

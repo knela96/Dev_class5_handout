@@ -22,6 +22,23 @@
    <gui>
      <atlas file="Assets/gui/Atlas1.5.png"/>
      <logo file="Assets/gui/Tails_Odyssey_mini.png"/>
+     <animations>
+       <button>
+         <frame x="482" y="0" w="115" h="58"/>
+         <frame x="482" y="60" w="115" h="58"/>
+         <frame x="482" y="121" w="115" h="58"/>
+       </button>
+       <button2>
+         <frame x="699" y="60" w="76" h="58"/>
+         <frame x="699" y="120" w="76" h="58"/>
+         <frame x="699" y="181" w="76" h="58"/>
+       </button2>
+       <button3>
+         <frame x="619" y="60" w="76" h="58"/>
+         <frame x="619" y="120" w="76" h="58"/>
+         <frame x="619" y="181" w="76" h="58"/>
+       </button3>
+     </animations>
      <btn_fx>Click.wav</btn_fx>
   </gui>
 
@@ -201,6 +218,17 @@
         </die>
       </animations>
     </flying_enemy>
+    <coin>
+      <animation>
+        <coin loop="true" speed="8.0">
+          <frame x="0" y="292" w="47" h="39"/>
+          <frame x="46" y="292" w="48" h="39"/>
+          <frame x="93" y="292" w="48" h="39"/>
+          <frame x="140" y="292" w="47" h="39"/>
+          <frame x="186" y="292" w="48" h="39"/>
+        </coin>
+      </animation>
+    </coin>
   </entities>
 
 </config>
