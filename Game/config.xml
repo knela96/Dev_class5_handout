@@ -20,7 +20,7 @@
   </renderer>
 
    <gui>
-     <atlas file="Assets/gui/Atlas1.3.png"/>
+     <atlas file="Assets/gui/Atlas1.5.png"/>
      <logo file="Assets/gui/Tails_Odyssey_mini.png"/>
      <btn_fx>Click.wav</btn_fx>
   </gui>

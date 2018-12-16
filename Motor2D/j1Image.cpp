@@ -84,14 +84,14 @@ void j1Image::createSettings() {
 	int w, h;
 	App->font->CalcSize("PAUSE", w, h);
 
-	childs.add((j1ElementGUI*)new j1Label({ (float)rect->w / 2 - w / 2,  30 }, "PAUSE", nullptr, this));
-	childs.add((j1ElementGUI*)new j1Button({ 83, 58 }, "RESUME", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
-	childs.add((j1ElementGUI*)new j1Button({ 60, 120 }, "", &App->gui->button3_anim, f_Load, false, graphics, this));
-	childs.add((j1ElementGUI*)new j1Button({ 145,120 }, "", &App->gui->button2_anim, f_Save, true, graphics, this));
+	childs.add((j1ElementGUI*)new j1Image({ 110, -80 }, new SDL_Rect({ 391,293,262,80 }), Levels::NONE , windowType::NONE, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 89, 38 }, "RESUME", &App->gui->button_anim, f_CloseWindow, true, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 51, 114 }, "", &App->gui->button3_anim, f_Load, false, graphics, this));
+	childs.add((j1ElementGUI*)new j1Button({ 166, 114 }, "", &App->gui->button2_anim, f_Save, true, graphics, this));
 	if(scene == Levels::Scene)
-		childs.add((j1ElementGUI*)new j1Button({ 83,201}, "MENU", &App->gui->button_anim, f_Scene1toMainMenu, true, graphics, this));
+		childs.add((j1ElementGUI*)new j1Button({ 89,189}, "MENU", &App->gui->button_anim, f_Scene1toMainMenu, true, graphics, this));
 	else if (scene == Levels::Scene2)
-		childs.add((j1ElementGUI*)new j1Button({ 83,201 }, "MENU", &App->gui->button_anim, f_Scene2toMainMenu, true, graphics, this));
+		childs.add((j1ElementGUI*)new j1Button({ 89,189 }, "MENU", &App->gui->button_anim, f_Scene2toMainMenu, true, graphics, this));
 	childs.add((j1ElementGUI*)new j1Slider({ 140, 65 }, MUSIC, graphics, this));
 	childs.add((j1ElementGUI*)new j1Slider({ 140, 115 }, FX, graphics, this));
 }
