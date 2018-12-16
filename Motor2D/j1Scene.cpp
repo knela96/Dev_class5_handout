@@ -68,17 +68,8 @@ bool j1Scene::Start()
 		
 	debug_tex = App->tex->Load("Assets/maps/path2.png");
 
-	
-	if (!hud) {
-		p2SString string;
-		string.create("%i", App->entitymanager->GetPlayer()->score);
-		score = (j1Label*)App->gui->AddLabel({ 0,0 }, string);
 
-		string.create("%i", App->entitymanager->GetPlayer()->timer);
-		timer = (j1Label*)App->gui->AddLabel({ 100,50 }, string);
-
-		hud = true;
-	}
+	CreateLayout();
 	
 	return true;
 }
@@ -172,7 +163,8 @@ bool j1Scene::Update(float dt)
 	if (timer != nullptr) {
 		string.create("%i", App->entitymanager->GetPlayer()->timer);
 		if (timer->text != string) {
-			timer->text = string;
+			timer->text = App->gui->convertTime(App->entitymanager->GetPlayer()->timer);
+			//timer->text = string;
 			timer->UpdateText();
 		}
 	}
@@ -180,7 +172,7 @@ bool j1Scene::Update(float dt)
 	if (score != nullptr) {
 		string.create("%i", App->entitymanager->GetPlayer()->score);
 		if (score->text != string) {
-			score->text = string;
+			score->text = App->gui->convertScore(App->entitymanager->GetPlayer()->score);
 			score->UpdateText();
 		}
 	}
@@ -224,6 +216,10 @@ bool j1Scene::Load(pugi::xml_node& data)
 		this->Disable();
 		App->scene2->Enable();
 	}
+	/*else {
+		CreateLayout();
+	}*/
+
 
 	return true;
 }
@@ -242,4 +238,20 @@ void j1Scene::CreateHUD()
 	if(settings == nullptr)
 		settings = App->gui->AddImage({ (float)(App->render->camera.w/2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene, windowType::SETTINGS);
 	
+}
+
+void j1Scene::CreateLayout() {
+	if (!hud) {
+		p2SString string;
+
+		App->gui->AddImage({ 0, 0 }, new SDL_Rect({ 0,335,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		App->gui->AddImage({ (float)App->render->camera.w - 309 , 0 }, new SDL_Rect({ 0,395,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+
+		score = (j1Label*)App->gui->AddLabel({ 125,10 }, App->gui->convertScore(App->entitymanager->GetPlayer()->score), 2);
+
+		timer = (j1Label*)App->gui->AddLabel({ 325,10 }, App->gui->convertTime(App->entitymanager->GetPlayer()->timer), 2);
+		//202 11
+
+		hud = true;
+	}
 }

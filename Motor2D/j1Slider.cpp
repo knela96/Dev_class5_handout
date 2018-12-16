@@ -14,7 +14,7 @@ j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* gr
 {
 	slide = new j1Image({ position.x, position.y }, new SDL_Rect({ 598,0,177,32 }),Levels::NONE, windowType::NONE, graphics,this);
 	thumb = new j1Image({ position.x, position.y+3 }, new SDL_Rect({ 604,34,18,26 }), Levels::NONE, windowType::NONE, graphics,this);
-	label = new j1Label({ position.x - 25, position.y + 12}, "100", nullptr, this);
+	label = new j1Label({ position.x - 25, position.y + 12}, "100", 1, nullptr, this);
 
 	if (OrientationType::MUSIC == orientation)
 		childs.add((j1ElementGUI*)new j1Image({ position.x + 20, position.y - 65 }, new SDL_Rect({ 479,178,138,56 }), Levels::NONE, windowType::NONE, graphics, this));

@@ -7,8 +7,9 @@
 #include "j1Textures.h"
 
 
-j1Label::j1Label(fPoint position, p2SString text, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
+j1Label::j1Label(fPoint position, p2SString text, int scale, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	text(text),
+	scale(scale),
 	j1ElementGUI(position, nullptr, type,graphics,parent)
 {
 	App->font->CalcSize(text.GetString(), width, height);
@@ -17,7 +18,7 @@ j1Label::j1Label(fPoint position, p2SString text, SDL_Texture* graphics, j1Eleme
 
 	global_pos = getParentPos(this);
 	
-	rect = new SDL_Rect({ (int)global_pos.x, (int)global_pos.y,width,height });
+	rect = new SDL_Rect({ (int)global_pos.x * scale, (int)global_pos.y* scale,width* scale,height* scale });
 }
 
 
@@ -39,12 +40,13 @@ void j1Label::Draw()
 
 	global_pos = getParentPos(this);
 
-	rect->x = global_pos.x;
-	rect->y = global_pos.y;
-	App->render->Blit(graphics, global_pos.x, global_pos.y, nullptr, SDL_FLIP_NONE, 1, 0.0f);
+	rect->x = global_pos.x * scale;
+	rect->y = global_pos.y * scale;
+	App->render->Blit(graphics, global_pos.x, global_pos.y, nullptr, SDL_FLIP_NONE, scale, 0.0f);
 }
 
 void j1Label::UpdateText() {
+
 	App->tex->UnLoad(graphics);
 	this->graphics = App->font->Print(text.GetString());
 }

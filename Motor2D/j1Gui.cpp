@@ -207,9 +207,9 @@ j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, Levels scene, windowTy
 	
 }
 
-j1ElementGUI* j1Gui::AddLabel(fPoint pos, p2SString text)
+j1ElementGUI* j1Gui::AddLabel(fPoint pos, p2SString text, int scale)
 {
-	j1Label* label = new j1Label(pos, text);//add position and text
+	j1Label* label = new j1Label(pos, text, scale);//add position and text
 
 	j1ElementGUI* element = (j1ElementGUI*)label;
 	element->Start();
@@ -233,6 +233,50 @@ j1ElementGUI* j1Gui::AddSlider(fPoint pos, OrientationType orientation) {
 	element->Start();
 	elements.add(element);
 	return element;
+}
+
+p2SString j1Gui::convertTime(uint time) {
+	p2SString s_sec, s_min, s_hour, s_total;
+
+	uint minutes = time / 60;
+	uint hours = minutes / 60;
+
+	if (time % 60 < 10) {
+		s_sec.create("0%i", time % 60);
+	}
+	else {
+		s_sec.create("%i", time % 60);
+	}
+	if (minutes % 60 < 10) {
+		s_min.create("0%i", minutes % 60);
+	}
+	else {
+		s_min.create("%i", minutes % 60);
+	}
+	if (hours < 10) {
+		s_hour.create("0%i", hours);
+	}
+	else {
+		s_hour.create("%i", hours);
+	}
+	s_total += s_hour;
+	s_total += ": ";
+	s_total += s_min;
+	s_total += ": ";
+	s_total += s_sec;
+	return s_total;
+}
+
+p2SString j1Gui::convertScore(uint score) {
+	p2SString s_score;
+
+	if (score < 10) {
+		s_score.create("0%i", score);
+	}
+	else {
+		s_score.create("%i", score);
+	}
+	return s_score;
 }
 
 void j1Gui::stateElements(j1ElementGUI* element,bool state) {

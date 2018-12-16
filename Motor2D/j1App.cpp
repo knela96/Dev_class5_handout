@@ -483,7 +483,8 @@ void j1App::calcTime(uint& timer) {
 	int i = (int)p_timer.ReadMs() / 1000;
 	if (i == 1) {
 		p_timer.Start();
-		timer += 1;
+		if(!gui->b_settings)
+			timer += 1;
 	}
 }
 

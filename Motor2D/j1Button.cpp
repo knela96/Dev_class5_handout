@@ -18,7 +18,7 @@ j1Button::j1Button(fPoint position, p2SString text, j1Animation* anim, int(*acti
 	action(action),
 	j1ElementGUI(position, nullptr, type, graphics, parent)
 {
-	label = new j1Label({ 0 ,0 }, text, nullptr, this);
+	label = new j1Label({ 0 ,0 }, text, 1, nullptr, this);
 }
 
 bool j1Button::Start() {

@@ -63,14 +63,12 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1SceneIntro::Start()
 {
-	App->gui->Enable();
 	main_menu = false;
 	cameraoffset = 0;
 	graphics = App->tex->Load("Assets/Sprites/Character/Player1.1.png");
 
 	current_anim = &anim_plane;
 
-	App->gui->Enable();
 	App->map->Enable();
 	if (App->map->Load(map.GetString()) == true) {
 
@@ -83,6 +81,7 @@ bool j1SceneIntro::Start()
 	}
 	App->collisions->Enable();
 	App->entitymanager->Enable();
+	App->gui->Enable();
 
 	App->audio->PlayMusic(music_path.GetString());
 

@@ -170,7 +170,9 @@ bool j1Player::Awake(pugi::xml_node& config)
 bool j1Player::Start() {
 	
 	App->p_timer.Start();
-	App->getTime(timer);
+
+	timer = 0;
+	score = 0;
 
 	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
@@ -219,7 +221,7 @@ bool j1Player::Update(float dt, bool do_logic)
 	if (!dead || !win) {
 		if (!death_anim && !godmode) {
 			if (OnGround)
-				lastPosition = position;
+				lastPosition = position, plane = false;
 			
 			switch (currentState)
 			{
@@ -553,7 +555,7 @@ void j1Player::OnCollision(Collider* collider1, Collider* collider2) {
 		else if (collider2->gettype() == COLLIDER_FLYING_ENEMY && !godmode || collider2->gettype() == COLLIDER_PLATFORM_ENEMY && !death_anim && !godmode) {
 
 			if (!hit && c_blink == 0 && death_anim == false) {
-				start_time = SDL_GetTicks() - start_time;
+				aux_time = SDL_GetTicks() - aux_time;
 				hit = true;
 				current_life--;
 				if (current_life == 0) {
@@ -647,8 +649,8 @@ void j1Player::cameraPos()
 }
 void j1Player::hitanim()
 {
-	if (SDL_GetTicks() - start_time > 100 && c_blink < 10) {
-		start_time = SDL_GetTicks();
+	if (SDL_GetTicks() - aux_time > 100 && c_blink < 10) {
+		aux_time = SDL_GetTicks();
 		if (c_blink % 2 == 0)
 			blink = true;
 		else

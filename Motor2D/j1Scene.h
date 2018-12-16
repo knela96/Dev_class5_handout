@@ -40,6 +40,8 @@ public:
 
 	void CreateHUD();
 
+	void CreateLayout();
+
 private:
 	p2SString map;
 	p2SString music_path;

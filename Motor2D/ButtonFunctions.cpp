@@ -9,8 +9,11 @@
 #include "j1ElementGUI.h"
 #include "ButtonFunctions.h"
 #include "j1EntityManager.h"
+#include "j1Player.h"
 
 int f_Start() {
+	if (App->entitymanager->GetPlayer() != nullptr)
+		App->getTime(App->entitymanager->GetPlayer()->timer);
 	App->fade->FadeToBlack(App->sceneintro, App->scene);
 	return true;
 }
@@ -36,7 +39,7 @@ int f_Credits() {
 }
 
 int f_CloseWindow() {
-	App->gui->b_settings = true;
+	App->gui->b_settings = false;
 	App->gui->stateElements(nullptr, true);
 	return -1;
 }
