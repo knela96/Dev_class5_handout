@@ -3,13 +3,13 @@
 This two level plataformer was created by Éric Canela, and Rafel Brau, 
 both students in UPC's degree in Design and Development of Videogames
 
-![](Tails_Odyssey.png)
+![](Tails_Odyssey.jpeg)
 
 _Tails Odyssey Logo_
 
 # Authors
 
-![alt Authors](Authors.png)
+![alt Authors](Authors.jpeg)
 
  <em> Rafel Brau, Èric Canela </em>
 
