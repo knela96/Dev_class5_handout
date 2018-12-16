@@ -60,7 +60,8 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
-	void j1App::calcTime(uint& timer, j1PerfTimer& ptimer);
+	void j1App::calcTime(uint& timer);
+	void j1App::setTime(uint& timer);
 
 	pugi::xml_node GetSaveData();
 
@@ -112,6 +113,8 @@ public:
 	uint				frame_cap;
 	float accumulated = 0;
 	float				dt;
+
+	j1PerfTimer	p_timer;
 
 private:
 

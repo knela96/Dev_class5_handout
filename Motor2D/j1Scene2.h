@@ -4,6 +4,8 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
+struct j1ElementGUI;
+struct j1Label;
 
 class j1Scene2 : public j1Module
 {
@@ -46,6 +48,9 @@ private:
 	p2SString fx_path;
 
 	j1ElementGUI* settings;
+	bool hud = false;
+	j1Label* score;
+	j1Label* timer;
 };
 
 #endif // __j1SCENE_H__

@@ -49,6 +49,7 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
+	hud = false;
 	App->gui->Enable();
 	App->map->Enable();
 	if (App->map->Load(map.GetString()) == true) {
@@ -210,6 +211,10 @@ bool j1Scene::CleanUp()
 	App->map->Disable();
 	App->gui->Disable();
 	settings = nullptr;
+	App->gui->deleteElement(timer);
+	timer = nullptr;
+	App->gui->deleteElement(score);
+	score = nullptr;
 	return true;
 }
 

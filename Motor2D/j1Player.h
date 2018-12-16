@@ -77,7 +77,6 @@ public:
 	j1Animation anim_jumpdown;
 	j1Animation anim_attack;
 
-	j1PerfTimer	ptimer;
 
 	Collider* attack_col;//Particle
 

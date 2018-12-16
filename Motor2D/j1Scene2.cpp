@@ -18,6 +18,7 @@
 #include "Brofiler\Brofiler.h"
 #include "j1ElementGUI.h"
 #include "ButtonFunctions.h"
+#include "j1Label.h"
 
 j1Scene2::j1Scene2() : j1Module()
 {
@@ -46,6 +47,7 @@ bool j1Scene2::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene2::Start()
 {
+	hud = false;
 	App->gui->Enable();
 	App->map->Enable();
 	if (App->map->Load(map.GetString()) == true) {
@@ -61,6 +63,17 @@ bool j1Scene2::Start()
 	App->entitymanager->Enable();
 
 	App->audio->PlayMusic(music_path.GetString());
+
+	if (!hud) {
+		p2SString string;
+		string.create("%i", App->entitymanager->GetPlayer()->score);
+		score = (j1Label*)App->gui->AddLabel({ 0,0 }, string);
+
+		string.create("%i", App->entitymanager->GetPlayer()->timer);
+		timer = (j1Label*)App->gui->AddLabel({ 100,50 }, string);
+
+		hud = true;
+	}
 
 	return true;
 }
@@ -148,6 +161,26 @@ bool j1Scene2::Update(float dt)
 
 	App->map->Draw();
 
+	p2SString string;
+
+	if (timer != nullptr) {
+		string.create("%i", App->entitymanager->GetPlayer()->timer);
+		if (timer->text != string) {
+			timer->text = string;
+			timer->UpdateText();
+			LOG("UPDATING TIMER");
+		}
+	}
+
+	if (score != nullptr) {
+		string.create("%i", App->entitymanager->GetPlayer()->score);
+		if (score->text != string) {
+			score->text = string;
+			score->UpdateText();
+			LOG("UPDATING COINS");
+		}
+	}
+
 	return true;
 }
 
@@ -171,6 +204,10 @@ bool j1Scene2::CleanUp()
 	App->map->Disable();
 	App->gui->Disable();
 	settings = nullptr;
+	App->gui->deleteElement(timer);
+	timer = nullptr;
+	App->gui->deleteElement(score);
+	score = nullptr;
 	return true;
 }
 

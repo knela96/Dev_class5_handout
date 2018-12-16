@@ -169,7 +169,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start() {
 	
-	ptimer.Start();
+	App->p_timer.Start();
 
 	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
@@ -185,8 +185,6 @@ bool j1Player::Start() {
 
 	App->render->camera.x = -60 * App->win->GetScale();
 	App->render->camera.y = 0;
-
-
 
 	currentState = CharacterState::Jump;
 
@@ -204,6 +202,9 @@ bool j1Player::CleanUp()
 	graphics = nullptr;
 	App->collisions->deleteCollider(collider);
 	collider = nullptr;
+
+	App->GetSaveData().child("player").child("timer").remove_attribute("value");
+	App->GetSaveData().child("player").child("timer").append_attribute("value") = timer;
 	return true;
 }
 
@@ -513,7 +514,7 @@ bool j1Player::Update() {
 
 	BROFILER_CATEGORY("PlayerUpdate2", Profiler::Color::MediumSpringGreen);
 
-	App->calcTime(timer, ptimer);
+	App->calcTime(timer);
 
 	// Draw everything --------------------------------------
 	if (hit)
