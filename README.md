@@ -10,6 +10,7 @@ _Tails Odyssey Logo_
 # Authors
 
 ![alt Authors](Authors.png)
+
  <em> Rafel Brau, Èric Canela </em>
 
 - Rafel Brau
@@ -19,6 +20,7 @@ _Tails Odyssey Logo_
     - [Github](https://github.com/knela96)
 
 ## Gameplay
+
 <iframe width="650" height="400" src="https://www.youtube.com/embed/7hml4wSPay8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 ## Link to download the latest version of the game  
