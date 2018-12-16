@@ -84,6 +84,7 @@ public:
 	j1Animation button_anim;
 	j1Animation button2_anim;
 	j1Animation button3_anim;
+	j1Animation diamond;
 	bool b_settings = false;
 	
 private:

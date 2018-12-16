@@ -65,17 +65,17 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 			});
 	}
 
-	/*for (pugi::xml_node push_node = conf.child("animations").child(temp.GetString()).child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	for (pugi::xml_node push_node = conf.child("animations").child("coin").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
-		anim.PushBack({
+		diamond.PushBack({
 			push_node.attribute("x").as_int(),
 			push_node.attribute("y").as_int(),
 			push_node.attribute("w").as_int(),
 			push_node.attribute("h").as_int()
 			});
 	}
-	anim.loop = config.child("animations").child("coin").attribute("loop").as_bool();
-	anim.speed = config.child("animations").child("coin").attribute("speed").as_float();*/
+	diamond.loop = conf.child("animations").child("coin").attribute("loop").as_bool();
+	diamond.speed = conf.child("animations").child("coin").attribute("speed").as_float();
 
 	btn_file_name = conf.child("btn_fx").child_value();
 
