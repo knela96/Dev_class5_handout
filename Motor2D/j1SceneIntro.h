@@ -43,6 +43,7 @@ private:
 	p2SString music_path;
 	p2SString fx_path;
 	iPoint cam_pos;
+	iPoint mousepos_y;
 	Levels load_scene;
 
 	SDL_Texture* debug_tex;

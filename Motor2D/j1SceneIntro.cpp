@@ -45,8 +45,8 @@ bool j1SceneIntro::Awake(pugi::xml_node& config)
 			push_node.attribute("h").as_int()
 			});
 	}
-	anim_plane.loop = config.child("animations").child("plane").attribute("loop").as_bool();
-	anim_plane.speed = config.child("animations").child("plane").attribute("speed").as_float();
+	anim_plane.loop = config.child("sceneintro").child("animations").child("plane").attribute("loop").as_bool();
+	anim_plane.speed = config.child("sceneintro").child("animations").child("plane").attribute("speed").as_float();
 
 
 	map.create(config.child("sceneintro").child("map").child_value());
@@ -69,6 +69,7 @@ bool j1SceneIntro::Start()
 	graphics = App->tex->Load("Assets/Sprites/Character/Player1.1.png");
 
 	current_anim = &anim_plane;
+
 	App->gui->Enable();
 	App->map->Enable();
 	if (App->map->Load(map.GetString()) == true) {
@@ -104,13 +105,18 @@ bool j1SceneIntro::PreUpdate()
 bool j1SceneIntro::Update(float dt)
 {
 	BROFILER_CATEGORY("SceneIntroUpdate", Profiler::Color::DarkMagenta);
-	
+
+	App->input->GetMousePosition(mousepos_y.x, mousepos_y.y);
+
 	App->map->Draw();
 	App->render->camera.x = cameraoffset;
 	cameraoffset -= 2;
+	if (App->gui->b_settings == false) LOG("enter");
 	animation_Rect = current_anim->GetCurrentFrame(dt);
 
-	App->render->Blit(graphics, 100, 60, &animation_Rect, SDL_FLIP_NONE);
+	if (cameraoffset == -6112) cameraoffset = 0;
+
+	App->render->Blit(graphics, mousepos_y.x/2-70, mousepos_y.y/2, &animation_Rect, SDL_FLIP_NONE, 2, 0.0f);
 
 	return true;
 }

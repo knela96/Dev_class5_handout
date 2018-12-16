@@ -42,11 +42,15 @@ int f_CloseWindow() {
 }
 
 int f_Scene1toMainMenu() {
+
+	App->gui->b_settings = true;
 	App->fade->FadeToBlack(App->scene, App->sceneintro);
 	return true;
 }
 
 int f_Scene2toMainMenu() {
+
+	App->gui->b_settings = true;
 	App->fade->FadeToBlack(App->scene2, App->sceneintro);
 	return true;
 }
