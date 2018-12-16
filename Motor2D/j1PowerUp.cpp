@@ -29,6 +29,9 @@ j1PowerUp::~j1PowerUp()
 {}
 
 bool j1PowerUp::Awake(pugi::xml_node& config) {
+
+	LOG("Loading PowerUp");
+
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());

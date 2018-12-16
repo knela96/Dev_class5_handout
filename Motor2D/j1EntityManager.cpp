@@ -104,6 +104,7 @@ bool j1EntityManager::AwakeEntities() {
 	while (item != NULL && ret == true)
 	{
 		ret = item->data->Awake(_config.child(item->data->name.GetString()));
+		LOG(item->data->name.GetString());
 		item = item->next;
 	}
 

@@ -245,14 +245,14 @@ bool j1Player::Update(float dt, bool do_logic)
 					currentState = CharacterState::Jump;
 					OnGround = false;
 				}
-				else if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !attacked) {
+				else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !attacked) {
 					currentState = CharacterState::Attack;
 				}
 
 				break;
 			case CharacterState::Walk:
 
-				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !attacked) {
+				if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !attacked) {
 					speed = { 0,0 };
 
 					currentState = CharacterState::Attack;
@@ -342,7 +342,7 @@ bool j1Player::Update(float dt, bool do_logic)
 				}
 
 
-				if (App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN && !attacked) {
+				if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && !attacked) {
 					Fall = true;
 					speed = { 0,0 };
 					currentState = CharacterState::Attack;
