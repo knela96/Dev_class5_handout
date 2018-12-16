@@ -156,7 +156,8 @@ unsigned int j1Audio::LoadFx(const char* path)
 
 	Mix_Chunk* chunk = Mix_LoadWAV(tmp.GetString());
 
-	ChangeFxVolume(chunk);
+	if(chunk != NULL)
+		ChangeFxVolume(chunk);
 
 	if(chunk == NULL)
 	{

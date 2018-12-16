@@ -147,6 +147,12 @@
           <frame x="725" y="56" w="31" h="35"/>
           <fx>Win.wav</fx>
         </jump_down>
+        <coin>
+          <fx>Diamond.wav</fx>
+        </coin>
+        <life>
+          <fx>Live.wav</fx>
+        </life>
       </animations>
   </player>
     <walking_enemy>

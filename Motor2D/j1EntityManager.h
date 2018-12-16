@@ -24,6 +24,7 @@ public:
 
 	bool Awake(pugi::xml_node& config);
 	bool AwakeEntities();
+	bool LoadEntities(pugi::xml_node & data);
 	bool StartEntities();
 	bool Start();
 	bool PreUpdate();

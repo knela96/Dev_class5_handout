@@ -110,6 +110,21 @@ bool j1EntityManager::AwakeEntities() {
 	return true;
 }
 
+bool j1EntityManager::LoadEntities(pugi::xml_node &data) {
+	bool ret = true;
+
+	p2List_item<j1Entity*>* item;
+	item = entities.start;
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Load(data.child(item->data->name.GetString()));
+		item = item->next;
+	}
+
+	return true;
+}
+
 bool j1EntityManager::StartEntities() {
 	bool ret = true;
 
@@ -276,6 +291,18 @@ bool j1EntityManager::Load(pugi::xml_node & data )
 		CreateEntity(EntityType::WALKING_ENEMY, new SDL_Rect({ x,y,w,h }));
 		object = object.next_sibling("walking_enemy");
 	}
+	
+	object = data.child("lives");
+	while (object) {
+		int x, y, w, h;
+		x = object.child("position").attribute("x").as_uint();
+		y = object.child("position").attribute("y").as_uint();
+		w = object.child("position").attribute("w").as_uint();
+		h = object.child("position").attribute("h").as_uint();
+
+		CreateEntity(EntityType::LIVES, new SDL_Rect({ x,y,w,h }));
+		object = object.next_sibling("lives");
+	}
 
 	object = data.child("coin");
 	while (object) {
@@ -289,21 +316,10 @@ bool j1EntityManager::Load(pugi::xml_node & data )
 		object = object.next_sibling("coin");
 	}
 
-	object = data.child("lives");
-	while (object) {
-		int x, y, w, h;
-		x = object.child("position").attribute("x").as_uint();
-		y = object.child("position").attribute("y").as_uint();
-		w = object.child("position").attribute("w").as_uint();
-		h = object.child("position").attribute("h").as_uint();
-
-		CreateEntity(EntityType::LIVES, new SDL_Rect({ x,y,w,h }));
-		object = object.next_sibling("lives");
-	}
-
 
 	AwakeEntities();
 	StartEntities();
+	LoadEntities(data);
 	
 	return true;
 }

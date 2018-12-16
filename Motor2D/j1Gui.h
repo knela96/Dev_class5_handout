@@ -69,6 +69,8 @@ public:
 
 	void stateElements(j1ElementGUI * element, bool state);
 
+	bool Save(pugi::xml_node & data) const;
+
 	bool Load(pugi::xml_node & data);
 
 	//Change to Animation

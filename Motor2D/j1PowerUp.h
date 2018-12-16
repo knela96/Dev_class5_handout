@@ -37,7 +37,6 @@ public:
 
 	void OnCollision(Collider* col_1, Collider* col_2);
 
-	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;
 
 	void PU_Effect();
