@@ -14,6 +14,7 @@
 #include "j1Audio.h"
 #include "j1Player.h"
 #include "ButtonFunctions.h"
+#include "Brofiler\Brofiler.h"
 
 
 
@@ -121,6 +122,9 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
+
+	BROFILER_CATEGORY("GuiPreUpdate", Profiler::Color::MediumPurple);
+
 	bool ret = true;
 	for (int i = 0; i < elements.count(); ++i)
 	{
@@ -131,6 +135,9 @@ bool j1Gui::PreUpdate()
 }
 
 bool j1Gui::Update(float dt) {
+
+
+	BROFILER_CATEGORY("GuiUpdate", Profiler::Color::MediumOrchid);
 
 	bool ret = true;
 
@@ -155,6 +162,9 @@ bool j1Gui::Update(float dt) {
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+
+	BROFILER_CATEGORY("GuiPostUpdate", Profiler::Color::MediumBlue);
+
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)

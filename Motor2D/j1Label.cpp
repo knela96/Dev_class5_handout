@@ -5,6 +5,7 @@
 #include "p2Log.h"
 #include "j1Textures.h"
 #include "j1Textures.h"
+#include "Brofiler\Brofiler.h"
 
 
 j1Label::j1Label(fPoint position, p2SString text, int scale, int move, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
@@ -52,7 +53,6 @@ void j1Label::Draw()
 }
 
 void j1Label::UpdateText() {
-
 	App->tex->UnLoad(graphics);
 	this->graphics = App->font->Print(text.GetString());
 }
