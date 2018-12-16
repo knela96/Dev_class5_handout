@@ -21,10 +21,15 @@ j1Audio::~j1Audio()
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)
 {
+
 	music_path.create(config.child("music").child("folder").child_value());
 	fx_path.create(config.child("fx").child("folder").child_value());
 
+	v_music = config.child("music").attribute("volume").as_float();
+	v_fx = config.child("fx").attribute("volume").as_float();
+
 	Load(App->GetSaveData().child("audio"));
+
 
 	LOG("Loading Audio Mixer");
 	bool ret = true;
@@ -215,8 +220,10 @@ void j1Audio::UnloadFx() {
 // Load Game State
 bool j1Audio::Load(pugi::xml_node& data)
 {
-	v_music = data.child("v_music").attribute("volume").as_float();
-	v_fx = data.child("v_fx").attribute("volume").as_float();
+	if (data != nullptr) {
+		v_music = data.child("v_music").attribute("volume").as_float();
+		v_fx = data.child("v_fx").attribute("volume").as_float();
+	}
 
 	return true;
 }

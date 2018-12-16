@@ -68,6 +68,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_idle.loop = config.child("animations").child("idle").attribute("loop").as_bool();
 	anim_idle.speed = config.child("animations").child("idle").attribute("speed").as_float();
+	anim_idle.Reset();
 
 	//Run Pushbacks
 	for (pugi::xml_node push_node = config.child("animations").child("run").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
@@ -81,6 +82,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_run.loop = config.child("animations").child("run").attribute("loop").as_bool();
 	anim_run.speed = config.child("animations").child("run").attribute("speed").as_float();
+	anim_run.Reset();
 
 	//Loading Fx
 	App->audio->LoadFx(config.child("animations").child("run").child("fx").child_value());
@@ -98,6 +100,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_plane.loop = config.child("animations").child("plane").attribute("loop").as_bool();
 	anim_plane.speed = config.child("animations").child("plane").attribute("speed").as_float();
+	anim_plane.Reset();
 
 	//Loading Fx
 	App->audio->LoadFx(config.child("animations").child("plane").child("fx").child_value());
@@ -114,6 +117,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_death.loop = config.child("animations").child("death").attribute("loop").as_bool();
 	anim_death.speed = config.child("animations").child("death").attribute("speed").as_float();
+	anim_death.Reset();
 
 	App->audio->LoadFx(config.child("animations").child("death").child("fx").child_value());
 
@@ -129,6 +133,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_jumpup.loop = config.child("animations").child("jump_up").attribute("loop").as_bool();
 	anim_jumpup.speed = config.child("animations").child("jump_up").attribute("speed").as_float();
+	anim_jumpup.Reset();
 
 	App->audio->LoadFx(config.child("animations").child("jump_up").child("fx").child_value());
 
@@ -144,6 +149,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_jumpdown.loop = config.child("animations").child("jump_down").attribute("loop").as_bool();
 	anim_jumpdown.speed = config.child("animations").child("jump_down").attribute("speed").as_float();
+	anim_jumpdown.Reset();
 
 	App->audio->LoadFx(config.child("animations").child("jump_down").child("fx").child_value());
 
@@ -159,6 +165,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	}
 	anim_attack.loop = config.child("animations").child("attack").attribute("loop").as_bool();
 	anim_attack.speed = config.child("animations").child("attack").attribute("speed").as_float();
+	anim_attack.Reset();
 
 	App->audio->LoadFx(config.child("animations").child("coin").child("fx").child_value());
 	App->audio->LoadFx(config.child("animations").child("life").child("fx").child_value());
