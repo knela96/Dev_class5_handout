@@ -4,7 +4,7 @@ This two level plataformer was created by Éric Canela, and Rafel Brau,
 both students in UPC's degree in Design and Development of Videogames.
 We made this game during the subject of Development. The task was to make a simple 2D plataformer, with our own sub-systems: Collisions, Pathfinding, Entity System and GUI.
 
-![](Tails_Odyssey.jpeg)
+![](Tails_Odyssey.jpg)
 
 _Tails Odyssey Logo_
 
