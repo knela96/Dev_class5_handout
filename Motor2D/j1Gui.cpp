@@ -64,6 +64,19 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 			push_node.attribute("h").as_int()
 			});
 	}
+
+	/*for (pugi::xml_node push_node = conf.child("animations").child(temp.GetString()).child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		anim.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	anim.loop = config.child("animations").child("coin").attribute("loop").as_bool();
+	anim.speed = config.child("animations").child("coin").attribute("speed").as_float();*/
+
 	btn_file_name = conf.child("btn_fx").child_value();
 
 

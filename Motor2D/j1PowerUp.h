@@ -44,6 +44,7 @@ public:
 public:
 
 	j1Animation anim;
+	j1Animation coin;
 
 private:
 	SDL_Texture * debug_tex;

@@ -20,7 +20,7 @@
   </renderer>
 
    <gui>
-     <atlas file="Assets/gui/Atlas1.5.png"/>
+     <atlas file="Assets/gui/Atlas1.6.png"/>
      <logo file="Assets/gui/Tails_Odyssey_mini.png"/>
      <animations>
        <button>
@@ -38,6 +38,13 @@
          <frame x="619" y="120" w="76" h="58"/>
          <frame x="619" y="181" w="76" h="58"/>
        </button3>
+       <coin loop="true" speed="8.0">
+         <frame x="0" y="292" w="47" h="39"/>
+         <frame x="46" y="292" w="48" h="39"/>
+         <frame x="93" y="292" w="48" h="39"/>
+         <frame x="140" y="292" w="47" h="39"/>
+         <frame x="186" y="292" w="48" h="39"/>
+       </coin>
      </animations>
      <btn_fx>Click.wav</btn_fx>
   </gui>
@@ -227,11 +234,11 @@
     <coin>
       <animations>
         <coin loop="true" speed="8.0">
-          <frame x="0" y="292" w="47" h="39"/>
-          <frame x="46" y="292" w="48" h="39"/>
-          <frame x="93" y="292" w="48" h="39"/>
-          <frame x="140" y="292" w="47" h="39"/>
-          <frame x="186" y="292" w="48" h="39"/>
+          <frame x="309" y="395" w="14" h="12"/>
+          <frame x="323" y="395" w="14" h="12"/>
+          <frame x="337" y="395" w="14" h="12"/>
+          <frame x="351" y="395" w="14" h="12"/>
+          <frame x="365" y="395" w="14" h="12"/>
         </coin>
       </animations>
     </coin>
