@@ -86,7 +86,7 @@ bool j1SceneIntro::Start()
 
 	App->audio->PlayMusic(music_path.GetString());
 
-	App->gui->b_settings = true;
+	App->gui->b_settings = false;
 
 	CreateHUD();
 

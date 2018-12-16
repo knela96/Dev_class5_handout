@@ -31,7 +31,6 @@ j1Enemy_Flying::~j1Enemy_Flying()
 {}
 
 bool j1Enemy_Flying::Awake(pugi::xml_node& config) {
-	LOG("Loading enemy flying");
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
@@ -224,11 +223,6 @@ void j1Enemy_Flying::WallCollision(Collider* c1, Collider* c2)
 
 bool j1Enemy_Flying::Load(pugi::xml_node& data) {
 
-	position.x = data.child("position").attribute("x").as_uint();
-
-	position.y = data.child("position").attribute("y").as_uint();
-
-	speed = data.child("walkSpeed").attribute("value").as_float();
 
 	return true;
 }

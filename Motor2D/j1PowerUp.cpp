@@ -14,6 +14,7 @@
 #include "j1Entity.h"
 #include "Brofiler\Brofiler.h"
 #include "j1EntityManager.h"
+#include "j1Gui.h"
 
 #include "SDL/include/SDL.h"
 
@@ -29,9 +30,6 @@ j1PowerUp::~j1PowerUp()
 {}
 
 bool j1PowerUp::Awake(pugi::xml_node& config) {
-
-	LOG("Loading PowerUp");
-
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
@@ -59,7 +57,7 @@ bool j1PowerUp::Awake(pugi::xml_node& config) {
 
 bool j1PowerUp::Start() {
 
-	graphics = App->tex->Load(texture_path.GetString());
+	graphics = App->gui->GetAtlas();
 
 	position.x = collider->rect.x;
 	position.y = collider->rect.y;

@@ -174,7 +174,6 @@ bool j1Scene::Update(float dt)
 		if (timer->text != string) {
 			timer->text = string;
 			timer->UpdateText();
-			LOG("UPDATING TIMER");
 		}
 	}
 
@@ -183,7 +182,6 @@ bool j1Scene::Update(float dt)
 		if (score->text != string) {
 			score->text = string;
 			score->UpdateText();
-			LOG("UPDATING COINS");
 		}
 	}
 

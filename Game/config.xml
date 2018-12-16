@@ -225,7 +225,7 @@
       </animations>
     </flying_enemy>
     <coin>
-      <animation>
+      <animations>
         <coin loop="true" speed="8.0">
           <frame x="0" y="292" w="47" h="39"/>
           <frame x="46" y="292" w="48" h="39"/>
@@ -233,7 +233,7 @@
           <frame x="140" y="292" w="47" h="39"/>
           <frame x="186" y="292" w="48" h="39"/>
         </coin>
-      </animation>
+      </animations>
     </coin>
   </entities>
 

@@ -33,9 +33,7 @@ j1Enemy_Walking::~j1Enemy_Walking()
 {}
 
 bool j1Enemy_Walking::Awake(pugi::xml_node& config) {
-
-	LOG("Loading enemy Walking");
-
+	
 	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
@@ -271,14 +269,6 @@ bool j1Enemy_Walking::checkPlatform(iPoint position) {
 }
 
 bool j1Enemy_Walking::Load(pugi::xml_node& data) {
-
-	position.x = data.child("position").attribute("x").as_uint();
-
-	position.y = data.child("position").attribute("y").as_uint();
-
-	speed.x = data.child("speed").attribute("x").as_float();
-
-	speed.y = data.child("speed").attribute("y").as_float();
 
 	return true;
 }

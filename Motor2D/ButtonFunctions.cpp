@@ -36,7 +36,7 @@ int f_Credits() {
 }
 
 int f_CloseWindow() {
-	App->gui->b_settings = false;
+	App->gui->b_settings = true;
 	App->gui->stateElements(nullptr, true);
 	return -1;
 }

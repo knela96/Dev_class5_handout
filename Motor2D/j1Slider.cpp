@@ -93,7 +93,6 @@ bool j1Slider::Update(float dt)
 		label->UpdateText();
 
 		float volume = (float)sliderValue() / 100;
-		LOG("%f", volume);
 		if (OrientationType::MUSIC == orientation)
 			App->audio->v_music = volume;
 		else if (OrientationType::FX == orientation)

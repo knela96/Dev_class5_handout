@@ -55,7 +55,7 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	const SDL_Texture* GetAtlas() const;
+	SDL_Texture* GetAtlas() const;
 
 	SDL_Texture* GetLogo() const;
 
