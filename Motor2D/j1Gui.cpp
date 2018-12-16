@@ -178,6 +178,7 @@ bool j1Gui::deleteElement(j1ElementGUI* element)
 				delete elements[i];
 				elements[i] = nullptr;
 				clearList();
+				break;
 			}
 		}
 	}

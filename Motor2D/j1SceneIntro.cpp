@@ -110,7 +110,6 @@ bool j1SceneIntro::Update(float dt)
 	App->map->Draw();
 	App->render->camera.x = cameraoffset;
 	cameraoffset -= 2;
-	if (App->gui->b_settings == false) LOG("enter");
 	animation_Rect = current_anim->GetCurrentFrame(dt);
 
 	if (cameraoffset == -6112) cameraoffset = 0;

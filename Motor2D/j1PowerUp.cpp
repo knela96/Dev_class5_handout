@@ -128,7 +128,13 @@ void j1PowerUp::PU_Effect() {
 	switch (type) {
 	case COIN:
 		App->entitymanager->GetPlayer()->score += 1;
-		App->entitymanager->GetPlayer()->PlayFX(coin_fx);
+		if (App->entitymanager->GetPlayer()->score % 10 == 0) {
+			App->entitymanager->GetPlayer()->AddLife();
+			App->entitymanager->GetPlayer()->PlayFX(life_fx);
+		}
+		else {
+			App->entitymanager->GetPlayer()->PlayFX(coin_fx);
+		}
 		break;
 	case LIVES:
 		LOG("LIVE");

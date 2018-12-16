@@ -19,6 +19,8 @@
 #include "ButtonFunctions.h"
 #include "Brofiler\Brofiler.h"
 #include "j1Label.h"
+#include "j1Image.h"
+#include "j1Gui.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -177,6 +179,8 @@ bool j1Scene::Update(float dt)
 		}
 	}
 
+	UpdateLives();
+
 	return true;
 }
 
@@ -244,14 +248,45 @@ void j1Scene::CreateLayout() {
 	if (!hud) {
 		p2SString string;
 
+		//App->gui->AddImage({ 0, 0 }, &App->gui->diamond.GetFrameRect(0), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		App->gui->AddImage({ 0, 0 }, new SDL_Rect({ 0,335,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		App->gui->AddImage({ (float)App->render->camera.w - 309 , 0 }, new SDL_Rect({ 0,395,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 
 		score = (j1Label*)App->gui->AddLabel({ 125,10 }, App->gui->convertScore(App->entitymanager->GetPlayer()->score), 2);
 
 		timer = (j1Label*)App->gui->AddLabel({ 325,10 }, App->gui->convertTime(App->entitymanager->GetPlayer()->timer), 2);
+		
+		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		//202 11
 
 		hud = true;
 	}
+}
+
+
+void j1Scene::UpdateLives() {
+	uint life = App->entitymanager->GetPlayer()->current_life;
+	if (life == 0) {
+		life1->display = false;
+		life2->display = false;
+		life3->display = false;
+	}
+	else if (life == 1) {
+		life1->display = true;
+		life2->display = false;
+		life3->display = false;
+	}
+	else if (life == 2) {
+		life1->display = true;
+		life2->display = true;
+		life3->display = false;
+	}
+	else if (life == 3) {
+		life1->display = true;
+		life2->display = true;
+		life3->display = true;
+	}
+
 }

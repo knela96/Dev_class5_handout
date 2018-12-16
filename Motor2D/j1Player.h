@@ -54,6 +54,7 @@ public:
 	void deathAnim(float dt);
 	void resetPlayer();
 	void j1Player::PlayFX(CharacterFX fx);
+	void AddLife();
 
 public:
 	CharacterState currentState = Stand;

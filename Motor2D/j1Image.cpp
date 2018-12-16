@@ -9,10 +9,11 @@
 #include "ButtonFunctions.h"
 #include "j1Textures.h"
 
-j1Image::j1Image(fPoint position, SDL_Rect* anim, Levels Scene, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
+j1Image::j1Image(fPoint position, SDL_Rect* anim, Levels Scene, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type, bool display) :
 	anim(anim),
 	scene(Scene),
 	window_type(window_type),
+	display(display),
 	j1ElementGUI(position, nullptr, type, graphics, parent) {
 
 	global_pos = getParentPos(this);
@@ -75,7 +76,8 @@ bool j1Image::Update(float dt) {
 
 void j1Image::Draw()
 {
-	App->render->Blit(graphics, global_pos.x,global_pos.y, anim, SDL_FLIP_NONE, 1, 0.0f);
+	if(display)
+		App->render->Blit(graphics, global_pos.x,global_pos.y, anim, SDL_FLIP_NONE, 1, 0.0f);
 
 	drawChilds();
 }

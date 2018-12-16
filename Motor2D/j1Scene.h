@@ -6,6 +6,7 @@
 struct SDL_Texture;
 struct j1ElementGUI;
 struct j1Label;
+struct j1Image;
 
 class j1Scene : public j1Module
 {
@@ -42,6 +43,8 @@ public:
 
 	void CreateLayout();
 
+	void UpdateLives();
+
 private:
 	p2SString map;
 	p2SString music_path;
@@ -54,6 +57,9 @@ private:
 	j1ElementGUI* settings;
 	j1Label* score;
 	j1Label* timer;
+	j1Image* life1;
+	j1Image* life2;
+	j1Image* life3;
 };
 
 #endif // __j1SCENE_H__

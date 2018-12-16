@@ -159,7 +159,7 @@ bool j1Player::Awake(pugi::xml_node& config)
 	anim_attack.speed = config.child("animations").child("attack").attribute("speed").as_float();
 
 	App->audio->LoadFx(config.child("animations").child("coin").child("fx").child_value());
-	//App->audio->LoadFx(config.child("animations").child("life").child("fx").child_value());
+	App->audio->LoadFx(config.child("animations").child("life").child("fx").child_value());
 
 	current_animation = &anim_idle;
 
@@ -718,7 +718,7 @@ bool j1Player::Load(pugi::xml_node& data)
 	speed.x = data.child("speed").attribute("x").as_uint();
 	speed.y = data.child("speed").attribute("y").as_uint();
 
-	life = data.child("life").attribute("value").as_uint();
+	current_life = data.child("life").attribute("value").as_uint();
 
 	jumpSpeed = data.child("jumpSpeed").attribute("value").as_float();
 	maxFallingSpeed = data.child("maxFallingSpeed").attribute("value").as_float();
@@ -744,7 +744,7 @@ bool j1Player::Save(pugi::xml_node& data) const
 	player.child("position").append_attribute("w") = collider->rect.w;
 	player.child("position").append_attribute("h") = collider->rect.h;
 
-	player.append_child("life").append_attribute("value") = life;
+	player.append_child("life").append_attribute("value") = current_life;
 
 	player.append_child("jumpSpeed").append_attribute("value") = jumpSpeed;
 	player.append_child("maxFallingSpeed").append_attribute("value") = maxFallingSpeed;
@@ -760,5 +760,14 @@ bool j1Player::Save(pugi::xml_node& data) const
 }
 
 void j1Player::PlayFX(CharacterFX fx) {
+	App->audio->StopFx();
 	App->audio->PlayFx(fx, 0);
 }
+
+void j1Player::AddLife() {
+	current_life += 1;
+	if (current_life > 3)
+		current_life = 3;
+}
+
+
