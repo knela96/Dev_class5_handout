@@ -101,11 +101,10 @@ bool j1EntityManager::AwakeEntities() {
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 
-	while (item != NULL && ret == true)
+	while (item != nullptr && ret == true)
 	{
 		pugi::xml_node node = _config.child(item->data->name.GetString());
 		ret = item->data->Awake(_config.child(item->data->name.GetString()));
-		LOG(item->data->name.GetString());
 		item = item->next;
 	}
 
@@ -118,7 +117,7 @@ bool j1EntityManager::LoadEntities(pugi::xml_node &data) {
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 
-	while (item != NULL && ret == true)
+	while (item != nullptr && ret == true)
 	{
 		ret = item->data->Load(data.child(item->data->name.GetString()));
 		item = item->next;
@@ -133,7 +132,7 @@ bool j1EntityManager::StartEntities() {
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 
-	while (item != NULL && ret == true)
+	while (item != nullptr && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -155,7 +154,7 @@ bool j1EntityManager::Start()
 	item = entities.start;
 	do_logic = false;
 
-	while (item != NULL && ret == true)
+	while (item != nullptr && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -171,7 +170,7 @@ bool j1EntityManager::PreUpdate()
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 
-	while (item != NULL && ret == true)
+	while (item != nullptr && ret == true)
 	{
 		ret = item->data->PreUpdate();
 		item = item->next;
@@ -186,7 +185,7 @@ bool j1EntityManager::PostUpdate()
 	p2List_item<j1Entity*>* item;
 	item = entities.start;
 
-	while (item != NULL && ret == true)
+	while (item != nullptr && ret == true)
 	{
 		ret = item->data->PostUpdate();
 		item = item->next;
@@ -239,7 +238,7 @@ bool j1EntityManager::CleanUp()
 	bool ret = true;
 
 	p2List_item<j1Entity*>* item;
-	for (item = entities.end; item != NULL && ret == true; item = item->prev)
+	for (item = entities.end; item != nullptr && ret == true; item = item->prev)
 	{
 		item->data->CleanUp();
 		delete item->data;

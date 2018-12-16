@@ -9,122 +9,100 @@
 	</audio>
 	<map />
 	<pathfinding />
-	<scenes value="0" />
+	<scenes value="1" />
 	<collisions />
 	<entities>
 		<player>
-			<speed x="250" y="0" />
-			<position x="6473.94971" y="204.698761" w="19" h="31" />
+			<speed x="0" y="0" />
+			<position x="292" y="449" w="19" h="31" />
 			<life value="3" />
 			<jumpSpeed value="500" />
 			<maxFallingSpeed value="400" />
 			<walkSpeed value="250" />
 			<gravity value="1800" />
-			<timer value="37" />
+			<timer value="39" />
 			<score value="10" />
 		</player>
 		<flying_enemy>
-			<position x="3947.23096" y="213.863388" w="25" h="27" />
+			<position x="752" y="58" w="25" h="27" />
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<flying_enemy>
-			<position x="5004.1084" y="145.010941" w="25" h="27" />
+			<position x="1315" y="298" w="25" h="27" />
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<flying_enemy>
-			<position x="6153.91162" y="224.461884" w="25" h="27" />
+			<position x="2159" y="70" w="25" h="27" />
 			<walkSpeed value="100" />
 		</flying_enemy>
 		<walking_enemy>
-			<position x="641" y="377" w="25" h="23" />
+			<position x="701" y="329" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
 		<walking_enemy>
-			<position x="4662.7793" y="313" w="25" h="23" />
+			<position x="1363" y="73" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
 		<walking_enemy>
-			<position x="5319" y="233" w="25" h="23" />
+			<position x="2596" y="441" w="25" h="23" />
 			<speed x="0" />
 			<speed y="0" />
 		</walking_enemy>
-		<walking_enemy>
-			<position x="2571.79663" y="470" w="25" h="23" />
-			<speed x="0" />
-			<speed y="0" />
-		</walking_enemy>
-		<walking_enemy>
-			<position x="3064.94482" y="470" w="25" h="23" />
-			<speed x="0" />
-			<speed y="0" />
-		</walking_enemy>
-		<lives type="1">
-			<position x="688" y="352" w="16" h="16" />
-		</lives>
 		<coin type="0">
-			<position x="272" y="352" w="16" h="16" />
+			<position x="592" y="320" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="1616" y="336" w="16" h="16" />
+			<position x="816" y="288" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="1952" y="400" w="16" h="16" />
+			<position x="928" y="208" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="2656" y="381" w="16" h="16" />
+			<position x="800" y="144" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="3472" y="221" w="16" h="16" />
+			<position x="720" y="96" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="3648" y="400" w="16" h="16" />
+			<position x="1152" y="480" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="3760" y="400" w="16" h="16" />
+			<position x="1312" y="416" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="3872" y="400" w="16" h="16" />
+			<position x="1456" y="320" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="4352" y="288" w="16" h="16" />
+			<position x="1616" y="192" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="4640" y="304" w="16" h="16" />
+			<position x="1424" y="112" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="4864" y="288" w="16" h="16" />
+			<position x="1472" y="160" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="4960" y="288" w="16" h="16" />
+			<position x="1664" y="96" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="5456" y="304" w="16" h="16" />
+			<position x="1968" y="224" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="5376" y="192" w="16" h="16" />
+			<position x="2240" y="480" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="6144" y="400" w="16" h="16" />
+			<position x="2400" y="512" w="16" h="16" />
 		</coin>
 		<coin type="0">
-			<position x="6288" y="272" w="16" h="16" />
-		</coin>
-		<coin type="0">
-			<position x="928" y="320" w="16" h="16" />
-		</coin>
-		<coin type="0">
-			<position x="1504" y="336" w="16" h="16" />
-		</coin>
-		<coin type="0">
-			<position x="3984" y="400" w="16" h="16" />
+			<position x="3088" y="176" w="16" h="16" />
 		</coin>
 	</entities>
 	<gui />
 	<fonts />
 	<fade />
 	<renderer>
-		<camera x="-5884" y="0" />
+		<camera x="-60" y="0" />
 	</renderer>
 </game_state>
