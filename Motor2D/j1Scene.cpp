@@ -258,11 +258,10 @@ void j1Scene::CreateLayout() {
 		score = (j1Label*)App->gui->AddLabel({ 125,10 }, App->gui->convertScore(App->entitymanager->GetPlayer()->score), 2);
 
 		timer = (j1Label*)App->gui->AddLabel({ 325,10 }, App->gui->convertTime(App->entitymanager->GetPlayer()->timer), 2);
-		
-		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, nullptr, &App->gui->diamond, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
-		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, nullptr, &App->gui->diamond, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
-		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, nullptr, &App->gui->diamond, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 
+		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		App->gui->AddImage({ 200, 10 }, nullptr, &App->gui->diamond, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 
 		hud = true;
@@ -273,24 +272,59 @@ void j1Scene::CreateLayout() {
 void j1Scene::UpdateLives() {
 	uint life = App->entitymanager->GetPlayer()->current_life;
 	if (life == 0) {
-		life1->display = false;
-		life2->display = false;
-		life3->display = false;
+		if (life1 != nullptr) {
+			App->gui->deleteElement(life1);
+			life1 = nullptr;
+		}
+		if (life2 != nullptr) {
+			App->gui->deleteElement(life2);
+			life2 = nullptr;
+		}
+		if (life3 != nullptr) {
+			App->gui->deleteElement(life3);
+			life3 = nullptr;
+		}
 	}
 	else if (life == 1) {
-		life1->display = true;
-		life2->display = false;
-		life3->display = false;
+		if (life1 == nullptr) {
+			life1 = (j1Image*)App->gui->AddImage({ 90,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		}
+		if (life2 != nullptr) {
+			App->gui->deleteElement(life2);
+			life2 = nullptr;
+		}
+		if (life3 != nullptr) {
+			App->gui->deleteElement(life3);
+			life3 = nullptr;
+		}
 	}
 	else if (life == 2) {
-		life1->display = true;
-		life2->display = true;
-		life3->display = false;
+		if (life1 == nullptr) {
+			life1 = (j1Image*)App->gui->AddImage({ 90,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+			life1->animation->Reset();
+		}
+		if (life2 == nullptr) {
+			life2 = (j1Image*)App->gui->AddImage({ 122,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+			life2->animation->Reset();
+		}
+		if (life3 != nullptr) {
+			App->gui->deleteElement(life3);
+			life3 = nullptr;
+		}
 	}
 	else if (life == 3) {
-		life1->display = true;
-		life2->display = true;
-		life3->display = true;
+		if (life1 == nullptr) {
+			life1 = (j1Image*)App->gui->AddImage({ 90,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());			
+			life1->animation->Reset();
+		}
+		if (life2 == nullptr) {
+			life2 = (j1Image*)App->gui->AddImage({ 122,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+			life2->animation->Reset();
+		}
+		if (life3 == nullptr) {
+			life3 = (j1Image*)App->gui->AddImage({ 154,10 }, nullptr, &App->gui->lives, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+			life3->animation->Reset();
+		}
 	}
 
 }
