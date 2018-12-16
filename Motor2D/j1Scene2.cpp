@@ -256,6 +256,7 @@ void j1Scene2::CreateLayout() {
 		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, new SDL_Rect({ 241,292,21,39 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, new SDL_Rect({ 241,292,21,39 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, new SDL_Rect({ 241,292,21,39 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		App->gui->AddImage({ 200, 10 }, nullptr, &App->gui->diamond, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		//202 11
 
 		hud = true;
