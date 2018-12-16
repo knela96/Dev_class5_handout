@@ -116,7 +116,7 @@ bool j1SceneIntro::Update(float dt)
 
 	if (cameraoffset == -6112) cameraoffset = 0;
 
-	App->render->Blit(graphics, mousepos_y.x/2-70, mousepos_y.y/2, &animation_Rect, SDL_FLIP_NONE, 2, 0.0f);
+	App->render->Blit(graphics, mousepos_y.x/2-70, mousepos_y.y/2 - 20, &animation_Rect, SDL_FLIP_NONE, 2, 0.0f);
 
 	return true;
 }
