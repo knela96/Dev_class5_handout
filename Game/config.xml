@@ -45,6 +45,12 @@
          <frame x="140" y="292" w="47" h="39"/>
          <frame x="186" y="292" w="48" h="39"/>
        </coin>
+       <lives loop="false" speed="2.0">
+         <frame x="241" y="292" w="21" h="39"/>
+         <frame x="262" y="292" w="21" h="39"/>
+         <frame x="283" y="292" w="21" h="39"/>
+         <frame x="304" y="292" w="21" h="39"/>
+       </lives>
      </animations>
      <btn_fx>Click.wav</btn_fx>
   </gui>

@@ -77,6 +77,21 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	diamond.loop = conf.child("animations").child("coin").attribute("loop").as_bool();
 	diamond.speed = conf.child("animations").child("coin").attribute("speed").as_float();
 
+
+
+	for (pugi::xml_node push_node = conf.child("animations").child("lives").child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
+	{
+		lives.PushBack({
+			push_node.attribute("x").as_int(),
+			push_node.attribute("y").as_int(),
+			push_node.attribute("w").as_int(),
+			push_node.attribute("h").as_int()
+			});
+	}
+	lives.loop = conf.child("animations").child("lives").attribute("loop").as_bool();
+	lives.speed = conf.child("animations").child("lives").attribute("speed").as_float();
+
+
 	btn_file_name = conf.child("btn_fx").child_value();
 
 
