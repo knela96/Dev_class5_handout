@@ -5,7 +5,7 @@
 class j1Label : public j1ElementGUI
 {
 public:
-	j1Label(fPoint position, p2SString text, int scale = 1, SDL_Texture* graphics = nullptr, j1ElementGUI* parent = nullptr, ElementUIType type = ElementUIType::LABEL);
+	j1Label(fPoint position, p2SString text, int scale = 1, int move = 0, SDL_Texture* graphics = nullptr, j1ElementGUI* parent = nullptr, ElementUIType type = ElementUIType::LABEL);
 	~j1Label();
 
 	bool CleanUp();
@@ -22,5 +22,6 @@ public:
 	int height;
 	int width;
 	int scale;
+	int move;
 };
 

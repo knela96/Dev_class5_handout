@@ -145277,13 +145277,12 @@
  <objectgroup id="32" name="spawn">
   <object id="70" name="1" x="464" y="304" width="19.125" height="31"/>
   <object id="71" name="4" x="3824" y="176" width="25" height="27"/>
-  <object id="72" name="5" x="624" y="304" width="25" height="23"/>
   <object id="73" name="4" x="4871.66" y="104" width="25" height="27"/>
   <object id="74" name="5" x="4560" y="240" width="25" height="23"/>
   <object id="76" name="4" x="6008.33" y="197.5" width="25" height="27"/>
   <object id="77" name="5" x="5216" y="160" width="25" height="23"/>
   <object id="82" name="7" type="0" x="272" y="352" width="16" height="16"/>
-  <object id="104" name="5" x="2432" y="432" width="25" height="23"/>
+  <object id="104" name="5" x="2672" y="432" width="25" height="23"/>
   <object id="105" name="5" x="2976" y="432" width="25" height="23"/>
   <object id="106" name="7" type="0" x="1008" y="320" width="16" height="16"/>
   <object id="107" name="7" type="0" x="1296" y="240" width="16" height="16"/>

@@ -59,9 +59,9 @@ public:
 
 	SDL_Texture* GetLogo() const;
 
-	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, Levels Scene, windowType windowType, SDL_Texture* graphics = nullptr);
+	j1ElementGUI* AddImage(fPoint pos, SDL_Rect* rect, j1Animation* anim, Levels Scene, windowType windowType, SDL_Texture* graphics = nullptr);
 
-	j1ElementGUI* AddLabel(fPoint pos, p2SString text, int scale = 1);
+	j1ElementGUI* AddLabel(fPoint pos, p2SString text, int scale = 1, int move = 0);
 
 	j1ElementGUI* AddButton(fPoint pos, p2SString text, SDL_Rect* rect, j1Animation* anim, int(*action)(void), bool active);
 

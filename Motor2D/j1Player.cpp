@@ -15,6 +15,8 @@
 #include "j1EntityManager.h"
 #include "j1Entity.h"
 #include "Brofiler\Brofiler.h"
+#include "j1Gui.h"
+#include "j1Label.h"
 
 #include "SDL/include/SDL.h"
 

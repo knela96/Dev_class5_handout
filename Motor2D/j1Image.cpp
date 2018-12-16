@@ -8,10 +8,12 @@
 #include "j1Fonts.h"
 #include "ButtonFunctions.h"
 #include "j1Textures.h"
+#include "j1Animation.h"
 
 j1Image::j1Image(fPoint position, SDL_Rect* anim, Levels Scene, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type, bool display) :
 	anim(anim),
 	scene(Scene),
+	animation(nullptr),
 	window_type(window_type),
 	display(display),
 	j1ElementGUI(position, nullptr, type, graphics, parent) {
@@ -20,6 +22,21 @@ j1Image::j1Image(fPoint position, SDL_Rect* anim, Levels Scene, windowType windo
 	
 	rect = new SDL_Rect({ (int)global_pos.x , (int)global_pos.y, anim->w , anim->h });
 	
+}
+
+j1Image::j1Image(fPoint position, j1Animation* animation, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type, bool display) :
+	anim(nullptr),
+	scene(Levels::NONE),
+	animation(animation),
+	window_type(window_type),
+	display(display),
+	j1ElementGUI(position, nullptr, type, graphics, parent) {
+
+	global_pos = getParentPos(this);
+	
+
+	rect = new SDL_Rect({ (int)global_pos.x , (int)global_pos.y, animation->frames[0].w, animation->frames[0].h });
+
 }
 
 
@@ -39,6 +56,7 @@ bool j1Image::CleanUp() {
 	rect = nullptr;
 	delete anim;
 	anim = nullptr;
+	animation = nullptr;
 	return true;
 }
 
@@ -71,12 +89,15 @@ bool j1Image::Update(float dt) {
 	{
 		ret = item->data->Update(dt);
 	}
+
+	if(display && animation!=nullptr)
+		App->render->Blit(graphics, global_pos.x, global_pos.y, &animation->GetCurrentFrame(dt), SDL_FLIP_NONE, 1, 0.0f);
 	return ret;
 }
 
 void j1Image::Draw()
 {
-	if(display)
+	if(display && anim!=nullptr)
 		App->render->Blit(graphics, global_pos.x,global_pos.y, anim, SDL_FLIP_NONE, 1, 0.0f);
 
 	drawChilds();

@@ -25,7 +25,7 @@ int f_Continue() {
 }
 
 int f_Settings() {
-	App->gui->stateElements(App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::NONE, windowType::SETTINGS_INTRO),false);
+	App->gui->stateElements(App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), nullptr, Levels::NONE, windowType::SETTINGS_INTRO),false);
 	return true;
 }
 

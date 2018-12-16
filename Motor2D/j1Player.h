@@ -8,6 +8,7 @@
 struct SDL_Texture;
 struct Collider;
 struct Mix_Chunk;
+struct j1Label;
 typedef struct _Mix_Music Mix_Music;
 
 enum CharacterState
@@ -77,6 +78,8 @@ public:
 	j1Animation anim_jumpup;
 	j1Animation anim_jumpdown;
 	j1Animation anim_attack;
+
+	j1Label* live_up;
 
 
 	Collider* attack_col;//Particle

@@ -237,7 +237,7 @@ bool j1Scene2::Save(pugi::xml_node& data) const
 void j1Scene2::CreateHUD()
 {
 	if (settings == nullptr)
-		settings = App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene2, windowType::SETTINGS);
+		settings = App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), nullptr, Levels::Scene2, windowType::SETTINGS);
 }
 
 
@@ -246,16 +246,16 @@ void j1Scene2::CreateLayout() {
 		p2SString string;
 
 		//App->gui->AddImage({ 0, 0 }, &App->gui->diamond.GetFrameRect(0), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
-		App->gui->AddImage({ 0, 0 }, new SDL_Rect({ 0,335,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
-		App->gui->AddImage({ (float)App->render->camera.w - 309 , 0 }, new SDL_Rect({ 0,395,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		App->gui->AddImage({ 0, 0 }, new SDL_Rect({ 0,335,309,60 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		App->gui->AddImage({ (float)App->render->camera.w - 309 , 0 }, new SDL_Rect({ 0,395,309,60 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 
 		score = (j1Label*)App->gui->AddLabel({ 125,10 }, App->gui->convertScore(App->entitymanager->GetPlayer()->score), 2);
 
 		timer = (j1Label*)App->gui->AddLabel({ 325,10 }, App->gui->convertTime(App->entitymanager->GetPlayer()->timer), 2);
 
-		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
-		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
-		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, new SDL_Rect({ 241,292,21,39 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, new SDL_Rect({ 241,292,21,39 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, new SDL_Rect({ 241,292,21,39 }), nullptr, Levels::NONE, windowType::NONE, App->gui->GetAtlas());
 		//202 11
 
 		hud = true;

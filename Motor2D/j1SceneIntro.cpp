@@ -168,7 +168,7 @@ void j1SceneIntro::CreateHUD()
 		App->gui->AddButton({ (float)App->render->camera.w / 2 - 59,480 }, "EXIT", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Exit, true);
 		App->gui->AddButton({ (float)App->render->camera.w - 118,(float)App->render->camera.h - 62}, "CREDITS", new SDL_Rect({ 120,0,196,196 }), &App->gui->button_anim, f_Credits, true);
 
-		App->gui->AddImage({ (float)App->render->camera.w/2 - 91,50 }, new SDL_Rect({ 0,0,182,201 }),Levels::NONE,windowType::NONE, App->gui->GetLogo());
+		App->gui->AddImage({ (float)App->render->camera.w/2 - 91,50 }, new SDL_Rect({ 0,0,182,201 }), nullptr, Levels::NONE,windowType::NONE, App->gui->GetLogo());
 		main_menu = true;
 	}
 }

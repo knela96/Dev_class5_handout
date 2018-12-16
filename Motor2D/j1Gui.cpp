@@ -121,17 +121,18 @@ bool j1Gui::Update(float dt) {
 
 	for (int i = 0; i < elements.count() && ret != false; ++i)
 	{
-		if(elements[i] != nullptr && elements[i]->state)
-			ret = elements[i]->Update(dt);
-	}
-	for (int i = 0; i < elements.count() && ret != false; ++i)
-	{
 		if (elements[i] != nullptr && elements[i]->state) {
 			elements[i]->Draw();
 			if (debug) {
 				elements[i]->DebugDraw();
 			}
 		}
+	}
+
+	for (int i = 0; i < elements.count() && ret != false; ++i)
+	{
+		if(elements[i] != nullptr && elements[i]->state)
+			ret = elements[i]->Update(dt);
 	}
 	return ret;
 }
@@ -206,13 +207,18 @@ SDL_Texture * j1Gui::GetLogo() const
 	return logo;
 }
 
-j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, Levels scene, windowType windowType, SDL_Texture* graphics)
+j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, j1Animation* anim, Levels scene, windowType windowType, SDL_Texture* graphics)
 {
-	j1Image* image;
-	if(graphics == nullptr)
-		image = new j1Image(pos, rect, scene, windowType, atlas);
-	else
-		image = new j1Image(pos, rect, scene, windowType, graphics);
+	j1Image* image = nullptr;
+	if (anim != nullptr) {
+		image = new j1Image(pos,anim, windowType, atlas);
+	}
+	else if (rect != nullptr) {
+		if (graphics == nullptr)
+			image = new j1Image(pos, rect, scene, windowType, atlas);
+		else
+			image = new j1Image(pos, rect, scene, windowType, graphics);
+	}
 	
 	j1ElementGUI* element = image;
 	element->Start();
@@ -221,9 +227,9 @@ j1ElementGUI* j1Gui::AddImage(fPoint pos, SDL_Rect* rect, Levels scene, windowTy
 	
 }
 
-j1ElementGUI* j1Gui::AddLabel(fPoint pos, p2SString text, int scale)
+j1ElementGUI* j1Gui::AddLabel(fPoint pos, p2SString text, int scale, int move)
 {
-	j1Label* label = new j1Label(pos, text, scale);//add position and text
+	j1Label* label = new j1Label(pos, text, scale, move);//add position and text
 
 	j1ElementGUI* element = (j1ElementGUI*)label;
 	element->Start();

@@ -7,8 +7,9 @@
 #include "j1Textures.h"
 
 
-j1Label::j1Label(fPoint position, p2SString text, int scale, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
+j1Label::j1Label(fPoint position, p2SString text, int scale, int move, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	text(text),
+	move(move),
 	scale(scale),
 	j1ElementGUI(position, nullptr, type,graphics,parent)
 {
@@ -39,10 +40,15 @@ void j1Label::Draw()
 {
 
 	global_pos = getParentPos(this);
-
-	rect->x = global_pos.x * scale;
-	rect->y = global_pos.y * scale;
-	App->render->Blit(graphics, global_pos.x, global_pos.y, nullptr, SDL_FLIP_NONE, scale, 0.0f);
+	if (move) {
+		rect->x = global_pos.x * scale - App->render->camera.x;
+		rect->y = global_pos.y * scale - App->render->camera.y;
+	}
+	else {
+		rect->x = global_pos.x * scale;
+		rect->y = global_pos.y * scale;
+	}
+	App->render->Blit(graphics, global_pos.x, global_pos.y, nullptr, SDL_FLIP_NONE, scale, (float)move);
 }
 
 void j1Label::UpdateText() {
