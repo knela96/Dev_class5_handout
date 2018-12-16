@@ -39,17 +39,17 @@ bool j1PowerUp::Awake(pugi::xml_node& config) {
 
 	for (pugi::xml_node push_node = config.child("animations").child(temp.GetString()).child("frame"); push_node && ret; push_node = push_node.next_sibling("frame"))
 	{
-		anim.PushBack({
+		coin.PushBack({
 			push_node.attribute("x").as_int(),
 			push_node.attribute("y").as_int(),
 			push_node.attribute("w").as_int(),
 			push_node.attribute("h").as_int()
 			});
 	}
-	anim.loop = config.child("animations").child("coin").attribute("loop").as_bool();
-	anim.speed = config.child("animations").child("coin").attribute("speed").as_float();
+	coin.loop = config.child("animations").child(temp.GetString()).attribute("loop").as_bool();
+	coin.speed = config.child("animations").child(temp.GetString()).attribute("speed").as_float();
 
-	current_animation = &anim;
+	current_animation = &coin;
 
 	return ret;
 
