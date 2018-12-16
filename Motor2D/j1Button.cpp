@@ -9,6 +9,7 @@
 #include "j1EntityManager.h"
 #include "ButtonFunctions.h"
 #include "j1Audio.h"
+#include "Brofiler\Brofiler.h"
 
 
 
@@ -59,6 +60,10 @@ bool j1Button::CleanUp() {
 }
 
 bool j1Button::Update(float dt) {
+
+
+	BROFILER_CATEGORY("ButtonUpdate", Profiler::Color::ForestGreen);
+
 	bool ret = true;
 	global_pos = getParentPos(this);
 	

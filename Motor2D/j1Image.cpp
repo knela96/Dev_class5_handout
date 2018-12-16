@@ -9,6 +9,7 @@
 #include "ButtonFunctions.h"
 #include "j1Textures.h"
 #include "j1Animation.h"
+#include "Brofiler\Brofiler.h"
 
 j1Image::j1Image(fPoint position, SDL_Rect* anim, Levels Scene, windowType window_type, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type, bool display) :
 	anim(anim),
@@ -43,6 +44,9 @@ j1Image::j1Image(fPoint position, j1Animation* animation, windowType window_type
 j1Image::~j1Image(){}
 
 bool j1Image::PreUpdate() {
+
+	BROFILER_CATEGORY("ImagePreUpdate", Profiler::Color::MediumVioletRed);
+
 	if (to_delete)
 		App->gui->deleteElement(this);
 	return true;
@@ -61,6 +65,9 @@ bool j1Image::CleanUp() {
 }
 
 bool j1Image::Start() {
+
+	BROFILER_CATEGORY("ImageUpdate", Profiler::Color::MidnightBlue);
+
 	bool ret = true;
 
 	switch (window_type) {
@@ -80,6 +87,9 @@ bool j1Image::Start() {
 }
 
 bool j1Image::Update(float dt) {
+
+	BROFILER_CATEGORY("ImagePostUpdate", Profiler::Color::MintCream);
+
 	bool ret = true;
 
 	global_pos = getParentPos(this);

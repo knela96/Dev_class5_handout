@@ -34,7 +34,7 @@ int f_Exit() {
 }
 
 int f_Credits() {
-	ShellExecuteA(NULL, "open", "http://google.es", NULL, NULL, SW_SHOWNORMAL);
+	ShellExecuteA(NULL, "open", "https://knela96.github.io/Tails-Odyssey/", NULL, NULL, SW_SHOWNORMAL);
 	return true;
 }
 

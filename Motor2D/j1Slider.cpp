@@ -6,7 +6,7 @@
 #include "j1ElementGUI.h"
 #include "j1Textures.h"
 #include "j1Audio.h"
-
+#include "Brofiler\Brofiler.h"
 
 j1Slider::j1Slider(fPoint position, OrientationType orientation, SDL_Texture* graphics, j1ElementGUI* parent, ElementUIType type) :
 	orientation(orientation),
@@ -56,6 +56,8 @@ bool j1Slider::CleanUp()
 
 bool j1Slider::Update(float dt)
 {
+	BROFILER_CATEGORY("GuiPreUpdate", Profiler::Color::Sienna);
+
 	if (OrientationType::MUSIC == orientation)
 		setSliderValue(App->audio->v_music * 100);
 	else if (OrientationType::FX == orientation)

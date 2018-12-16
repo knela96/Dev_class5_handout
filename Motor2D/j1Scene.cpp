@@ -227,8 +227,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 		this->Disable();
 		App->scene2->Enable();
 	}
-
-
 	return true;
 }
 
