@@ -176,7 +176,7 @@ bool j1Player::Start() {
 
 	if (!b_respawn) {
 		position.x = respawn.x = collider->rect.x;
-		position.y = respawn.y = collider->rect.y;
+		position.y = respawn.y = collider->rect.y - 20;
 	}
 	else {
 		position.x = respawn.x;
@@ -200,6 +200,7 @@ bool j1Player::CleanUp()
 {
 	LOG("Unloading Player assets");
 	App->setTime(timer);
+	App->setScore(score);
 	//App->audio->StopFx();
 	App->audio->UnloadFx();
 	App->tex->UnLoad(graphics);

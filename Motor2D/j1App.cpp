@@ -495,3 +495,11 @@ void j1App::setTime(uint& timer) {
 void j1App::getTime(uint& timer) {
 	timer = b_timer;
 }
+
+void j1App::setScore(uint& timer) {
+	b_score = timer;
+}
+
+void j1App::getScore(uint& score) {
+	score = b_score;
+}

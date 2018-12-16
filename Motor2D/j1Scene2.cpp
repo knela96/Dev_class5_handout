@@ -15,10 +15,11 @@
 #include "j1Window.h"
 #include "j1Pathfinding.h"
 #include "j1SceneIntro.h"
-#include "Brofiler\Brofiler.h"
-#include "j1ElementGUI.h"
 #include "ButtonFunctions.h"
+#include "Brofiler\Brofiler.h"
 #include "j1Label.h"
+#include "j1Image.h"
+#include "j1Gui.h"
 
 j1Scene2::j1Scene2() : j1Module()
 {
@@ -64,16 +65,11 @@ bool j1Scene2::Start()
 
 	App->audio->PlayMusic(music_path.GetString());
 
-	if (!hud) {
-		p2SString string;
-		string.create("%i", App->entitymanager->GetPlayer()->score);
-		score = (j1Label*)App->gui->AddLabel({ 0,0 }, string);
+	App->getTime(App->entitymanager->GetPlayer()->timer);
+	App->getScore(App->entitymanager->GetPlayer()->score);
 
-		string.create("%i", App->entitymanager->GetPlayer()->timer);
-		timer = (j1Label*)App->gui->AddLabel({ 100,50 }, string);
+	CreateLayout();
 
-		hud = true;
-	}
 
 	return true;
 }
@@ -82,6 +78,7 @@ bool j1Scene2::Start()
 bool j1Scene2::PreUpdate()
 {
 	BROFILER_CATEGORY("Scene2PreUpdate", Profiler::Color::RosyBrown);
+	/*
 	static iPoint origin;
 	static bool origin_selected = false;
 
@@ -103,7 +100,7 @@ bool j1Scene2::PreUpdate()
 			origin_selected = true;
 		}
 	}
-
+	*/
 	if (App->gui->b_settings)
 		CreateHUD();
 	else {
@@ -166,18 +163,16 @@ bool j1Scene2::Update(float dt)
 	if (timer != nullptr) {
 		string.create("%i", App->entitymanager->GetPlayer()->timer);
 		if (timer->text != string) {
-			timer->text = string;
+			timer->text = App->gui->convertTime(App->entitymanager->GetPlayer()->timer);
 			timer->UpdateText();
-			LOG("UPDATING TIMER");
 		}
 	}
 
 	if (score != nullptr) {
 		string.create("%i", App->entitymanager->GetPlayer()->score);
 		if (score->text != string) {
-			score->text = string;
+			score->text = App->gui->convertScore(App->entitymanager->GetPlayer()->score);
 			score->UpdateText();
-			LOG("UPDATING COINS");
 		}
 	}
 
@@ -202,12 +197,18 @@ bool j1Scene2::CleanUp()
 	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
-	App->gui->Disable();
 	settings = nullptr;
 	App->gui->deleteElement(timer);
 	timer = nullptr;
 	App->gui->deleteElement(score);
 	score = nullptr;
+	App->gui->deleteElement(life1);
+	life1 = nullptr;
+	App->gui->deleteElement(life2);
+	life2 = nullptr;
+	App->gui->deleteElement(life3);
+	life3 = nullptr;
+	App->gui->Disable();
 	return true;
 }
 
@@ -237,4 +238,52 @@ void j1Scene2::CreateHUD()
 {
 	if (settings == nullptr)
 		settings = App->gui->AddImage({ (float)(App->render->camera.w / 2) - 241, (float)(App->render->camera.h / 2) - 146 }, new SDL_Rect({ 0,0,482,293 }), Levels::Scene2, windowType::SETTINGS);
+}
+
+
+void j1Scene2::CreateLayout() {
+	if (!hud) {
+		p2SString string;
+
+		//App->gui->AddImage({ 0, 0 }, &App->gui->diamond.GetFrameRect(0), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		App->gui->AddImage({ 0, 0 }, new SDL_Rect({ 0,335,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		App->gui->AddImage({ (float)App->render->camera.w - 309 , 0 }, new SDL_Rect({ 0,395,309,60 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+
+		score = (j1Label*)App->gui->AddLabel({ 125,10 }, App->gui->convertScore(App->entitymanager->GetPlayer()->score), 2);
+
+		timer = (j1Label*)App->gui->AddLabel({ 325,10 }, App->gui->convertTime(App->entitymanager->GetPlayer()->timer), 2);
+
+		life1 = (j1Image*)App->gui->AddImage({ 90,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life2 = (j1Image*)App->gui->AddImage({ 122,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		life3 = (j1Image*)App->gui->AddImage({ 154,10 }, new SDL_Rect({ 241,292,21,39 }), Levels::NONE, windowType::NONE, App->gui->GetAtlas());
+		//202 11
+
+		hud = true;
+	}
+}
+
+
+void j1Scene2::UpdateLives() {
+	uint life = App->entitymanager->GetPlayer()->current_life;
+	if (life == 0) {
+		life1->display = false;
+		life2->display = false;
+		life3->display = false;
+	}
+	else if (life == 1) {
+		life1->display = true;
+		life2->display = false;
+		life3->display = false;
+	}
+	else if (life == 2) {
+		life1->display = true;
+		life2->display = true;
+		life3->display = false;
+	}
+	else if (life == 3) {
+		life1->display = true;
+		life2->display = true;
+		life3->display = true;
+	}
+
 }

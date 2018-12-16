@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="220" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="69">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="220" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="86">
  <tileset firstgid="1" name="tileset.ajusted" tilewidth="16" tileheight="16" tilecount="720" columns="36">
   <image source="tileset.ajusted.png" width="576" height="320"/>
  </tileset>
@@ -63475,6 +63475,22 @@
   <object id="62" name="5" x="701.076" y="327.576" width="25" height="23"/>
   <object id="63" name="5" x="1363.46" y="69.4583" width="25" height="23"/>
   <object id="66" name="5" x="2596.83" y="437.833" width="25" height="23"/>
+  <object id="69" name="7" type="0" x="592" y="320" width="16" height="16"/>
+  <object id="70" name="7" type="0" x="816" y="288" width="16" height="16"/>
+  <object id="71" name="7" type="0" x="928" y="208" width="16" height="16"/>
+  <object id="72" name="7" type="0" x="800" y="144" width="16" height="16"/>
+  <object id="73" name="7" type="0" x="720" y="96" width="16" height="16"/>
+  <object id="74" name="7" type="0" x="1152" y="480" width="16" height="16"/>
+  <object id="75" name="7" type="0" x="1312" y="416" width="16" height="16"/>
+  <object id="76" name="7" type="0" x="1456" y="320" width="16" height="16"/>
+  <object id="77" name="7" type="0" x="1616" y="192" width="16" height="16"/>
+  <object id="78" name="7" type="0" x="1424" y="112" width="16" height="16"/>
+  <object id="79" name="7" type="0" x="1472" y="160" width="16" height="16"/>
+  <object id="80" name="7" type="0" x="1664" y="96" width="16" height="16"/>
+  <object id="81" name="7" type="0" x="1968" y="224" width="16" height="16"/>
+  <object id="82" name="7" type="0" x="2240" y="480" width="16" height="16"/>
+  <object id="83" name="7" type="0" x="2400" y="512" width="16" height="16"/>
+  <object id="84" name="7" type="0" x="3088" y="176" width="16" height="16"/>
  </objectgroup>
  <layer id="15" name="Meta" width="220" height="48">
   <properties>

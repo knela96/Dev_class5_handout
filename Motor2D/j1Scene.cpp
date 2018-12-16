@@ -80,10 +80,10 @@ bool j1Scene::Start()
 bool j1Scene::PreUpdate()
 {
 	BROFILER_CATEGORY("Scene1PreUpdate", Profiler::Color::DarkKhaki);
-
+	/*
 	static iPoint origin;
 	static bool origin_selected = false;
-
+	
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
@@ -101,7 +101,7 @@ bool j1Scene::PreUpdate()
 			origin = p;
 			origin_selected = true;
 		}
-	}
+	}*/
 
 	if (App->gui->b_settings)
 		CreateHUD();
@@ -166,7 +166,6 @@ bool j1Scene::Update(float dt)
 		string.create("%i", App->entitymanager->GetPlayer()->timer);
 		if (timer->text != string) {
 			timer->text = App->gui->convertTime(App->entitymanager->GetPlayer()->timer);
-			//timer->text = string;
 			timer->UpdateText();
 		}
 	}
@@ -198,17 +197,25 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	App->tex->UnLoad(debug_tex);
 	App->audio->StopMusic();
 	App->audio->UnloadFx();
 	App->entitymanager->Disable();
 	App->collisions->Disable();
 	App->map->Disable();
-	App->gui->Disable();
 	settings = nullptr;
 	App->gui->deleteElement(timer);
 	timer = nullptr;
 	App->gui->deleteElement(score);
 	score = nullptr;
+	App->gui->deleteElement(life1);
+	life1 = nullptr;
+	App->gui->deleteElement(life2);
+	life2 = nullptr;
+	App->gui->deleteElement(life3);
+	life3 = nullptr;
+
+	App->gui->Disable();
 	return true;
 }
 
@@ -220,9 +227,6 @@ bool j1Scene::Load(pugi::xml_node& data)
 		this->Disable();
 		App->scene2->Enable();
 	}
-	/*else {
-		CreateLayout();
-	}*/
 
 
 	return true;

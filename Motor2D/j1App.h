@@ -60,10 +60,12 @@ public:
 	void LoadGame();
 	void SaveGame() const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
-	void j1App::calcTime(uint& timer);
-	void j1App::setTime(uint& timer);
-
+	void calcTime(uint& timer);
+	void setTime(uint& timer);
 	void getTime(uint & timer);
+
+	void setScore(uint& score);
+	void getScore(uint & score);
 
 	pugi::xml_node GetSaveData();
 
@@ -148,6 +150,7 @@ private:
 	bool				cap_frames = true;
 	int					capped_ms;
 	uint64				b_timer = 0;
+	uint				b_score = 0;
 
 };
 

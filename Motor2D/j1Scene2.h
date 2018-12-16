@@ -6,6 +6,7 @@
 struct SDL_Texture;
 struct j1ElementGUI;
 struct j1Label;
+struct j1Image;
 
 class j1Scene2 : public j1Module
 {
@@ -40,6 +41,10 @@ public:
 
 	void CreateHUD();
 
+	void CreateLayout();
+
+	void UpdateLives();
+
 private:
 	p2SString map;
 	iPoint cam_pos;
@@ -51,6 +56,9 @@ private:
 	bool hud = false;
 	j1Label* score;
 	j1Label* timer;
+	j1Image* life1;
+	j1Image* life2;
+	j1Image* life3;
 };
 
 #endif // __j1SCENE_H__
